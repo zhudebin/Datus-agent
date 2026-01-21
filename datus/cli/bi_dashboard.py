@@ -39,9 +39,12 @@ from datus.tools.db_tools.db_manager import db_manager_instance
 from datus.tools.func_tool.semantic_tools import SemanticTools
 from datus.utils.constants import SYS_SUB_AGENTS
 from datus.utils.exceptions import DatusException, ErrorCode
+from datus.utils.loggings import get_logger
 from datus.utils.path_manager import get_path_manager
 from datus.utils.stream_output import StreamOutputManager
 from datus.utils.sub_agent_manager import SubAgentManager
+
+logger = get_logger(__name__)
 
 if TYPE_CHECKING:
     from datus.cli.repl import DatusCLI
@@ -80,12 +83,22 @@ class BiDashboardCommands:
         self._adaptor_registry = self._discover_adaptors()
 
     def cmd(self, args: str = "") -> None:
+        """
+        Orchestrates an interactive flow to build and save a BI dashboard sub-agent.
+        
+        Runs a step-by-step process that prompts for connection and dashboard options, loads dashboard charts and datasets, allows selecting charts for reference SQL and metrics, assembles the dashboard artifacts (tables, SQLs, metrics), reviews table scoping, and persists the resulting sub-agent configuration and related artifacts.
+        
+        Parameters:
+            args (str): Optional command-line arguments or invocation string (currently unused by the interactive flow).
+        
+        """
         try:
             options = self._prompt_options()
         except (KeyboardInterrupt, EOFError):
             self.console.print("\n[yellow]Cancelled.[/]")
             return
         except Exception as exc:
+            logger.error("Failed to initialize BI dashboard options", exc_info=True)
             self.console.print(f"[bold red]Error:[/] {exc}")
             return
 
@@ -246,12 +259,21 @@ class BiDashboardCommands:
     def _confirm_dashboard(
         self, adaptor: BIAdaptorBase, dashboard_url: str
     ) -> tuple[Optional[DashboardInfo], Optional[Union[int, str]]]:
+        """
+        Prompt the user to load and confirm a dashboard given a dashboard URL.
+        
+        Attempts to load dashboard information from the provided URL, displays a brief summary (ID, name, description) if found, and prompts the user to confirm reuse or to enter an alternative dashboard URL. If the user confirms a loaded dashboard, returns its DashboardInfo and parsed dashboard identifier; if the user declines or no dashboard is confirmed, returns (None, None).
+        
+        Returns:
+            tuple[Optional[DashboardInfo], Optional[Union[int, str]]]: `(DashboardInfo, dashboard_id)` if the user confirms the loaded dashboard; `(None, None)` otherwise.
+        """
         while True:
             dashboard_id = adaptor.parse_dashboard_id(dashboard_url)
             try:
                 with self.console.status("Loading dashboard..."):
                     dashboard = adaptor.get_dashboard_info(dashboard_id)
             except Exception as exc:
+                logger.error(f"Failed to load dashboard from {dashboard_url}", exc_info=True)
                 self.console.print(f"[bold red]Failed to load dashboard:[/] {exc}")
                 dashboard = None
 
@@ -368,6 +390,19 @@ class BiDashboardCommands:
         dashboard_id: Union[int, str],
         chart_metas: Sequence[ChartInfo],
     ) -> List[ChartInfo]:
+        """
+        Load detailed chart information for each chart metadata item.
+        
+        For each entry in `chart_metas`, fetch a detailed `ChartInfo` from `adaptor` using `dashboard_id`. If loading a chart fails, the original `ChartInfo` from `chart_metas` is used as a fallback; failures emit a warning to the logger and a brief message to the console.
+        
+        Parameters:
+            adaptor (BIAdaptorBase): BI adaptor used to fetch chart details.
+            dashboard_id (int | str): Identifier of the dashboard containing the charts.
+            chart_metas (Sequence[ChartInfo]): Sequence of chart metadata objects to hydrate.
+        
+        Returns:
+            List[ChartInfo]: A list of `ChartInfo` objects where each entry is the detailed chart when available or the original metadata item when loading failed.
+        """
         charts: List[ChartInfo] = []
         total = len(chart_metas)
         with self.console.status("Loading chart details...") as status:
@@ -376,6 +411,7 @@ class BiDashboardCommands:
                 try:
                     chart_detail = adaptor.get_chart(chart_meta.id, dashboard_id)
                 except Exception as exc:
+                    logger.warning(f"Failed to load chart {chart_meta.id}: {exc}")
                     self.console.print(f"[yellow]Failed to load chart {chart_meta.id}:[/] {exc}")
                     chart_detail = None
                 charts.append(chart_detail or chart_meta)
@@ -460,6 +496,21 @@ class BiDashboardCommands:
         dashboard: DashboardInfo,
         result: DashboardAssemblyResult,
     ) -> None:
+        """
+        Builds and persists a sub-agent (and an attribution sub-agent) for the given BI dashboard by generating metadata, reference SQL, a semantic model, and metrics, then saving and bootstrapping the resulting sub-agent(s).
+        
+        Parameters:
+            platform: The BI platform identifier used to namespace files and sub-agent names.
+            dashboard: DashboardInfo object describing the dashboard (name, description, etc.).
+            result: DashboardAssemblyResult containing tables, reference SQLs, and metric SQLs produced from the dashboard.
+        
+        Notes:
+            - If no current namespace is configured, the function prints a warning and returns without saving.
+            - Reserved sub-agent names are skipped and will not be persisted.
+            - Steps performed, in order: metadata generation, reference SQL generation, semantic model generation, metrics generation (only if semantic model succeeds).
+            - If any scoped context (tables, SQLs, or metrics) is produced, a SubAgentConfig is created and saved; the agent is then bootstrapped.
+            - An attribution sub-agent (suffix "_attribution") is created and bootstrapped if its name is not reserved; failures to persist either agent are logged and reported to the console but do not raise exceptions from this function.
+        """
         sub_agent_name = self._build_sub_agent_name(platform, dashboard.name or "")
         if not getattr(self.agent_config, "current_namespace", ""):
             self.console.print("[yellow]No namespace set. Skipping sub-agent save.[/]")
@@ -525,6 +576,7 @@ class BiDashboardCommands:
             manager.save_agent(sub_agent, previous_name=sub_agent_name)
             self.console.log(f"[bold green]Sub-Agent `{sub_agent_name}` saved.")
         except Exception as exc:
+            logger.error(f"Failed to persist sub-agent {sub_agent_name}", exc_info=True)
             self.console.log(f"[bold red]Failed to persist sub-agent:[/] {exc}")
             return
         manager.bootstrap_agent(sub_agent, components=["metadata", "semantic_model", "metrics", "reference_sql"])
@@ -545,6 +597,7 @@ class BiDashboardCommands:
                 manager.save_agent(attribution_agent, previous_name=attribution_agent_name)
                 self.console.log(f"[bold green]Attribution Sub-Agent `{attribution_agent_name}` saved.")
             except Exception as exc:
+                logger.warning(f"Failed to persist attribution sub-agent {attribution_agent_name}: {exc}")
                 self.console.log(f"[bold yellow]Failed to persist attribution sub-agent:[/] {exc}")
             else:
                 manager.bootstrap_agent(
@@ -875,13 +928,16 @@ class BiDashboardCommands:
         return successful
 
     def _gen_metadata(self, table_names: List[str]) -> bool:
-        """Generate metadata for tables used in the dashboard.
-
-        Args:
-            table_names: List of table names to build metadata for
-
+        """
+        Generate local schema metadata for the provided tables using the configured agent and database manager.
+        
+        Builds metadata via the agent configuration's metadata store in incremental mode; uses the CLI's db_manager when available or creates one from agent namespaces.
+        
+        Parameters:
+            table_names (List[str]): Table identifiers to include in metadata generation.
+        
         Returns:
-            True if successful, False otherwise
+            bool: `True` if metadata generation completed successfully, `False` otherwise.
         """
         if not table_names:
             self.console.log("[yellow]No tables for metadata generation[/]")
@@ -910,6 +966,7 @@ class BiDashboardCommands:
             return True
 
         except Exception as exc:
+            logger.error(f"Metadata generation failed for tables: {table_names}", exc_info=True)
             self.console.log(f"[yellow]Metadata generation failed: {exc}[/]")
             return False
 
@@ -948,6 +1005,7 @@ class BiDashboardCommands:
             return True
 
         except Exception as exc:
+            logger.warning(f"Semantic model validation check failed: {exc}")
             self.console.log(f"[yellow]Validation check failed: {exc}[/]")
             return False
 

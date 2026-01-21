@@ -83,7 +83,27 @@ def init_metrics(
     console: Optional[Console] = None,
     extra_instructions: Optional[str] = None,
 ) -> tuple[bool, Optional[dict[str, Any]]]:
-    """Initialize metrics using success stories."""
+    """
+    Initialize metrics from a success story and persist them to the agent's metric storage.
+    
+    This builds metric storage from the provided success story file, optionally overwriting any
+    existing metric storage (deletes the `metrics.lance` directory when `build_model` is
+    "overwrite"). Progress and messages are streamed to the provided console and a Markdown
+    summary is rendered after the live display stops.
+    
+    Parameters:
+        success_path (Path): Path to the success story file or directory to ingest.
+        agent_config (AgentConfig): Agent configuration providing storage paths and persistence settings.
+        subject_tree (Optional[List[str]]): Optional list of subject identifiers to restrict metric initialization.
+        build_model (Literal["incremental", "overwrite"]): Controls whether to incrementally add to existing metrics
+            or overwrite them; when "overwrite", existing metric storage is removed before initialization.
+        console (Optional[Console]): Rich Console used for live progress output; a Console is created if not provided.
+        extra_instructions (Optional[str]): Optional extra instructions forwarded to the metric initialization routine.
+    
+    Returns:
+        tuple[bool, Optional[dict[str, Any]]]: A tuple where the first element is `True` on success and `False`
+        on failure. On success the second element is a dictionary with metric initialization results; on failure it is `None`.
+    """
     from rich.markup import escape
 
     from datus.schemas.batch_events import BatchEvent, BatchStage
@@ -143,6 +163,9 @@ def init_metrics(
         finally:
             output_mgr.stop()
 
+        # Render markdown summary after Live display stops
+        output_mgr.render_markdown_summary(title="Metrics Summary")
+
         if successful:
             console.print("[green]Metrics initialized[/]")
             return True, metrics_result
@@ -161,16 +184,19 @@ def init_semantic_model(
     build_mode: Literal["incremental", "overwrite"] = "incremental",
     console: Optional[Console] = None,
 ) -> tuple[bool, Optional[dict[str, Any]]]:
-    """Initialize semantic model using success stories.
-
-    Args:
-        success_path: Path to success story CSV file
-        agent_config: Agent configuration
-        build_mode: Build mode (incremental or overwrite)
-        console: Optional Rich console for output
-
+    """
+    Initialize a semantic model from a success story file.
+    
+    If `build_mode` is "overwrite", existing semantic model storage and associated YAML files are removed before initialization. Progress and messages are emitted to the provided Rich `console` (or a new Console if none is supplied).
+    
+    Parameters:
+        success_path (Path): Path to the success story CSV file.
+        agent_config (AgentConfig): Agent configuration used to determine storage paths and namespace.
+        build_mode (Literal["incremental", "overwrite"]): "incremental" to preserve existing data, "overwrite" to clear and recreate storage.
+        console (Optional[Console]): Optional Rich Console for live output and summaries.
+    
     Returns:
-        Tuple of (success: bool, result: Optional[dict])
+        tuple[bool, Optional[dict[str, Any]]]: `True` and a dict containing `"semantic_model_count"` on success (the dict may be empty if the count cannot be determined), `False` and `None` on failure.
     """
     from rich.markup import escape
 
@@ -232,6 +258,9 @@ def init_semantic_model(
             successful, error_message = init_success_story_semantic_model(args, agent_config, emit=emit)
         finally:
             output_mgr.stop()
+
+        # Render markdown summary after Live display stops
+        output_mgr.render_markdown_summary(title="Semantic Model Summary")
 
         if successful:
             console.print("[green]Semantic model initialized[/]")

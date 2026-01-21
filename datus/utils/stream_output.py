@@ -12,12 +12,15 @@ Provides a consistent UI for displaying:
 - LLM output (maximized visibility)
 """
 
+import json
+import re
 from collections import deque
 from contextlib import contextmanager
 from typing import Optional
 
 from rich.console import Console, Group
 from rich.live import Live
+from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.progress import BarColumn, Progress, SpinnerColumn, TaskID, TextColumn
 from rich.text import Text
@@ -34,13 +37,13 @@ class StreamOutputManager:
         title: str = "Processing",
     ):
         """
-        Initialize output manager
-
-        Args:
-            console: Rich console instance
-            max_message_lines: Maximum number of lines in the message scrolling window (default 10 lines)
-            show_progress: Whether to display a progress bar
-            title: Progress bar title
+        Initialize StreamOutputManager with console and display settings.
+        
+        Parameters:
+            console (Console): Rich Console used for rendering output and Live updates.
+            max_message_lines (int): Maximum number of lines retained in the scrolling message window.
+            show_progress (bool): Whether to display a progress indicator during operations.
+            title (str): Title displayed above the progress area.
         """
         self.console = console
         self.max_message_lines = max_message_lines
@@ -63,12 +66,18 @@ class StreamOutputManager:
         self.progress_task: Optional[TaskID] = None
         self._is_running = False
 
+        # Store complete LLM output for markdown rendering
+        self.full_output: list[str] = []
+
     def _create_progress(self, total_items: int) -> Progress:
         """
-        Create progress bar based on total items count.
-
-        For single item (total_items <= 1), use spinner-only style without count.
-        For multiple items, use full progress bar with percentage and count.
+        Create a Rich Progress instance configured for the expected number of items.
+        
+        Parameters:
+            total_items (int): Number of items to process; when less than or equal to 1, a spinner-only progress (description column only) is used, otherwise a full progress bar with percentage and completed/total count is returned.
+        
+        Returns:
+            Progress: A configured Rich `Progress` object appropriate for single-item (spinner) or multi-item (bar + percentage + count) display.
         """
         if total_items <= 1:
             # Single task mode: spinner + description only
@@ -208,20 +217,21 @@ class StreamOutputManager:
 
     def add_llm_output(self, output: str):
         """
-        Add LLM output (priority display, use special styles)
-
-        Args:
-            output: LLM output content
+        Add LLM-generated text to the manager and display it in the message window.
+        
+        Parameters:
+            output (str): LLM output to store for later markdown rendering and to display immediately with a prominent white style.
         """
+        self.full_output.append(output)
         self.add_message(output, style="white")
 
     def complete_task(self, success: bool = True, message: str = ""):
         """
-        Complete the current task
-
-        Args:
-            success: Whether it was successful or not
-            message: Complete the message
+        Mark the currently active task as completed and optionally append a styled completion message.
+        
+        Parameters:
+            success (bool): Whether the task succeeded; determines the icon and message style.
+            message (str): Optional completion message to add to the message window; if empty no message is added.
         """
         if message:
             icon = "✓" if success else "✗"
@@ -250,15 +260,69 @@ class StreamOutputManager:
 
     def success(self, message: str):
         """
-        Displays a success message
-
-        Args:
-            message: Success message
+        Record a success message prefixed with a checkmark and styled green.
+        
+        Parameters:
+            message (str): Text of the success message to add.
         """
         self.add_message(f"✓ {message}", style="green")
 
+    def render_markdown_summary(self, title: str = "Summary"):
+        """
+        Render accumulated LLM output as Markdown inside a titled panel.
+        
+        If the manager has stored LLM output, combine it, extract Markdown content (preferring JSON "output" fields when present), render it as Markdown inside a green-bordered panel with the given title, and then clear the stored output.
+        
+        Parameters:
+            title (str): Title to display on the summary panel (default "Summary").
+        """
+        if not self.full_output:
+            return
+
+        # Combine all output and extract markdown content
+        full_text = "\n".join(self.full_output)
+        markdown_content = self._extract_markdown_from_output(full_text)
+
+        if markdown_content:
+            md = Markdown(markdown_content)
+            self.console.print(Panel(md, title=f"📋 {title}", border_style="green"))
+
+        # Clear full_output after rendering
+        self.full_output.clear()
+
+    def _extract_markdown_from_output(self, text: str) -> str:
+        """
+        Extract markdown content from LLM output, preferring an `output` field inside a JSON block.
+        
+        Parameters:
+            text (str): Raw LLM output which may contain plain markdown or a JSON object embedding an `output` field.
+        
+        Returns:
+            str: The markdown text found in the JSON `output` field if present, otherwise the original input `text`.
+        """
+        # Try to extract 'output' field from JSON
+        try:
+            # Look for JSON blocks containing 'output' field
+            json_match = re.search(r'\{[^{}]*"output"[^{}]*\}', text, re.DOTALL)
+            if json_match:
+                data = json.loads(json_match.group())
+                if "output" in data:
+                    return data["output"]
+        except (json.JSONDecodeError, KeyError):
+            pass
+
+        # If no JSON found, return the original text
+        return text
+
     def _render(self):
-        """Render the entire output interface"""
+        """
+        Builds the composite renderable group for the live CLI display.
+        
+        Assembles the display components in order: optional progress bar (at the top), current file panel (if set), current task line (if set), and a messages panel containing the most recent message lines. Each message line is styled and indented; the messages panel is wrapped in a bordered panel.
+        
+        Returns:
+            render_group (rich.console.Group): A Group containing the assembled renderables in display order.
+        """
         components = []
 
         # 1. Progress bar (fixed at the top)
