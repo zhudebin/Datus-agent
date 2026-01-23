@@ -20,6 +20,7 @@ from agents import SQLiteSession, Tool
 from agents.mcp import MCPServerStdio
 
 from datus.agent.node.node import Node
+from datus.cli.execution_state import InteractionBroker
 from datus.configuration.agent_config import AgentConfig
 from datus.models.base import LLMBaseModel
 from datus.prompts.prompt_manager import prompt_manager
@@ -73,6 +74,9 @@ class AgenticNode(Node):
         self._session_tokens: int = 0
         self.last_summary: Optional[str] = None
         self.context_length: Optional[int] = None
+
+        # InteractionBroker - created per-node instance for async user interactions
+        self.interaction_broker: Optional["InteractionBroker"] = None
 
         # Parse node configuration from agent.yml (available to all agentic nodes)
         self.node_config = self._parse_node_config(agent_config, self.get_node_name())
@@ -558,22 +562,60 @@ class AgenticNode(Node):
         self, action_history_manager: Optional[ActionHistoryManager] = None
     ) -> AsyncGenerator[ActionHistory, None]:
         """
-        Execute the agentic node with streaming support.
-
-        This method should be implemented by subclasses to provide specific
-        functionality while using the common session and tool management.
-
-        Input should be accessed from self.input instead of parameters.
-
-        Args:
-            action_history_manager: Optional action history manager for tracking
-
+        Stream the node's execution and yield incremental action updates.
+        
+        Subclasses must implement this to perform the node-specific streaming execution using state on self (for example, self.input). Implementations should use the optional action_history_manager to record or update action history as execution progresses.
+        
+        Parameters:
+            action_history_manager (Optional[ActionHistoryManager]): Manager used to record or update action history; may be None.
+        
         Yields:
-            ActionHistory: Progress updates during execution
+            ActionHistory: Incremental progress updates produced during execution.
         """
 
+    def _get_or_create_broker(self) -> "InteractionBroker":
+        """
+        Get the interaction broker for this node, creating and storing a new one if none exists.
+        
+        Returns:
+            interaction_broker (InteractionBroker): The node's InteractionBroker instance.
+        """
+        if self.interaction_broker is None:
+            self.interaction_broker = InteractionBroker()
+        return self.interaction_broker
+
+    async def execute_stream_with_interactions(
+        self, action_history_manager: Optional[ActionHistoryManager] = None
+    ) -> AsyncGenerator[ActionHistory, None]:
+        """
+        Execute the node's streaming execution while merging in user-facing interaction events.
+        
+        Streams ActionHistory updates produced by the node's execute_stream and interleaves interaction actions emitted by the per-node InteractionBroker.
+        
+        Yields:
+            ActionHistory: Progress updates and interaction events produced during execution.
+        """
+        from datus.cli.execution_state import merge_interaction_stream
+
+        broker = self._get_or_create_broker()
+
+        action_stream = self.execute_stream(action_history_manager)
+        async for action in merge_interaction_stream(action_stream, broker):
+            yield action
+
+    def reset_broker(self) -> None:
+        """
+        Reset the interaction broker to its initial state so it can be reused.
+        
+        If no interaction broker is set, this is a no-op.
+        """
+        if self.interaction_broker:
+            self.interaction_broker.reset()
+
     def clear_session(self) -> None:
-        """Clear the current session and reset token count."""
+        """
+        Clears the current session and resets the session token count.
+        """
         if self.model and self.session_id:
             self.model.clear_session(self.session_id)
             self._session = None

@@ -29,7 +29,19 @@ class ChatExecutor:
         self.last_actions = []  # Store last execution's actions
 
     def execute_chat_stream(self, user_message: str, cli, current_subagent: Optional[str] = None):
-        """Execute chat command with streaming support - reuses chat_commands logic."""
+        """
+        Streamingly execute a chat command using the CLI's chat_commands and yield incremental results.
+        
+        This generator drives the chat node execution and yields intermediate output for UI streaming. It may create or reuse a chat node, populate the node input from the user message, and update chat_commands state. For interactive choices of type "request_choice" in PROCESSING status, the function will auto-submit the configured default choice (if available) via the node's interaction broker. On normal progress it yields formatted text fragments for tool/assistant thinking and yields interaction ActionHistory objects for rendering; on configuration errors or exceptions it yields an error string. The collected actions are stored on self.last_actions when the stream finishes.
+        
+        Parameters:
+            user_message (str): The user's chat message to execute.
+            cli: The CLI/context object containing chat_commands, actions, and at_completer used to prepare and run the node.
+            current_subagent (Optional[str]): Name of the subagent to use when deciding whether to create a new chat node; pass None to use the default/chat node.
+        
+        Returns:
+            Yields either formatted text fragments (str) intended for streaming display or ActionHistory instances representing interactions; on error yields an error message string.
+        """
         if not cli or not cli.chat_commands:
             yield "Error: Please load configuration first!"
             return
@@ -99,11 +111,38 @@ class ChatExecutor:
                 current_node.input = node_input
 
                 async def run_stream():
-                    """Wrapper to iterate the async generator to completion"""
+                    """
+                    Iterate the node's interaction stream, auto-handle certain processing interactions, and yield actions ready for UI rendering.
+                    
+                    Processes events from the node's async interaction generator. Skips tool actions that are still processing. For interaction events of type "request_choice" that are in PROCESSING, automatically submit the configured default choice (via the node's interaction broker) and do not yield the processing event to the UI. Appends yielded actions to an internal incremental list and stores that list to self.last_actions when the stream completes.
+                    
+                    Yields:
+                        ActionHistory: Actions that should be rendered by the UI (typically SUCCESS interactions and other non-processing events).
+                    """
                     try:
-                        async for action in current_node.execute_stream(cli.actions):
+                        async for action in current_node.execute_stream_with_interactions(cli.actions):
                             if action.role == ActionRole.TOOL and action.status == ActionStatus.PROCESSING:
                                 continue
+
+                            # Auto-submit default choice for PROCESSING interactions (Web mode)
+                            if (
+                                action.role == ActionRole.INTERACTION
+                                and action.action_type == "request_choice"
+                                and action.status == ActionStatus.PROCESSING
+                            ):
+                                # Get default choice and auto-submit
+                                input_data = action.input or {}
+                                choices = input_data.get("choices", [])
+                                default_idx = input_data.get("default_choice", 0)
+                                if choices and 0 <= default_idx < len(choices):
+                                    default_choice = choices[default_idx]
+                                    broker = current_node.interaction_broker
+                                    if broker:
+                                        broker.submit(action.action_id, default_choice)
+                                        logger.info(f"Web auto-submitted default choice: {default_choice}")
+                                continue  # Don't yield PROCESSING to UI
+
+                            # SUCCESS interactions are yielded for UI rendering
                             incremental_actions.append(action)
                             yield action
                         self.last_actions = incremental_actions

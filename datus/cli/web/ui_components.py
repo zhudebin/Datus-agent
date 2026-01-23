@@ -25,7 +25,7 @@ from pandas.core.dtypes.common import is_numeric_dtype
 from datus.cli.action_history_display import ActionContentGenerator
 from datus.configuration.agent_config import AgentConfig
 from datus.models.base import LLMBaseModel
-from datus.schemas.action_history import ActionHistory, ActionRole
+from datus.schemas.action_history import ActionHistory, ActionRole, ActionStatus
 from datus.schemas.node_models import ExecuteSQLResult
 from datus.schemas.visualization import VisualizationInput, VisualizationOutput
 from datus.tools.llms_tools.visualization_tool import VisualizationTool
@@ -571,6 +571,26 @@ class UIComponents:
     def render_action_item(
         self, chat_id: str, index: int, action: ActionHistory, content_generator: ActionContentGenerator
     ):
+        # Handle INTERACTION SUCCESS actions with special rendering
+        """
+        Render a single action history item in the Streamlit UI.
+        
+        Renders an expander for the given action showing a header with a status indicator and a title that includes the step index.
+        If the action is a TOOL call, the title includes the invoked function name when available; otherwise the title shows the action's messages.
+        Inside the expander the UI presents two columns labeled "Input" and "Output" that display the action's input/output (JSON rendered for dicts, plain text otherwise) or a "(no input)/(no output)" caption when absent.
+        If both start and end times are available, a caption shows the start time and the duration; if only start time is present, only the start time is shown.
+        Special case: when the action role is INTERACTION and its status is SUCCESS, rendering is delegated to a dedicated interaction-success renderer.
+        
+        Parameters:
+            chat_id (str): Identifier of the chat or conversation associated with the action (used for contextual rendering/navigation).
+            index (int): 1-based step index used in the displayed title.
+            action (ActionHistory): The action record to render, including role, status, input, output, messages, and timestamps.
+            content_generator (ActionContentGenerator): Utility used to produce status indicator elements and other presentation helpers.
+        """
+        if action.role == ActionRole.INTERACTION and action.status == ActionStatus.SUCCESS:
+            self._render_interaction_success(action, index)
+            return
+
         with st.container():
             # Action header with status indicator
             dot = content_generator._get_action_dot(action)
@@ -615,6 +635,47 @@ class UIComponents:
                     st.caption(f"⏱️ Started: {action.start_time.strftime('%H:%M:%S')} | Duration: {duration:.2f}s")
                 elif action.start_time:
                     st.caption(f"⏱️ Started: {action.start_time.strftime('%H:%M:%S')}")
+
+    def _render_interaction_success(self, action: ActionHistory, index: int):
+        """
+        Render a successful user-interaction action as an expanded UI section.
+        
+        Displays the original request content (honoring content_type 'markdown' or 'yaml'), the auto-selected user choice if present, and the callback/result content (honoring its content_type). The UI section is presented in an expander titled "Step {index}: ✓ User Interaction".
+        
+        Parameters:
+            action (ActionHistory): The interaction action to render.
+            index (int): Step index used in the expander title.
+        """
+        input_data = action.input or {}
+        output_data = action.output or {}
+
+        with st.expander(f"Step {index}: ✓ User Interaction", expanded=True):
+            # Render original request content
+            content = input_data.get("content", "")
+            content_type = input_data.get("content_type", "text")
+            if content:
+                if content_type == "markdown":
+                    st.markdown(content)
+                elif content_type == "yaml":
+                    st.code(content, language="yaml")
+                else:
+                    st.write(content)
+
+            # Render user choice (auto-selected in web mode)
+            user_choice = output_data.get("user_choice", "")
+            if user_choice:
+                st.success(f"✓ Auto-selected: {user_choice}")
+
+            # Render callback result content
+            result_content = output_data.get("content", "") or action.messages or ""
+            result_type = output_data.get("content_type", "markdown")
+            if result_content:
+                if result_type == "markdown":
+                    st.markdown(result_content)
+                elif result_type == "yaml":
+                    st.code(result_content, language="yaml")
+                else:
+                    st.write(result_content)
 
     def render_action_history(self, actions: List[ActionHistory], chat_id: str = None, expanded: bool = False) -> None:
         """Render complete action history with full details.

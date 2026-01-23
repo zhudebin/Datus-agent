@@ -24,12 +24,22 @@ logger = get_logger(__name__)
 
 class BaseActionContentGenerator:
     def __init__(self) -> None:
+        """
+        Initialize renderer mappings for action roles and statuses.
+        
+        Sets up mapping attributes used to determine display colors, iconography, and dot glyphs for action roles and statuses:
+        - role_colors: color name for each ActionRole.
+        - status_icons: small status icons (e.g., processing, success, failed).
+        - status_dots: colored dot glyphs representing status.
+        - role_dots: role-specific glyphs for visual identification.
+        """
         self.role_colors = {
             ActionRole.SYSTEM: "bright_magenta",
             ActionRole.ASSISTANT: "bright_blue",
             ActionRole.USER: "bright_green",
             ActionRole.TOOL: "bright_cyan",
             ActionRole.WORKFLOW: "bright_yellow",
+            ActionRole.INTERACTION: "bright_yellow",
         }
         self.status_icons = {
             ActionStatus.PROCESSING: "⏳",
@@ -48,10 +58,16 @@ class BaseActionContentGenerator:
             ActionRole.SYSTEM: "🟣",  # Purple for system
             ActionRole.USER: "🟢",  # Green for user
             ActionRole.WORKFLOW: "🟡",  # Yellow for workflow
+            ActionRole.INTERACTION: "❓",  # Question mark for interaction requests
         }
 
     def _get_action_dot(self, action: ActionHistory) -> str:
-        """Get the appropriate colored dot for an action based on role and status"""
+        """
+        Selects the colored dot used to represent an action in the UI.
+        
+        Returns:
+            str: A colored dot emoji for the given action. TOOL and ASSISTANT roles return their role-specific dots; other roles return a dot based on the action's status or "⚫" if the status is unknown.
+        """
         # For tools, use cyan dot
         if action.role == ActionRole.TOOL:
             return self.role_dots[ActionRole.TOOL]
@@ -395,6 +411,19 @@ class ActionHistoryDisplay:
     """Display ActionHistory in a rich format with separated content generation logic"""
 
     def __init__(self, console: Optional[Console] = None, enable_truncation: bool = True):
+        """
+        Initialize an ActionHistoryDisplay for streaming and final action views.
+        
+        Parameters:
+            console (Optional[Console]): Rich Console to render to; a default Console is created if omitted.
+            enable_truncation (bool): Whether generated action input/output content should be truncated for compact display.
+        
+        Attributes created:
+            content_generator: ActionContentGenerator configured with the truncation setting.
+            _action_window (Optional[deque]): Sliding window buffer used to hold recent actions for streaming output.
+            _max_actions (Optional[int]): Maximum number of actions that fit in the current terminal display (calculated later).
+            _current_context (Optional[StreamingActionContext]): Reference to the active streaming context used to control the live display.
+        """
         self.console = console or Console()
         self.enable_truncation = enable_truncation
 
@@ -405,8 +434,16 @@ class ActionHistoryDisplay:
         self._action_window: Optional[deque] = None
         self._max_actions: Optional[int] = None
 
+        # Reference to current streaming context for live control
+        self._current_context: Optional["StreamingActionContext"] = None
+
     def _get_terminal_height(self) -> int:
-        """Get terminal height, fallback to reasonable default"""
+        """
+        Return the terminal height in lines, falling back to a sensible default when unavailable.
+        
+        Returns:
+            int: Number of terminal lines; returns 24 if the terminal size cannot be determined.
+        """
         try:
             return os.get_terminal_size().lines
         except (OSError, ValueError):
@@ -543,7 +580,15 @@ class ActionHistoryDisplay:
         self.console.print(tree)
 
     def display_streaming_actions(self, actions: List[ActionHistory]) -> "StreamingActionContext":
-        """Create a live display for streaming actions with sliding window and output capture"""
+        """
+        Open a live streaming display that maintains a sliding window of recent actions.
+        
+        Parameters:
+            actions (List[ActionHistory]): The list of actions to render and monitor for live updates.
+        
+        Returns:
+            StreamingActionContext: Context manager controlling the live display; entering it starts the live render and exiting stops it.
+        """
 
         # Initialize sliding window if needed
         if self._max_actions is None:
@@ -562,8 +607,42 @@ class ActionHistoryDisplay:
 
         return StreamingActionContext(actions, self)
 
+    def stop_live(self) -> None:
+        """
+        Stop the active live display if one exists.
+        
+        If a live display is active on the current context, attempt to stop it. Exceptions raised while stopping are caught and logged at debug level.
+        """
+        if self._current_context and self._current_context.live:
+            try:
+                self._current_context.live.stop()
+            except Exception as e:
+                logger.debug(f"Error stopping live display: {e}")
+
+    def restart_live(self) -> None:
+        """
+        Restart the live action stream display.
+        
+        If a streaming context is active, recreate the Live display from the current cursor position; failures are logged at debug level.
+        """
+        if self._current_context:
+            try:
+                # Use recreate_live_display() instead of live.start()
+                # This creates a new Live from current cursor position,
+                # preserving any content printed during the interaction
+                self._current_context.recreate_live_display()
+            except Exception as e:
+                logger.debug(f"Error restarting live display: {e}")
+
     def display_final_action_history(self, actions: List[ActionHistory]) -> None:
-        """Display the final action history with complete SQL queries and reasoning results"""
+        """
+        Render a final, detailed action history tree to the console.
+        
+        Each action is shown as a top-level tree node with its status icon, role-colored label, messages, and duration when start and end times are present. If an action has input or output, those are added as child nodes; dictionary inputs/outputs are expanded into nested tree entries for full inspection. If the provided list is empty, a dimmed "No actions to display" message is printed.
+        
+        Parameters:
+            actions (List[ActionHistory]): Sequence of action history entries to render.
+        """
         if not actions:
             self.console.print("[dim]No actions to display[/dim]")
             return
@@ -638,8 +717,6 @@ class StreamingActionContext:
         This is used in plan mode to create a fresh display after showing
         static content (menus, plans), avoiding overlap with previous content.
         """
-        from datus.cli.execution_state import execution_controller
-
         # Stop and discard the old Live display
         if self.live:
             try:
@@ -658,16 +735,18 @@ class StreamingActionContext:
             self.live = Live(self._content_renderer, refresh_per_second=4)
             self.live.start()
 
-            # Register with execution controller
-            try:
-                execution_controller.register_live_display(self.live)
-            except Exception as e:
-                logger.warning(f"Failed to register recreated live display: {e}")
-
         return self.live
 
     def __enter__(self):
         # Create the content renderer
+        """
+        Enter the streaming context and start a live updating action stream display.
+        
+        Initializes a content renderer for streaming actions, starts the Live display, and registers this context on the associated ActionHistoryDisplay so the live display can be controlled and recreated.
+        
+        Returns:
+            StreamingActionContext: The context instance with an active Live display.
+        """
         class StreamingContent:
             def __init__(self, actions_list, display_instance: ActionHistoryDisplay, context):
                 self.actions = actions_list
@@ -702,29 +781,34 @@ class StreamingActionContext:
         # Start the live display
         self.live.start()
 
-        # Register with execution controller (including context for recreation)
-        try:
-            from datus.cli.execution_state import execution_controller
-
-            execution_controller.register_live_display(self.live, context=self)
-        except Exception as e:
-            logger.warning(f"Failed to register live display: {e}")
+        # Register this context with the display instance for live control
+        self.display._current_context = self
 
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):  # pylint: disable=unused-argument
-        # Unregister from execution controller
-        try:
-            from datus.cli.execution_state import execution_controller
-
-            execution_controller.unregister_live_display()
-        except Exception as e:
-            logger.warning(f"Failed to unregister live display: {e}")
-
+        """
+        Tear down the streaming live display and unregister this context from the parent display.
+        
+        Stops the active Live instance if one exists. If the parent display's current context reference points to this context, clears that reference.
+        """
         if self.live:
             self.live.stop()
 
+        # Unregister this context from the display instance
+        if self.display._current_context is self:
+            self.display._current_context = None
+
 
 def create_action_display(console: Optional[Console] = None, enable_truncation: bool = True) -> ActionHistoryDisplay:
-    """Factory function to create ActionHistoryDisplay with truncation control"""
+    """
+    Create an ActionHistoryDisplay configured for the given console and truncation preference.
+    
+    Parameters:
+        console (Optional[Console]): Rich Console to use for rendering. If None, a default Console will be created.
+        enable_truncation (bool): Whether to enable truncation of long action inputs/outputs in the display.
+    
+    Returns:
+        ActionHistoryDisplay: A new ActionHistoryDisplay instance configured with the provided console and truncation setting.
+    """
     return ActionHistoryDisplay(console, enable_truncation)

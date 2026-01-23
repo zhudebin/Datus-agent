@@ -186,12 +186,14 @@ class GenMetricsAgenticNode(AgenticNode):
             logger.error(f"Failed to setup semantic tools: {e}")
 
     def _setup_hooks(self):
-        """Setup hooks for interactive mode."""
+        """
+        Initialize and attach generation hooks used in interactive mode.
+        
+        Creates and assigns a GenerationHooks instance to self.hooks using the node's broker and agent configuration. Failures are logged and do not raise an exception.
+        """
         try:
-            from rich.console import Console
-
-            console = Console()
-            self.hooks = GenerationHooks(console=console, agent_config=self.agent_config)
+            broker = self._get_or_create_broker()
+            self.hooks = GenerationHooks(broker=broker, agent_config=self.agent_config)
             logger.info("Setup hooks: generation_hooks")
         except Exception as e:
             logger.error(f"Failed to setup generation_hooks: {e}")

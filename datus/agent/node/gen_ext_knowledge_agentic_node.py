@@ -163,12 +163,14 @@ class GenExtKnowledgeAgenticNode(AgenticNode):
             logger.error(f"Failed to setup specific filesystem tool: {e}")
 
     def _setup_hooks(self):
-        """Setup hooks (hardcoded to generation_hooks)."""
+        """
+        Initialize the generation hooks and assign them to the node's `hooks` attribute.
+        
+        Attempts to obtain or create a broker via `_get_or_create_broker()` and instantiate `GenerationHooks` with that broker and the node's `agent_config`, storing the instance on `self.hooks`. On failure the method logs an error and leaves `self.hooks` unset.
+        """
         try:
-            from rich.console import Console
-
-            console = Console()
-            self.hooks = GenerationHooks(console=console, agent_config=self.agent_config)
+            broker = self._get_or_create_broker()
+            self.hooks = GenerationHooks(broker=broker, agent_config=self.agent_config)
             logger.info("Setup hooks: generation_hooks")
         except Exception as e:
             logger.error(f"Failed to setup generation_hooks: {e}")

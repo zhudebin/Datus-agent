@@ -22,6 +22,7 @@ from rich.table import Table
 
 from datus.agent.node.chat_agentic_node import ChatAgenticNode
 from datus.cli.action_history_display import ActionHistoryDisplay
+from datus.cli.blocking_input_manager import blocking_input_manager
 from datus.schemas.action_history import ActionHistory, ActionRole, ActionStatus
 from datus.schemas.node_models import SQLContext
 from datus.utils.loggings import get_logger
@@ -292,7 +293,22 @@ class ChatCommands:
     def execute_chat_command(
         self, message: str, plan_mode: bool = False, subagent_name: str = None, compact_when_new_subagent: bool = True
     ):
-        """Execute a chat command with simplified node management."""
+        """
+        Handle a user chat message: manage node lifecycle, stream execution with interactive prompts, and render final outputs.
+        
+        This method:
+        - Determines whether to reuse or create a chat/subagent node.
+        - Optionally compacts the previous session when switching subagents.
+        - Builds and assigns node input, runs the node's interaction-aware streaming execution,
+          handles inline CLI interactions, and renders final outputs (SQL, reports, semantic models, files, or markdown).
+        - Appends the interaction to the chat history and updates last actions.
+        
+        Parameters:
+            message (str): The user's chat message; must be non-empty.
+            plan_mode (bool): When True, run the node in plan mode (affects node input and execution behavior).
+            subagent_name (str | None): Name of a subagent to use; if None, uses or creates the default chat node.
+            compact_when_new_subagent (bool): If True and switching to a different subagent, attempt to compact the current session before switching.
+        """
         if not message.strip():
             self.console.print("[yellow]Please provide a message to chat with the AI.[/]")
             return
@@ -342,28 +358,36 @@ class ChatCommands:
             action_display = ActionHistoryDisplay(self.console)
             incremental_actions = []
 
-            # Run streaming execution with real-time display
-            # Use live display for both normal and plan mode
-            # Plan mode now coordinates properly using execution_controller
-            if not plan_mode:
-                # Normal mode: use full Live Display
-                with action_display.display_streaming_actions(incremental_actions):
+            # Run streaming execution with real-time display using interaction-aware stream
+            async def run_chat_stream_with_interactions():
+                """
+                Handle the chat node's streaming output while managing interactive "request_choice" actions.
+                
+                Iterates over actions produced by the node's interaction-aware stream, pausing the live action display to collect user input when an INTERACTION action with status PROCESSING is encountered, submitting that input to the node's interaction broker if available, and resuming the live display when the corresponding INTERACTION action reaches status SUCCESS. Non-interactive actions are appended to the incremental actions list for normal display.
+                """
+                async for action in current_node.execute_stream_with_interactions(
+                    action_history_manager=self.cli.actions
+                ):
+                    # INTERACTION role actions: distinguish by status (PROCESSING vs SUCCESS)
+                    if action.role == ActionRole.INTERACTION and action.action_type == "request_choice":
+                        if action.status == ActionStatus.PROCESSING:
+                            # Interactive request: stop rendering, show prompt, wait for user input
+                            action_display.stop_live()
+                            user_response = await self._handle_cli_interaction(action)
+                            if current_node.interaction_broker:
+                                current_node.interaction_broker.submit(action.action_id, user_response)
+                            # Don't restart_live here - wait for SUCCESS
+                        elif action.status == ActionStatus.SUCCESS:
+                            # Success callback: display content and resume rendering
+                            self._display_success(action)
+                            action_display.restart_live()
+                    else:
+                        # Regular actions: add to incremental actions for display
+                        incremental_actions.append(action)
 
-                    async def run_chat_stream():
-                        async for action in current_node.execute_stream(action_history_manager=self.cli.actions):
-                            incremental_actions.append(action)
-
-                    asyncio.run(run_chat_stream())
-            else:
-                # Plan mode: use Live Display but allow it to be stopped/unregistered
-                # The display will be stopped by plan_hooks when showing menus
-                with action_display.display_streaming_actions(incremental_actions):
-
-                    async def run_chat_stream():
-                        async for action in current_node.execute_stream(action_history_manager=self.cli.actions):
-                            incremental_actions.append(action)
-
-                    asyncio.run(run_chat_stream())
+            # Both normal and plan mode use the same interaction-aware streaming
+            with action_display.display_streaming_actions(incremental_actions):
+                asyncio.run(run_chat_stream_with_interactions())
 
             # Display final response from the last successful action
             if incremental_actions:
@@ -583,10 +607,10 @@ class ChatCommands:
 
     def _display_ext_knowledge_file(self, ext_knowledge_file: str):
         """
-        Display external knowledge file path.
-
-        Args:
-            ext_knowledge_file: External knowledge file path
+        Display the path of an external knowledge file in the console using styled output.
+        
+        Parameters:
+            ext_knowledge_file (str): Path to the external knowledge file to display.
         """
         try:
             self.console.print()
@@ -597,15 +621,160 @@ class ChatCommands:
             # Fallback to simple display
             self.console.print(f"\n[bold green]External Knowledge File:[/] {ext_knowledge_file}")
 
-    def _extract_report_from_json(self, response: str) -> Optional[str]:
+    async def _handle_cli_interaction(self, action: ActionHistory) -> str:
         """
-        Extract 'report' field from gen_report JSON format response.
+        Render an INTERACTION action to the CLI, collect the user's response, and return it.
+        
+        Parameters:
+            action (ActionHistory): An action with role INTERACTION whose `input` contains keys
+                such as `content`, `choices`, `content_type`, `default_choice`, and optional
+                `context` with `input_mode` ("choice" or "text").
+        
+        Returns:
+            str: The user's selected choice string, free-form text input when `input_mode` is
+            "text", or an empty string when no response is provided. If input is invalid, the
+            configured default choice is returned when available.
+        """
+        try:
+            input_data = action.input or {}
+            content = input_data.get("content", "")
+            choices = input_data.get("choices", [])
+            content_type = input_data.get("content_type", "text")
+            default_choice = input_data.get("default_choice", 0)
+            context = input_data.get("context", {})
+            input_mode = context.get("input_mode", "choice")
+
+            # Display separator
+            self.console.print("\n" + "=" * 60)
+
+            # Display content based on content_type
+            if content_type == "yaml":
+                syntax = Syntax(content, "yaml", theme="monokai", line_numbers=True)
+                self.console.print(syntax)
+            elif content_type == "sql":
+                syntax = Syntax(content, "sql", theme="monokai", line_numbers=True)
+                self.console.print(syntax)
+            elif content_type == "markdown":
+                from rich.markdown import Markdown
+
+                self.console.print(Markdown(content))
+            else:
+                # text or other - use Rich markup directly
+                self.console.print(content)
+
+            # Handle text input mode (for free-form text like replan feedback)
+            if input_mode == "text":
+                self.console.print()
+                self.console.print("[dim](Escape+Enter or Alt+Enter to submit)[/]")
+
+                # Use run_in_executor to run prompt_input in a separate thread
+                # This avoids "asyncio.run() cannot be called from a running event loop" error
+                loop = asyncio.get_running_loop()
+                user_text = await loop.run_in_executor(
+                    None, lambda: self.cli.prompt_input(message="Your input", multiline=True)
+                )
+                if user_text:
+                    self.console.print(f"[dim]Input received ({len(user_text)} chars)[/]")
+                    return user_text
+                else:
+                    self.console.print("[yellow]No input provided.[/]")
+                    return choices[default_choice] if choices else ""
+
+            # Handle choice selection mode (default)
+            if choices:
+                self.console.print("\n[bold cyan]Options:[/]")
+                for i, choice in enumerate(choices, 1):
+                    marker = "→" if i - 1 == default_choice else " "
+                    self.console.print(f"  {marker} {i}. {choice}")
+                self.console.print()
+
+                # Get user input using blocking_input_manager
+                def get_input():
+                    """
+                    Prompt the user to select an option from the current choices and return the selected 1-based index as a string.
+                    
+                    Displays "Your choice (1-N) [D]: " where N is the number of choices and D is the default (default_choice + 1). If the user presses Enter without typing a value, the default index is returned. The returned value is the selected index as a string.
+                    """
+                    default_num = default_choice + 1
+                    prompt = f"Your choice (1-{len(choices)}) [{default_num}]: "
+                    return blocking_input_manager.get_blocking_input(lambda: input(prompt).strip() or str(default_num))
+
+                choice_str = get_input()
+
+                # Parse choice
+                try:
+                    idx = int(choice_str) - 1
+                    if 0 <= idx < len(choices):
+                        selected = choices[idx]
+                        self.console.print("[dim]Selected: {selected}[/]")
+                        return selected
+                    else:
+                        self.console.print("[yellow]Invalid choice, using default.[/]")
+                        return choices[default_choice]
+                except ValueError:
+                    self.console.print("[yellow]Invalid input, using default.[/]")
+                    return choices[default_choice]
+            else:
+                # No choices - just acknowledge
+                return ""
+
+        except Exception as e:
+            logger.error(f"Error handling CLI interaction: {e}")
+            self.console.print(f"[red]Error handling interaction: {e}[/]")
+            # Return default choice if available
+            choices = (action.input or {}).get("choices", [])
+            default_choice = (action.input or {}).get("default_choice", 0)
+            if choices and 0 <= default_choice < len(choices):
+                return choices[default_choice]
+            return ""
+
+    def _display_success(self, action: ActionHistory):
+        """
+        Display a success callback result action.
 
         Args:
-            response: Response string that may contain JSON with 'report' field
+            action: ActionHistory with role=INTERACTION, action_type="request_choice", status=SUCCESS
+        """
+        try:
+            # Read from output for display
+            output_data = action.output or {}
+            content = output_data.get("content", "") or action.messages or ""
+            content_type = output_data.get("content_type", "markdown")
 
+            if not content:
+                return
+
+            # Display based on content_type (default to markdown)
+            if content_type == "yaml":
+                syntax = Syntax(content, "yaml", theme="monokai", line_numbers=True)
+                self.console.print(syntax)
+            elif content_type == "sql":
+                syntax = Syntax(content, "sql", theme="monokai", line_numbers=True)
+                self.console.print(syntax)
+            else:
+                # markdown or text - render as markdown for proper formatting
+                from rich.markdown import Markdown
+
+                self.console.print(Markdown(content))
+
+        except Exception as e:
+            logger.error(f"Error displaying success: {e}")
+            # Fallback to simple print
+            content = (action.output or {}).get("content", "")
+            if content:
+                self.console.print(content)
+
+    def _extract_report_from_json(self, response: str) -> Optional[str]:
+        """
+        Extracts the "report" field from a gen_report-style JSON response string.
+        
+        Attempts to repair and parse JSON-like content and returns the value of the top-level "report" key when present.
+        
+        Parameters:
+            response (str): Response text that may contain JSON with a top-level "report" field.
+        
         Returns:
-            Extracted report content or None if not found
+            Optional[str]: The extracted report string if found, otherwise None.
         """
         if not response:
             return None

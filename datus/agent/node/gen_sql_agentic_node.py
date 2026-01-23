@@ -478,15 +478,18 @@ class GenSQLAgenticNode(AgenticNode):
         self, action_history_manager: Optional[ActionHistoryManager] = None
     ) -> AsyncGenerator[ActionHistory, None]:
         """
-        Execute the customized node interaction with streaming support.
-
-        Input is accessed from self.input instead of parameters.
-
-        Args:
-            action_history_manager: Optional action history manager
-
+        Stream execution of the GenSQL node, yielding ActionHistory updates as the node processes the request.
+        
+        Execution reads input from self.input (set via setup_input or assigned directly) and streams progress and final results through yielded ActionHistory objects.
+        
+        Parameters:
+            action_history_manager (Optional[ActionHistoryManager]): Optional manager to record and track actions; a new manager is created if omitted.
+        
         Yields:
-            ActionHistory: Progress updates during execution
+            ActionHistory: Progress and result updates produced during execution.
+        
+        Raises:
+            ValueError: If self.input is not set prior to execution.
         """
         if not action_history_manager:
             action_history_manager = ActionHistoryManager()
@@ -522,12 +525,11 @@ class GenSQLAgenticNode(AgenticNode):
             is_plan_mode = getattr(user_input, "plan_mode", False)
             if is_plan_mode:
                 self.plan_mode_active = True
-                from rich.console import Console
-
                 from datus.cli.plan_hooks import PlanModeHooks
 
+                broker = self._get_or_create_broker()
                 auto_mode = getattr(user_input, "auto_execute_plan", False)
-                self.plan_hooks = PlanModeHooks(console=Console(), session=session, auto_mode=auto_mode)
+                self.plan_hooks = PlanModeHooks(broker=broker, session=session, auto_mode=auto_mode)
                 logger.info(f"Plan mode activated (auto_mode={auto_mode})")
 
             system_instruction = self._get_system_prompt(conversation_summary, user_input.prompt_version)

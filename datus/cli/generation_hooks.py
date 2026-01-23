@@ -13,11 +13,8 @@ from typing import Optional
 
 import yaml
 from agents.lifecycle import AgentHooks
-from rich.console import Console
-from rich.syntax import Syntax
 
-from datus.cli.blocking_input_manager import blocking_input_manager
-from datus.cli.execution_state import execution_controller
+from datus.cli.execution_state import InteractionBroker, InteractionCancelled
 from datus.configuration.agent_config import AgentConfig
 from datus.storage.metric.store import MetricRAG
 from datus.storage.reference_sql.store import ReferenceSqlRAG
@@ -38,15 +35,15 @@ class GenerationCancelledException(Exception):
 class GenerationHooks(AgentHooks):
     """Hooks for handling generation tool results and user interaction."""
 
-    def __init__(self, console: Console, agent_config: AgentConfig = None):
+    def __init__(self, broker: InteractionBroker, agent_config: AgentConfig = None):
         """
-        Initialize generation hooks.
-
-        Args:
-            console: Rich console for output
-            agent_config: Agent configuration for storage access
+        Create a GenerationHooks instance that coordinates user interactions and optional agent configuration.
+        
+        Parameters:
+            broker (InteractionBroker): Broker used to present prompts, display markdown content, and receive user choices asynchronously.
+            agent_config (AgentConfig, optional): Agent configuration used to resolve file paths and access storage/RAG sync utilities; may be omitted for operations that do not require storage.
         """
-        self.console = console
+        self.broker = broker
         self.agent_config = agent_config
         self.processed_files = set()  # Track files that have been processed to avoid duplicates
         logger.debug(f"GenerationHooks initialized with config: {agent_config is not None}")
@@ -56,10 +53,15 @@ class GenerationHooks(AgentHooks):
 
     @optional_traceable(name="on_tool_end", run_type="chain")
     async def on_tool_end(self, context, agent, tool, result) -> None:
-        """Handle generation tool completion."""
-        # Wait if execution is paused
-        await execution_controller.wait_for_resume()
-
+        """
+        Dispatch tool completion events to the appropriate generation handlers.
+        
+        Checks the tool's name and routes completion results to the matching handler:
+        - "end_semantic_model_generation" -> handles semantic model generation results
+        - "end_metric_generation" -> handles metric generation results
+        - "write_file" -> inspects context to determine whether to handle a SQL summary result or an external knowledge result
+        
+        """
         tool_name = getattr(tool, "name", getattr(tool, "__name__", str(tool)))
 
         logger.debug(f"Tool end: {tool_name}, result type: {type(result)}")
@@ -80,24 +82,50 @@ class GenerationHooks(AgentHooks):
                 await self._handle_ext_knowledge_result(result)
 
     async def on_tool_start(self, context, agent, tool) -> None:
-        # Wait if execution is paused
-        await execution_controller.wait_for_resume()
+        """
+        Lifecycle hook invoked immediately before a tool starts; provided as an override point for subclasses.
+        
+        Parameters:
+            context: The execution context provided by the agent framework for this hook invocation.
+            agent: The agent instance that is starting the tool.
+            tool: The tool object about to be executed.
+        
+        Description:
+            Default implementation is a no-op.
+        """
+        pass
 
     async def on_handoff(self, context, agent, source) -> None:
-        # Wait if execution is paused
-        await execution_controller.wait_for_resume()
+        """
+        Handle handoff events from the generation agent; default implementation performs no action.
+        
+        Parameters:
+            context: Execution context provided by the generation framework (contains run metadata and tool call details).
+            agent: The agent instance that triggered the handoff.
+            source: Identifier of the handoff origin (for example, the tool name or subsystem initiating the handoff).
+        """
+        pass
 
     async def on_end(self, context, agent, output) -> None:
-        # Wait if execution is paused
-        await execution_controller.wait_for_resume()
+        """
+        Hook invoked at the end of a generation run to allow post-run processing.
+        
+        Parameters:
+            context: Hook context object containing run metadata and tool-call history.
+            agent: The agent instance that performed the generation.
+            output: The final output produced by the agent (e.g., text or structured result).
+        """
+        pass
 
     @optional_traceable(name="_handle_end_semantic_model_generation", run_type="chain")
     async def _handle_end_semantic_model_generation(self, result):
         """
-        Handle end_semantic_model_generation tool result.
-
-        Args:
-            result: Tool result containing semantic_model_files list
+        Process the result of a semantic model generation tool and handle each generated semantic model file.
+        
+        If the provided result contains one or more semantic model file paths, each path is processed via _process_single_file. If no paths are found a warning is logged. The method swallows GenerationCancelledException to allow user-cancelled flows to terminate silently and logs other unexpected errors.
+        
+        Parameters:
+            result: Tool result object or dict expected to contain a `semantic_model_files` list (or equivalent) with file paths to process.
         """
         try:
             file_paths = self._extract_filepaths_from_result(result)
@@ -113,18 +141,18 @@ class GenerationHooks(AgentHooks):
                 await self._process_single_file(file_path)
 
         except GenerationCancelledException:
-            self.console.print("[yellow]Generation workflow cancelled[/]")
+            logger.info("Generation workflow cancelled")
         except Exception as e:
             logger.error(f"Error handling end_semantic_model_generation: {e}", exc_info=True)
-            self.console.print(f"[red]Error: {e}[/]")
 
     @optional_traceable(name="_handle_end_metric_generation", run_type="chain")
     async def _handle_end_metric_generation(self, result):
         """
-        Handle end_metric_generation tool result.
-
-        Args:
-            result: Tool result containing metric_file, optional semantic_model_file, and metric_sqls
+        Handle the tool result produced by metric generation and initiate processing and optional sync of the generated files.
+        
+        Extracts `metric_file`, optional `semantic_model_file`, and `metric_sqls` from the provided tool result, normalizes file paths using the configured agent base paths when available, and then processes the metric file alone or together with its semantic model so they can be shown to the user and optionally synced to the knowledge base. Logs a warning and returns early if no `metric_file` can be determined. Exceptions from user cancellation are handled internally and logged.
+        Parameters:
+            result: Tool result containing `metric_file`, optional `semantic_model_file`, and `metric_sqls` (a mapping of metric names to SQL).
         """
         try:
             metric_file, semantic_model_file, metric_sqls = self._extract_metric_generation_result(result)
@@ -156,20 +184,19 @@ class GenerationHooks(AgentHooks):
                 await self._process_single_file(metric_file, metric_sqls=metric_sqls)
 
         except GenerationCancelledException:
-            self.console.print("[yellow]Generation workflow cancelled[/]")
+            logger.info("Generation workflow cancelled")
         except Exception as e:
             logger.error(f"Error handling end_metric_generation: {e}", exc_info=True)
-            self.console.print(f"[red]Error: {e}[/]")
 
     def _extract_filepaths_from_result(self, result) -> list:
         """
-        Extract semantic_model_files list from tool result.
-
-        Args:
-            result: Tool result (dict or FuncToolResult object)
-
+        Extract the list of semantic model file paths from a tool result.
+        
+        Parameters:
+            result: The tool result, either a dict with a "result" mapping or an object exposing a `result` attribute.
+        
         Returns:
-            List of file paths
+            list: Semantic model file paths found under the `semantic_model_files` key, or an empty list if none are present.
         """
         result_dict = None
         if isinstance(result, dict):
@@ -215,11 +242,11 @@ class GenerationHooks(AgentHooks):
 
     async def _process_single_file(self, file_path: str, metric_sqls: dict = None):
         """
-        Process a single YAML file: display and get user confirmation.
-
-        Args:
-            file_path: Path to the YAML file
-            metric_sqls: Optional dict mapping metric names to generated SQL (from dry_run)
+        Process a single YAML file: read its content, build a markdown preview, mark it as processed, and prompt the user whether to sync it to the Knowledge Base.
+        
+        Parameters:
+            file_path (str): Path to the YAML file to process.
+            metric_sqls (dict, optional): Mapping of metric names to generated SQL to include in the sync context when prompting the user.
         """
         # Check if file exists
         if not os.path.exists(file_path):
@@ -242,35 +269,28 @@ class GenerationHooks(AgentHooks):
         # Mark file as processed
         self.processed_files.add(file_path)
 
-        # Stop live display BEFORE showing YAML content
-        execution_controller.stop_live_display()
-        await asyncio.sleep(0.1)
+        # Build display content (markdown format)
+        display_content = f"## Generated YAML: {os.path.basename(file_path)}\n\n"
+        display_content += f"*Path: {file_path}*\n\n"
+        display_content += f"```yaml\n{yaml_content}\n```\n"
 
-        # Display generated YAML for all file types
-        self.console.print("\n" + "=" * 60)
-        self.console.print(f"[bold green]Generated YAML: {os.path.basename(file_path)}[/]")
-        self.console.print(f"[dim]Path: {file_path}[/]")
-        self.console.print("=" * 60)
-
-        # Display YAML with syntax highlighting
-        syntax = Syntax(yaml_content, "yaml", theme="monokai", line_numbers=True)
-        self.console.print(syntax)
-        await asyncio.sleep(0.2)
-
-        # Get user confirmation to sync
-        await self._get_sync_confirmation(yaml_content, file_path, "semantic", metric_sqls=metric_sqls)
+        # Get user confirmation to sync (content will be shown in request)
+        await self._get_sync_confirmation(
+            yaml_content, file_path, "semantic", metric_sqls=metric_sqls, display_content=display_content
+        )
 
     async def _process_metric_with_semantic_model(
         self, semantic_model_file: str, metric_file: str, metric_sqls: dict = None
     ):
         """
-        Process metric file along with its semantic model file.
-        Display both files and sync them together so metrics can reference semantic model data.
-
-        Args:
-            semantic_model_file: Path to the semantic model YAML file
-            metric_file: Path to the metric YAML file
-            metric_sqls: Optional dict mapping metric names to generated SQL (from dry_run)
+        Present a semantic model and its associated metric file to the user and offer to sync them together to the Knowledge Base.
+        
+        If both files exist and have not been processed, reads their contents, constructs a combined display for user confirmation, and prompts the user to choose whether to sync both files as a pair. If one file is missing, attempts to process the other file alone. Tracks processed files to avoid duplicate handling.
+        
+        Parameters:
+            semantic_model_file (str): Path to the semantic model YAML file.
+            metric_file (str): Path to the metric YAML file.
+            metric_sqls (dict, optional): Mapping of metric names to generated SQL (e.g., from a dry run); provided to sync operations when available.
         """
         # Check if files exist
         if not os.path.exists(semantic_model_file):
@@ -305,53 +325,30 @@ class GenerationHooks(AgentHooks):
             logger.warning("Empty content in semantic model or metric file")
             return
 
-        # Stop live display BEFORE showing YAML content
-        execution_controller.stop_live_display()
-        await asyncio.sleep(0.1)
-
-        # Display both files
-        self.console.print("\n" + "=" * 60)
-        self.console.print(f"[bold green]Generated Semantic Model: {os.path.basename(semantic_model_file)}[/]")
-        self.console.print(f"[dim]Path: {semantic_model_file}[/]")
-        self.console.print("=" * 60)
-
-        syntax = Syntax(semantic_content, "yaml", theme="monokai", line_numbers=True)
-        self.console.print(syntax)
-        await asyncio.sleep(0.2)
-
-        self.console.print("\n" + "=" * 60)
-        self.console.print(f"[bold green]Generated Metric: {os.path.basename(metric_file)}[/]")
-        self.console.print(f"[dim]Path: {metric_file}[/]")
-        self.console.print("=" * 60)
-
-        syntax = Syntax(metric_content, "yaml", theme="monokai", line_numbers=True)
-        self.console.print(syntax)
-        await asyncio.sleep(0.2)
+        # Build display content (markdown format) with both files
+        display_content = f"## Generated Semantic Model: {os.path.basename(semantic_model_file)}\n\n"
+        display_content += f"*Path: {semantic_model_file}*\n\n"
+        display_content += f"```yaml\n{semantic_content}\n```\n\n"
+        display_content += "---\n\n"
+        display_content += f"## Generated Metric: {os.path.basename(metric_file)}\n\n"
+        display_content += f"*Path: {metric_file}*\n\n"
+        display_content += f"```yaml\n{metric_content}\n```\n"
 
         # Get user confirmation to sync both files together
-        await self._get_sync_confirmation_for_pair(semantic_model_file, metric_file, metric_sqls)
-
-    async def _clear_output_and_show_sync_prompt(self):
-        """Show sync confirmation prompt."""
-        import sys
-
-        await asyncio.sleep(0.3)
-        sys.stdout.flush()
-        sys.stderr.flush()
-
-        self.console.print("\n  [bold cyan]SYNC TO KNOWLEDGE BASE?[/]")
-        self.console.print("")
-        self.console.print("  [bold green]1.[/bold green] Yes - Save to Knowledge Base")
-        self.console.print("  [bold yellow]2.[/bold yellow] No - Keep file only")
-        self.console.print("")
+        await self._get_sync_confirmation_for_pair(
+            semantic_model_file, metric_file, metric_sqls, display_content=display_content
+        )
 
     @optional_traceable(name="_handle_sql_summary_result", run_type="chain")
     async def _handle_sql_summary_result(self, result):
         """
-        Handle sql_summary tool result.
-
-        Args:
-            result: Tool result from sql_summary
+        Process a SQL-summary tool result: extract the generated YAML filepath, read its contents, and prompt the user to confirm syncing the reference SQL to the knowledge base.
+        
+        Parameters:
+            result: The tool result (dict or object) containing the success message that includes the written file path.
+        
+        Raises:
+            GenerationCancelledException: If the user cancels the sync interaction.
         """
         try:
             # Extract file path from result
@@ -399,36 +396,31 @@ class GenerationHooks(AgentHooks):
                 logger.warning(f"Empty content in {file_path}")
                 return
 
-            # Stop live display BEFORE showing YAML content
-            execution_controller.stop_live_display()
-            await asyncio.sleep(0.1)
-
-            # Display generated YAML with syntax highlighting
-            self.console.print("\n" + "=" * 60)
-            self.console.print("[bold green]Generated Reference SQL YAML[/]")
-            self.console.print(f"[dim]File: {file_path}[/]")
-            self.console.print("=" * 60)
-
-            syntax = Syntax(yaml_content, "yaml", theme="monokai", line_numbers=True)
-            self.console.print(syntax)
-            await asyncio.sleep(0.2)
+            # Build display content (markdown format)
+            display_content = "## Generated Reference SQL YAML\n\n"
+            display_content += f"*File: {file_path}*\n\n"
+            display_content += f"```yaml\n{yaml_content}\n```\n"
 
             # Get user confirmation to sync (this is for SQL summary)
-            await self._get_sync_confirmation(yaml_content, file_path, "sql_summary")
+            await self._get_sync_confirmation(yaml_content, file_path, "sql_summary", display_content=display_content)
 
         except GenerationCancelledException:
             raise
         except Exception as e:
             logger.error(f"Error handling write_file_reference_sql result: {e}", exc_info=True)
-            self.console.print(f"[red]Error: {e}[/]")
 
     @optional_traceable(name="_handle_ext_knowledge_result", run_type="chain")
     async def _handle_ext_knowledge_result(self, result):
         """
-        Handle ext_knowledge tool result.
-
-        Args:
-            result: Tool result from ext_knowledge
+        Process an external knowledge tool result, load the generated YAML file, and prompt the user to optionally sync it to the Knowledge Base.
+        
+        The function extracts a written file path from the tool result (supports a dict with "result" or an object with a `result` attribute), verifies the file exists and has not been processed before, reads its YAML content, constructs a markdown display payload, and invokes the user confirmation flow to sync the external knowledge. If the file cannot be found, is empty, or cannot be read, the function logs and returns without syncing.
+        
+        Parameters:
+            result: The tool result containing the write confirmation message or payload. Expected formats include a dict with a "result" key or an object exposing a `result` attribute.
+        
+        Raises:
+            GenerationCancelledException: If the user cancels the interactive confirmation.
         """
         try:
             # Extract file path from result
@@ -476,79 +468,70 @@ class GenerationHooks(AgentHooks):
                 logger.warning(f"Empty content in {file_path}")
                 return
 
-            # Stop live display BEFORE showing YAML content
-            execution_controller.stop_live_display()
-            await asyncio.sleep(0.1)
-
-            # Display generated YAML with syntax highlighting
-            self.console.print("\n" + "=" * 60)
-            self.console.print("[bold green]Generated External Knowledge YAML[/]")
-            self.console.print(f"[dim]File: {file_path}[/]")
-            self.console.print("=" * 60)
-
-            syntax = Syntax(yaml_content, "yaml", theme="monokai", line_numbers=True)
-            self.console.print(syntax)
-            await asyncio.sleep(0.2)
+            # Build display content (markdown format)
+            display_content = "## Generated External Knowledge YAML\n\n"
+            display_content += f"*File: {file_path}*\n\n"
+            display_content += f"```yaml\n{yaml_content}\n```\n"
 
             # Get user confirmation to sync (this is for external knowledge)
-            await self._get_sync_confirmation(yaml_content, file_path, "ext_knowledge")
+            await self._get_sync_confirmation(yaml_content, file_path, "ext_knowledge", display_content=display_content)
 
         except GenerationCancelledException:
             raise
         except Exception as e:
             logger.error(f"Error handling write_file_ext_knowledge result: {e}", exc_info=True)
-            self.console.print(f"[red]Error: {e}[/]")
 
     async def _get_sync_confirmation_for_pair(
-        self, semantic_model_file: str, metric_file: str, metric_sqls: dict = None
+        self,
+        semantic_model_file: str,
+        metric_file: str,
+        metric_sqls: dict = None,
+        display_content: str = "",
     ):
         """
-        Get user confirmation to sync semantic model and metric files together to Knowledge Base.
-
-        Args:
-            semantic_model_file: Path to semantic model YAML file
-            metric_file: Path to metric YAML file
-            metric_sqls: Optional dict mapping metric names to generated SQL (from dry_run)
+        Prompt the user to confirm syncing a semantic model and metric YAML pair to the Knowledge Base.
+        
+        Presents the provided markdown display_content and a "Sync to Knowledge Base?" choice via the broker; if the user confirms, syncs both files together and sends the sync result to the broker callback, otherwise sends a message that the files were kept locally.
+        
+        Parameters:
+            semantic_model_file (str): Path to the semantic model YAML file.
+            metric_file (str): Path to the metric YAML file.
+            metric_sqls (dict, optional): Mapping of metric names to generated SQL snippets associated with the metric file.
+            display_content (str, optional): Pre-built markdown content to show to the user (headers and YAML previews).
+        
+        Raises:
+            GenerationCancelledException: If the user cancels the interaction.
         """
         try:
-            # Stop the live display if active
-            execution_controller.stop_live_display()
+            request_content = f"{display_content}\n### Sync to Knowledge Base?"
 
-            # Use execution control to prevent output interference
-            async with execution_controller.pause_execution():
-                await self._clear_output_and_show_sync_prompt()
+            choice, callback = await self.broker.request(
+                content=request_content,
+                choices=["Yes - Save to Knowledge Base", "No - Keep file only"],
+                default_choice=0,
+                context={
+                    "semantic_model_file": semantic_model_file,
+                    "metric_file": metric_file,
+                    "metric_sqls": metric_sqls,
+                    "action": "sync_to_kb",
+                },
+            )
 
-                self.console.print("[bold yellow]Please enter your choice:[/bold yellow] ", end="")
+            if choice.startswith("Yes"):
+                # Sync both files to Knowledge Base
+                sync_result = await self._sync_semantic_and_metric(semantic_model_file, metric_file, metric_sqls)
+                callback_content = "---\n\n"
+                callback_content += sync_result
+                callback_content += "\n\n---\n**Generation workflow completed, generating report...**"
+                await callback(callback_content)
+            else:
+                # Keep files only
+                callback_content = "---\n\n"
+                callback_content += f"YAMLs saved to files only:\n- `{semantic_model_file}`\n- `{metric_file}`"
+                callback_content += "\n\n---\n**Generation workflow completed, generating report...**"
+                await callback(callback_content)
 
-                def get_user_input():
-                    return blocking_input_manager.get_blocking_input(lambda: input("[1/2] ").strip() or "1")
-
-                choice = await execution_controller.request_user_input(get_user_input)
-
-                if choice == "1":
-                    # Sync both files to Knowledge Base
-                    self.console.print("[bold green]✓ Syncing to Knowledge Base...[/]")
-                    await self._sync_semantic_and_metric(semantic_model_file, metric_file, metric_sqls)
-                elif choice == "2":
-                    # Keep files only
-                    self.console.print("[yellow]✓ YAMLs saved to files only:[/]")
-                    self.console.print(f"  - {semantic_model_file}")
-                    self.console.print(f"  - {metric_file}")
-                else:
-                    self.console.print("[red]✗ Invalid choice. Please enter 1 or 2.[/]")
-                    self.console.print("[dim]Please try again...[/]\n")
-                    await self._get_sync_confirmation_for_pair(semantic_model_file, metric_file, metric_sqls)
-
-            # Print completion separator to prevent action stream from overwriting
-            self.console.print("\n" + "=" * 80)
-            self.console.print("[bold green]✓ Generation workflow completed, generating report...[/]", justify="center")
-            self.console.print("=" * 80 + "\n")
-
-            # Add delay to ensure message is visible before any new output
-            await asyncio.sleep(0.1)
-
-        except (KeyboardInterrupt, EOFError):
-            self.console.print("\n[yellow]✗ Sync cancelled by user[/]")
+        except InteractionCancelled:
             raise GenerationCancelledException("User interrupted")
         except GenerationCancelledException:
             raise
@@ -556,53 +539,64 @@ class GenerationHooks(AgentHooks):
             logger.error(f"Error in sync confirmation: {e}", exc_info=True)
             raise
 
-    async def _get_sync_confirmation(self, yaml_content: str, file_path: str, yaml_type: str, metric_sqls: dict = None):
+    async def _get_sync_confirmation(
+        self,
+        yaml_content: str,
+        file_path: str,
+        yaml_type: str,
+        metric_sqls: dict = None,
+        display_content: str = "",
+    ):
         """
-        Get user confirmation to sync to Knowledge Base.
-
-        Args:
-            yaml_content: Generated YAML content
-            file_path: Path where YAML was saved
-            yaml_type: YAML type - "semantic" or "sql_summary"
-            metric_sqls: Optional dict mapping metric names to generated SQL (from dry_run)
+        Prompt the user to confirm syncing a generated YAML file to the Knowledge Base and perform the chosen action.
+        
+        Parameters:
+            yaml_content (str): The YAML text generated and saved to disk.
+            file_path (str): Filesystem path where the YAML was written.
+            yaml_type (str): Type of the YAML content; expected values include "semantic", "sql_summary", or "ext_knowledge".
+            metric_sqls (dict, optional): Mapping of metric names to generated SQL statements associated with the YAML (if any).
+            display_content (str, optional): Pre-built markdown content to display to the user; if omitted, a default header and YAML code block are created.
+        
+        Raises:
+            GenerationCancelledException: If the user cancels the interaction.
         """
         try:
-            # Stop the live display if active
-            execution_controller.stop_live_display()
+            # Build request content with YAML display
+            if not display_content:
+                display_content = f"## Generated YAML: {os.path.basename(file_path)}\n\n"
+                display_content += f"*Path: {file_path}*\n\n"
+                display_content += f"```yaml\n{yaml_content}\n```\n\n"
 
-            # Use execution control to prevent output interference
-            async with execution_controller.pause_execution():
-                await self._clear_output_and_show_sync_prompt()
+            request_content = f"{display_content}\n### Sync to Knowledge Base?"
 
-                self.console.print("[bold yellow]Please enter your choice:[/bold yellow] ", end="")
+            choice, callback = await self.broker.request(
+                content=request_content,
+                choices=["Yes - Save to Knowledge Base", "No - Keep file only"],
+                default_choice=0,
+                context={
+                    "file_path": file_path,
+                    "yaml_type": yaml_type,
+                    "metric_sqls": metric_sqls,
+                    "action": "sync_to_kb",
+                },
+            )
 
-                def get_user_input():
-                    return blocking_input_manager.get_blocking_input(lambda: input("[1/2] ").strip() or "1")
+            if choice.startswith("Yes"):
+                # Sync to Knowledge Base
+                sync_result = await self._sync_to_storage(file_path, yaml_type, metric_sqls=metric_sqls)
+                # Build callback content with result
+                callback_content = "---\n\n"
+                callback_content += sync_result
+                callback_content += "\n\n---\n**Generation workflow completed, generating report...**"
+                await callback(callback_content)
+            else:
+                # Keep file only
+                callback_content = "---\n\n"
+                callback_content += f"YAML saved to file only: `{file_path}`"
+                callback_content += "\n\n---\n**Generation workflow completed, generating report...**"
+                await callback(callback_content)
 
-                choice = await execution_controller.request_user_input(get_user_input)
-
-                if choice == "1":
-                    # Sync to Knowledge Base
-                    self.console.print("[bold green]✓ Syncing to Knowledge Base...[/]")
-                    await self._sync_to_storage(file_path, yaml_type, metric_sqls=metric_sqls)
-                elif choice == "2":
-                    # Keep file only
-                    self.console.print(f"[yellow]✓ YAML saved to file only: {file_path}[/]")
-                else:
-                    self.console.print("[red]✗ Invalid choice. Please enter 1 or 2.[/]")
-                    self.console.print("[dim]Please try again...[/]\n")
-                    await self._get_sync_confirmation(yaml_content, file_path, yaml_type, metric_sqls=metric_sqls)
-
-            # Print completion separator to prevent action stream from overwriting
-            self.console.print("\n" + "=" * 80)
-            self.console.print("[bold green]✓ Generation workflow completed, generating report...[/]", justify="center")
-            self.console.print("=" * 80 + "\n")
-
-            # Add delay to ensure message is visible before any new output
-            await asyncio.sleep(0.1)
-
-        except (KeyboardInterrupt, EOFError):
-            self.console.print("\n[yellow]✗ Sync cancelled by user[/]")
+        except InteractionCancelled:
             raise GenerationCancelledException("User interrupted")
         except GenerationCancelledException:
             raise
@@ -611,19 +605,22 @@ class GenerationHooks(AgentHooks):
             raise
 
     @optional_traceable(name="_sync_to_storage", run_type="chain")
-    async def _sync_to_storage(self, file_path: str, yaml_type: str, metric_sqls: dict = None):
+    async def _sync_to_storage(self, file_path: str, yaml_type: str, metric_sqls: dict = None) -> str:
         """
-        Sync YAML file to RAG storage based on file type.
-
-        Args:
-            file_path: File path to sync
-            yaml_type: YAML type - "semantic" or "sql_summary"
-            metric_sqls: Optional dict mapping metric names to generated SQL (from dry_run)
+        Sync a YAML file into the retrieval-augmented knowledge storage and report the outcome.
+        
+        Parameters:
+            file_path (str): Path to the YAML file to sync.
+            yaml_type (str): Type of YAML being synced; expected values are "semantic", "sql_summary", or "ext_knowledge".
+            metric_sqls (dict, optional): Mapping of metric names to generated SQL to include when syncing metric-related semantic content.
+        
+        Returns:
+            str: Markdown-formatted message summarizing the result. On success the message states which item was synced and the file path; on failure or if agent configuration is missing the message explains the error and notes that the YAML was saved to the given file path.
         """
         if not self.agent_config:
-            self.console.print("[red]Agent configuration not available, cannot sync to RAG[/]")
-            self.console.print(f"[yellow]YAML saved to file: {file_path}[/]")
-            return
+            return (
+                f"**Error:** Agent configuration not available, cannot sync to RAG\n\nYAML saved to file: `{file_path}`"
+            )
 
         try:
             # Sync based on yaml_type
@@ -646,45 +643,47 @@ class GenerationHooks(AgentHooks):
                 )
                 item_type = "external knowledge"
             else:
-                self.console.print(
-                    f"[red]Invalid yaml_type: {yaml_type}. Expected 'semantic', 'sql_summary', or 'ext_knowledge'[/]"
-                )
-                self.console.print(f"[yellow]YAML saved to file: {file_path}[/]")
-                return
+                return f"**Error:** Invalid yaml_type: {yaml_type}\n\nYAML saved to file: `{file_path}`"
 
             if result.get("success"):
-                self.console.print(f"[bold green]✓ Successfully synced {item_type} to Knowledge Base[/]")
+                result_content = f"**Successfully synced {item_type} to Knowledge Base**\n\n"
                 message = result.get("message", "")
                 if message:
-                    self.console.print(f"[dim]{message}[/]")
-                self.console.print(f"[dim]File: {file_path}[/]")
+                    result_content += f"{message}\n\n"
+                result_content += f"File: `{file_path}`"
+                return result_content
             else:
                 error = result.get("error", "Unknown error")
-                self.console.print(f"[red]Sync failed: {error}[/]")
-                self.console.print(f"[yellow]YAML saved to file: {file_path}[/]")
+                return f"**Sync failed:** {error}\n\nYAML saved to file: `{file_path}`"
 
         except Exception as e:
             logger.error(f"Error syncing to storage: {e}")
-            self.console.print(f"[red]Sync error: {e}[/]")
-            self.console.print(f"[yellow]YAML saved to file: {file_path}[/]")
+            return f"**Sync error:** {e}\n\nYAML saved to file: `{file_path}`"
 
     @optional_traceable(name="_sync_semantic_and_metric", run_type="chain")
-    async def _sync_semantic_and_metric(self, semantic_model_file: str, metric_file: str, metric_sqls: dict = None):
+    async def _sync_semantic_and_metric(
+        self, semantic_model_file: str, metric_file: str, metric_sqls: dict = None
+    ) -> str:
         """
-        Sync both semantic model and metric files to RAG storage.
-        Creates a combined YAML for syncing so metrics can reference semantic model data.
+        Prepare and sync a semantic model and its metric definitions to the knowledge store.
+        
+        Creates a temporary combined YAML so metrics can be synced with access to the semantic model, then attempts to sync metrics into the RAG-backed storage and returns a user-facing markdown summary.
+        
+        Parameters:
+            semantic_model_file (str): Path to the semantic model YAML file.
+            metric_file (str): Path to the metric YAML file.
+            metric_sqls (dict, optional): Mapping of metric names to generated SQL statements to include when syncing metrics.
+        
+        Returns:
+            str: Markdown-formatted message summarizing the result, including success or error details and the involved file paths.
+        """
+        files_info = f"- `{semantic_model_file}`\n- `{metric_file}`"
 
-        Args:
-            semantic_model_file: Path to semantic model YAML file
-            metric_file: Path to metric YAML file
-            metric_sqls: Optional dict mapping metric names to generated SQL (from dry_run)
-        """
         if not self.agent_config:
-            self.console.print("[red]Agent configuration not available, cannot sync to RAG[/]")
-            self.console.print("[yellow]YAMLs saved to files:[/]")
-            self.console.print(f"  - {semantic_model_file}")
-            self.console.print(f"  - {metric_file}")
-            return
+            return (
+                f"**Error:** Agent configuration not available, cannot sync to RAG\n\n"
+                f"YAMLs saved to files:\n{files_info}"
+            )
 
         try:
             loop = asyncio.get_event_loop()
@@ -718,21 +717,15 @@ class GenerationHooks(AgentHooks):
                 )
 
                 if result.get("success"):
-                    self.console.print(
-                        "[bold green]✓ Successfully synced semantic model and metrics to Knowledge Base[/]"
-                    )
+                    result_content = "**Successfully synced semantic model and metrics to Knowledge Base**\n\n"
                     message = result.get("message", "")
                     if message:
-                        self.console.print(f"[dim]{message}[/]")
-                    self.console.print("[dim]Files:[/]")
-                    self.console.print(f"  - {semantic_model_file}")
-                    self.console.print(f"  - {metric_file}")
+                        result_content += f"{message}\n\n"
+                    result_content += f"Files:\n{files_info}"
+                    return result_content
                 else:
                     error = result.get("error", "Unknown error")
-                    self.console.print(f"[red]Sync failed: {error}[/]")
-                    self.console.print("[yellow]YAMLs saved to files:[/]")
-                    self.console.print(f"  - {semantic_model_file}")
-                    self.console.print(f"  - {metric_file}")
+                    return f"**Sync failed:** {error}\n\nYAMLs saved to files:\n{files_info}"
 
             finally:
                 # Clean up temp file
@@ -741,14 +734,17 @@ class GenerationHooks(AgentHooks):
 
         except Exception as e:
             logger.error(f"Error syncing semantic and metric: {e}", exc_info=True)
-            self.console.print(f"[red]Sync error: {e}[/]")
-            self.console.print("[yellow]YAMLs saved to files:[/]")
-            self.console.print(f"  - {semantic_model_file}")
-            self.console.print(f"  - {metric_file}")
+            return f"**Sync error:** {e}\n\nYAMLs saved to files:\n{files_info}"
 
     def _is_sql_summary_tool_call(self, context) -> bool:
         """
-        Check if write_file tool call is for SQL summary.
+        Determine whether the provided tool context represents a write_file call for a SQL summary.
+        
+        Parameters:
+            context (object): Tool invocation context that may have a `tool_arguments` attribute containing a JSON string. The JSON, when present, is expected to be a mapping with a `file_type` key.
+        
+        Returns:
+            `true` if the parsed `tool_arguments` contains `"file_type": "sql_summary"`, `false` otherwise (including when `tool_arguments` is missing, not a JSON mapping, or on parse errors).
         """
         try:
             if hasattr(context, "tool_arguments"):
@@ -765,19 +761,15 @@ class GenerationHooks(AgentHooks):
 
     def _is_ext_knowledge_tool_call(self, context) -> bool:
         """
-        Check if write_file tool call is for external knowledge.
-
-        Examines tool arguments to determine if this is an external knowledge file write.
-
-        Args:
-            context: ToolContext with tool_arguments field (JSON string)
-
+        Determine whether the provided tool context represents a write_file call for external knowledge.
+        
+        Parameters:
+            context: ToolContext-like object whose `tool_arguments` is a JSON string containing a `file_type` key.
+        
         Returns:
-            bool: True if this is an external knowledge write operation
+            `True` if the context's `tool_arguments` specify `"file_type": "ext_knowledge"`, `False` otherwise.
         """
         try:
-            import json
-
             if hasattr(context, "tool_arguments"):
                 if context.tool_arguments:
                     tool_args = json.loads(context.tool_arguments)
@@ -1287,22 +1279,24 @@ class GenerationHooks(AgentHooks):
     @staticmethod
     def _sync_ext_knowledge_to_db(file_path: str, agent_config: AgentConfig, build_mode: str = "incremental") -> dict:
         """
-        Sync external knowledge YAML file to Knowledge Base.
-
-        Supports multi-document YAML files (documents separated by ---).
-        Each document is treated as a separate knowledge entry.
-
-        Args:
-            file_path: Path to the external knowledge YAML file
-            agent_config: Agent configuration
-            build_mode: "overwrite" or "incremental" (default: "incremental")
-
+        Sync external knowledge YAML documents into the knowledge store.
+        
+        Processes a YAML file that may contain multiple documents (---). Each document is treated as a separate knowledge entry; duplicate entries (by generated id) are skipped. Selection of existing items to consider depends on build_mode.
+        
+        Parameters:
+            file_path (str): Path to the external knowledge YAML file.
+            agent_config (AgentConfig): Agent configuration used to obtain the knowledge storage instance.
+            build_mode (str): "overwrite" or "incremental". Determines how existing entries are considered when detecting duplicates (default: "incremental").
+        
         Returns:
-            dict: Sync result with success, error, and message fields
+            dict: Result summary with keys:
+                - `success` (bool): `True` when at least one entry was processed (synced or skipped), `False` on error or if no valid entries found.
+                - `message` (str, optional): Human-readable summary of synced and skipped entries.
+                - `error` (str, optional): Error message when `success` is `False`.
+                - `synced_count` (int, optional): Number of entries newly synced.
+                - `skipped_count` (int, optional): Number of entries skipped because they already existed.
         """
         try:
-            import yaml
-
             from datus.storage.cache import get_storage_cache_instance
             from datus.storage.ext_knowledge.init_utils import exists_ext_knowledge, gen_ext_knowledge_id
 

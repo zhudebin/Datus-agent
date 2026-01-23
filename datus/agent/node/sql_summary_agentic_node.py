@@ -156,12 +156,14 @@ class SqlSummaryAgenticNode(AgenticNode):
             logger.error(f"Failed to setup specific filesystem tool: {e}")
 
     def _setup_hooks(self):
-        """Setup hooks (hardcoded to generation_hooks)."""
+        """
+        Initialize generation-related hooks for this node.
+        
+        Creates or retrieves a broker and instantiates GenerationHooks with that broker and the node's agent configuration, storing the result on self.hooks. If setup fails the error is logged and self.hooks remains unset.
+        """
         try:
-            from rich.console import Console
-
-            console = Console()
-            self.hooks = GenerationHooks(console=console, agent_config=self.agent_config)
+            broker = self._get_or_create_broker()
+            self.hooks = GenerationHooks(broker=broker, agent_config=self.agent_config)
             logger.info("Setup hooks: generation_hooks")
         except Exception as e:
             logger.error(f"Failed to setup generation_hooks: {e}")
