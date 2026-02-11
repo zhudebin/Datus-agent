@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -177,7 +175,6 @@ jobs:
 
             const req = https.request(options, (res) => {
               console.log('Feishu notification sent:', res.statusCode);
-              process.exit(0);
             });
 
             req.on('error', (error) => {

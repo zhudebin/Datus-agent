@@ -68,7 +68,7 @@ def skill_config() -> SkillConfig:
 
 
 @pytest.fixture
-def skill_config_with_extra(tmp_path) -> SkillConfig:
+def skill_config_with_extra(tmp_path) -> tuple[SkillConfig, Path]:
     """SkillConfig with two directories: real skills + a tmp dir for dynamic tests."""
     extra_dir = tmp_path / "extra_skills"
     extra_dir.mkdir()

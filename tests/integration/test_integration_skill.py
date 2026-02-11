@@ -166,7 +166,7 @@ class TestSkillLoadAndExecuteIntegration:
         output = json.loads(exec_result.result.strip())
         assert output["table"] == "students"
 
-    def test_script_execution_error_propagates(self, skill_func_tool, tmp_path):
+    def test_script_execution_error_propagates(self, skill_func_tool):
         """Script that raises an error returns failure result."""
         # Use skill_execute_command for a skill that doesn't exist
         result = skill_func_tool.skill_execute_command("nonexistent-skill", "echo hello")
@@ -214,7 +214,7 @@ class TestPermissionIntegration:
     @pytest.mark.acceptance
     def test_deny_blocks_load(self, skill_manager_with_perms):
         """DENY permission blocks load_skill."""
-        success, message, content = skill_manager_with_perms.load_skill("admin-tools", "chatbot")
+        success, message, _content = skill_manager_with_perms.load_skill("admin-tools", "chatbot")
         assert success is False
         assert "denied" in message.lower() or "Permission" in message
 
@@ -227,7 +227,7 @@ class TestPermissionIntegration:
         names = [s.name for s in available]
         assert "sql-analysis" in names  # Visible
 
-        success, message, content = manager.load_skill("sql-analysis", "chatbot")
+        success, message, _content = manager.load_skill("sql-analysis", "chatbot")
         assert success is False
         assert message == "ASK_PERMISSION"
 
@@ -624,7 +624,8 @@ class TestRealLLMSkillIntegration:
 
             warnings.warn(
                 "skill_execute_command not found in action history. "
-                "The LLM loaded the skill but did not execute a command."
+                "The LLM loaded the skill but did not execute a command.",
+                stacklevel=2,
             )
 
         # Verify the node completed (success or error - not stuck)
