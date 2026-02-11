@@ -80,6 +80,7 @@ class AgenticNode(Node):
         # Permission and skill management
         self.permission_manager: Optional["PermissionManager"] = None
         self.skill_manager: Optional["SkillManager"] = None
+        self.skill_func_tool = None
         self._permission_callback: Optional[Callable[[str, str, Dict[str, Any]], Awaitable[bool]]] = None
 
         # Parse node configuration from agent.yml (available to all agentic nodes)
@@ -90,6 +91,9 @@ class AgenticNode(Node):
 
         # Setup skill manager (after permission_manager is available)
         self._setup_skill_manager()
+
+        # Setup skill func tools for non-chat nodes when explicitly configured
+        self._setup_skill_func_tools()
 
         # Initialize model: use node-specific model if configured, otherwise use default from agent_config
         if agent_config:
@@ -148,7 +152,7 @@ class AgenticNode(Node):
 
         try:
             # Use prompt manager to render the template
-            return prompt_manager.render_template(
+            base_prompt = prompt_manager.render_template(
                 template_name=template_name,
                 version=version,
                 # Add common template variables
@@ -172,6 +176,16 @@ class AgenticNode(Node):
                 code=ErrorCode.COMMON_CONFIG_ERROR,
                 message_args={"config_error": f"Template loading failed for '{template_name}': {str(e)}"},
             ) from e
+
+        # Inject available skills XML into system prompt when skill_func_tool is active.
+        # For ChatAgenticNode (no explicit skills config): shows ALL skills.
+        # For other nodes (explicit skills config): shows only matching skills.
+        if self.skill_func_tool:
+            skills_xml = self._get_available_skills_context()
+            if skills_xml:
+                base_prompt = base_prompt + "\n\n" + skills_xml
+
+        return base_prompt
 
     def _generate_session_id(self) -> str:
         """Generate a unique session ID."""
@@ -472,6 +486,35 @@ class AgenticNode(Node):
 
         except Exception as e:
             logger.error(f"Failed to setup skill manager: {e}")
+
+    def _setup_skill_func_tools(self) -> None:
+        """
+        Setup skill function tools when explicitly configured in agentic_nodes.
+
+        Only activates if 'skills' is explicitly set in node_config AND skill_manager exists.
+        ChatAgenticNode overrides skill setup in its own setup_tools(), so this primarily
+        serves other AgenticNode subclasses (GenReport, GenMetrics, etc.).
+        """
+        skill_patterns_str = self.node_config.get("skills")
+        if not skill_patterns_str or not self.skill_manager:
+            return
+
+        try:
+            from datus.tools.skill_tools.skill_func_tool import SkillFuncTool
+
+            self.skill_func_tool = SkillFuncTool(
+                manager=self.skill_manager,
+                node_name=self.get_node_name(),
+            )
+            if self.tools is None:
+                self.tools = []
+            self.tools.extend(self.skill_func_tool.available_tools())
+            logger.info(
+                f"Skill func tools activated for node '{self.get_node_name()}' "
+                f"with pattern '{skill_patterns_str}'"
+            )
+        except Exception as e:
+            logger.error(f"Failed to setup skill func tools: {e}")
 
     def set_permission_callback(self, callback: Callable[[str, str, Dict[str, Any]], Awaitable[bool]]) -> None:
         """
