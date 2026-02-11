@@ -57,16 +57,22 @@ def test_store_and_search_schema(schema_lineage_tool, sqlite_connector):
     """Test storing and searching schema"""
     log.info("Creating test tables in SQLite")
     # Create test tables in SQLite
-    sqlite_connector.execute({"sql_query": """
+    sqlite_connector.execute(
+        {
+            "sql_query": """
         CREATE TABLE users (
             id INTEGER PRIMARY KEY,
             username TEXT NOT NULL,
             email TEXT UNIQUE,
             created_at TIMESTAMP
         )
-        """})
+        """
+        }
+    )
 
-    sqlite_connector.execute({"sql_query": """
+    sqlite_connector.execute(
+        {
+            "sql_query": """
         CREATE TABLE posts (
             id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
@@ -75,7 +81,9 @@ def test_store_and_search_schema(schema_lineage_tool, sqlite_connector):
             created_at TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
-        """})
+        """
+        }
+    )
 
     # Get schema from SQLite
     log.info("Retrieving schema from SQLite")
