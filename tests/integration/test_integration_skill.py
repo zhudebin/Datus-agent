@@ -17,14 +17,12 @@ Covers:
 """
 
 import json
-from pathlib import Path
 
 import pytest
 
-from datus.tools.permission.permission_config import PermissionConfig, PermissionLevel, PermissionRule
+from datus.tools.permission.permission_config import PermissionLevel
 from datus.tools.permission.permission_manager import PermissionManager
-from datus.tools.skill_tools import SkillConfig, SkillFuncTool, SkillManager
-
+from datus.tools.skill_tools import SkillConfig, SkillManager
 
 # ============================================================================
 # 1. Skill Discovery Integration
@@ -53,9 +51,7 @@ class TestSkillDiscoveryIntegration:
         # Add a skill to the extra directory
         new_skill_dir = extra_dir / "extra-skill"
         new_skill_dir.mkdir()
-        (new_skill_dir / "SKILL.md").write_text(
-            "---\nname: extra-skill\ndescription: Extra\n---\n# Extra"
-        )
+        (new_skill_dir / "SKILL.md").write_text("---\nname: extra-skill\ndescription: Extra\n---\n# Extra")
 
         manager = SkillManager(config=config)
         names = {s.name for s in manager.list_all_skills()}
@@ -75,9 +71,7 @@ class TestSkillDiscoveryIntegration:
         # Add new skill at runtime
         runtime_dir = extra_dir / "runtime-skill"
         runtime_dir.mkdir()
-        (runtime_dir / "SKILL.md").write_text(
-            "---\nname: runtime-skill\ndescription: Added at runtime\n---\n# Runtime"
-        )
+        (runtime_dir / "SKILL.md").write_text("---\nname: runtime-skill\ndescription: Added at runtime\n---\n# Runtime")
 
         manager.refresh()
         assert manager.get_skill_count() == initial_count + 1
@@ -104,9 +98,7 @@ class TestSkillDiscoveryIntegration:
         # Create a skill with same name as existing one in the second directory
         dup_dir = extra_dir / "sql-analysis"
         dup_dir.mkdir()
-        (dup_dir / "SKILL.md").write_text(
-            "---\nname: sql-analysis\ndescription: Override version\n---\n# Override"
-        )
+        (dup_dir / "SKILL.md").write_text("---\nname: sql-analysis\ndescription: Override version\n---\n# Override")
 
         manager = SkillManager(config=config)
         skill = manager.get_skill("sql-analysis")
@@ -235,14 +227,10 @@ class TestPermissionIntegration:
         assert success is False
         assert message == "ASK_PERMISSION"
 
-    def test_node_override_grants_access_to_denied_skill(
-        self, skill_config, perm_deny_admin_with_node_override
-    ):
+    def test_node_override_grants_access_to_denied_skill(self, skill_config, perm_deny_admin_with_node_override):
         """Global DENY + node-specific ALLOW → skill accessible for that node."""
         global_config, node_overrides = perm_deny_admin_with_node_override
-        perm_manager = PermissionManager(
-            global_config=global_config, node_overrides=node_overrides
-        )
+        perm_manager = PermissionManager(global_config=global_config, node_overrides=node_overrides)
         manager = SkillManager(config=skill_config, permission_manager=perm_manager)
 
         # Regular chatbot: admin-tools denied
@@ -279,8 +267,7 @@ class TestPermissionIntegration:
         skill_dir = tmp_path / "hidden-skill"
         skill_dir.mkdir()
         (skill_dir / "SKILL.md").write_text(
-            "---\nname: hidden-skill\ndescription: Hidden\n"
-            "disable_model_invocation: true\n---\n# Hidden"
+            "---\nname: hidden-skill\ndescription: Hidden\n" "disable_model_invocation: true\n---\n# Hidden"
         )
 
         config = SkillConfig(directories=[str(tmp_path)])
@@ -516,9 +503,7 @@ class TestRealLLMSkillIntegration:
         action_types = [a.action_type for a in all_actions]
         action_messages = " ".join(a.messages for a in all_actions)
         has_load_skill = "load_skill" in action_types or "load_skill" in action_messages
-        has_skill_exec = (
-            "skill_execute_command" in action_types or "skill_execute_command" in action_messages
-        )
+        has_skill_exec = "skill_execute_command" in action_types or "skill_execute_command" in action_messages
 
         print(f"\n{separator}")
         print()
@@ -585,9 +570,7 @@ class TestRealLLMSkillIntegration:
         # Resolve model name for report
         model_key = llm_agent_config.target
         model_config = llm_agent_config.models.get(model_key, {})
-        model_name = (
-            model_config.get("model", model_key) if isinstance(model_config, dict) else model_key
-        )
+        model_name = model_config.get("model", model_key) if isinstance(model_config, dict) else model_key
 
         # 1. Create ChatAgenticNode
         node = ChatAgenticNode(
@@ -626,14 +609,9 @@ class TestRealLLMSkillIntegration:
         # Must have load_skill call (LLM decided to use the skill)
         has_load_skill = "load_skill" in action_types or "load_skill" in action_messages
         # Should have skill_execute_command (skill script execution)
-        has_skill_exec = (
-            "skill_execute_command" in action_types or "skill_execute_command" in action_messages
-        )
+        has_skill_exec = "skill_execute_command" in action_types or "skill_execute_command" in action_messages
 
-        assert has_load_skill, (
-            f"Expected load_skill in action history. "
-            f"Action types found: {action_types}"
-        )
+        assert has_load_skill, f"Expected load_skill in action history. " f"Action types found: {action_types}"
         # skill_execute_command is expected but LLM behavior is non-deterministic
         if not has_skill_exec:
             import warnings
@@ -645,6 +623,4 @@ class TestRealLLMSkillIntegration:
 
         # Verify the node completed (success or error - not stuck)
         final_action = all_actions[-1]
-        assert final_action.status in ("success", "failed"), (
-            f"Unexpected final status: {final_action.status}"
-        )
+        assert final_action.status in ("success", "failed"), f"Unexpected final status: {final_action.status}"

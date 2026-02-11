@@ -510,8 +510,7 @@ class AgenticNode(Node):
                 self.tools = []
             self.tools.extend(self.skill_func_tool.available_tools())
             logger.info(
-                f"Skill func tools activated for node '{self.get_node_name()}' "
-                f"with pattern '{skill_patterns_str}'"
+                f"Skill func tools activated for node '{self.get_node_name()}' " f"with pattern '{skill_patterns_str}'"
             )
         except Exception as e:
             logger.error(f"Failed to setup skill func tools: {e}")

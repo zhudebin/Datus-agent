@@ -3,6 +3,7 @@
 This module implements a tree structure using the adjacency list model,
 following the pattern established by TaskStore for consistency.
 """
+
 import fnmatch
 import os
 import sqlite3
@@ -62,8 +63,7 @@ class SubjectTreeStore:
             cursor = conn.cursor()
 
             # Create main table
-            cursor.execute(
-                """
+            cursor.execute("""
                 CREATE TABLE IF NOT EXISTS subject_nodes (
                     node_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     parent_id INTEGER,
@@ -73,23 +73,18 @@ class SubjectTreeStore:
                     updated_at TEXT NOT NULL,
                     UNIQUE(parent_id, name)
                 )
-            """
-            )
+            """)
 
             # Create indices
-            cursor.execute(
-                """
+            cursor.execute("""
                 CREATE INDEX IF NOT EXISTS idx_subject_parent_id
                 ON subject_nodes(parent_id)
-            """
-            )
+            """)
 
-            cursor.execute(
-                """
+            cursor.execute("""
                 CREATE UNIQUE INDEX IF NOT EXISTS idx_subject_parent_name
                 ON subject_nodes(parent_id, name)
-            """
-            )
+            """)
 
             # Migrate existing NULL parent_id values to ROOT_PARENT_ID (-1)
             # This ensures UNIQUE constraint works for root nodes

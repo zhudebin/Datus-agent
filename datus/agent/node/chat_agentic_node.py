@@ -8,6 +8,7 @@ ChatAgenticNode implementation for flexible CLI chat interactions.
 This module provides a concrete implementation of GenSQLAgenticNode specifically
 designed for chat interactions with database and filesystem tool support.
 """
+
 from typing import AsyncGenerator, Optional, override
 
 from datus.agent.node.gen_sql_agentic_node import GenSQLAgenticNode
@@ -201,9 +202,7 @@ class ChatAgenticNode(GenSQLAgenticNode):
                 base_config = PermissionConfig()
 
             # Add default ASK for skill_execute_command (bash) at position 0 (lowest priority)
-            has_bash_rule = any(
-                r.tool == "skills" and r.pattern == "skill_execute_command" for r in base_config.rules
-            )
+            has_bash_rule = any(r.tool == "skills" and r.pattern == "skill_execute_command" for r in base_config.rules)
             if not has_bash_rule:
                 base_config.rules.insert(
                     0,

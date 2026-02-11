@@ -11,6 +11,7 @@ This module provides utilities for:
 - Evaluating benchmark accuracy
 - Generating evaluation reports
 """
+
 from __future__ import annotations
 
 import csv
@@ -167,8 +168,7 @@ class SqlData:
 
 
 class SqlProvider(Protocol):
-    def fetch(self, task_id: str) -> SqlData:
-        ...
+    def fetch(self, task_id: str) -> SqlData: ...
 
 
 @dataclass
@@ -550,8 +550,7 @@ class EvaluationReport:
 
 
 class ResultProvider(Protocol):
-    def fetch(self, task_id: str) -> ResultData:
-        ...
+    def fetch(self, task_id: str) -> ResultData: ...
 
 
 class CsvPerTaskResultProvider(ResultProvider):
