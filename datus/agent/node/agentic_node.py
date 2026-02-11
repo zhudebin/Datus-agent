@@ -177,9 +177,25 @@ class AgenticNode(Node):
                 message_args={"config_error": f"Template loading failed for '{template_name}': {str(e)}"},
             ) from e
 
+        return self._finalize_system_prompt(base_prompt)
+
+    def _finalize_system_prompt(self, base_prompt: str) -> str:
+        """
+        Finalize system prompt by injecting skill context and ensuring skill tools.
+
+        All subclasses should call this at the end of their _get_system_prompt() override
+        to ensure skills are properly injected regardless of how the template is rendered.
+
+        Args:
+            base_prompt: The rendered template prompt
+
+        Returns:
+            Prompt with skills XML appended (if skill_func_tool is active)
+        """
+        # Ensure skill tools are in self.tools (lazy injection after subclass setup_tools()).
+        self._ensure_skill_tools_in_tools()
+
         # Inject available skills XML into system prompt when skill_func_tool is active.
-        # For ChatAgenticNode (no explicit skills config): shows ALL skills.
-        # For other nodes (explicit skills config): shows only matching skills.
         if self.skill_func_tool:
             skills_xml = self._get_available_skills_context()
             if skills_xml:
@@ -491,29 +507,72 @@ class AgenticNode(Node):
         """
         Setup skill function tools when explicitly configured in agentic_nodes.
 
-        Only activates if 'skills' is explicitly set in node_config AND skill_manager exists.
+        Only activates if 'skills' is explicitly set in node_config.
         ChatAgenticNode overrides skill setup in its own setup_tools(), so this primarily
         serves other AgenticNode subclasses (GenReport, GenMetrics, etc.).
+
+        If skill_manager was not created (e.g. no global 'skills:' section in agent.yml),
+        creates one with default SkillConfig (same behavior as ChatAgenticNode).
+
+        NOTE: This only creates the SkillFuncTool instance (self.skill_func_tool).
+        The actual tools are injected into self.tools lazily via _ensure_skill_tools_in_tools(),
+        which is called from _get_system_prompt(). This avoids a timing issue where subclass
+        setup_tools() resets self.tools = [] after __init__ completes.
         """
         skill_patterns_str = self.node_config.get("skills")
-        if not skill_patterns_str or not self.skill_manager:
+        if not skill_patterns_str:
             return
 
         try:
+            # Create skill_manager with defaults if not already initialized
+            # (e.g. when agent.yml has no global 'skills:' section)
+            if not self.skill_manager:
+                from datus.tools.skill_tools.skill_manager import SkillManager
+
+                self.skill_manager = SkillManager(
+                    permission_manager=self.permission_manager,
+                )
+                logger.info(
+                    f"Created default SkillManager for node '{self.get_node_name()}' "
+                    f"with {self.skill_manager.get_skill_count()} skills"
+                )
+
             from datus.tools.skill_tools.skill_func_tool import SkillFuncTool
 
             self.skill_func_tool = SkillFuncTool(
                 manager=self.skill_manager,
                 node_name=self.get_node_name(),
             )
-            if self.tools is None:
-                self.tools = []
-            self.tools.extend(self.skill_func_tool.available_tools())
             logger.info(
                 f"Skill func tools activated for node '{self.get_node_name()}' " f"with pattern '{skill_patterns_str}'"
             )
         except Exception as e:
             logger.error(f"Failed to setup skill func tools: {e}")
+
+    def _ensure_skill_tools_in_tools(self) -> None:
+        """
+        Ensure skill function tools are present in self.tools.
+
+        Called lazily (from _get_system_prompt) to avoid the timing issue where
+        subclass setup_tools() resets self.tools = [] after base __init__ runs.
+        Idempotent — safe to call multiple times.
+        """
+        if not self.skill_func_tool:
+            return
+
+        skill_tool_names = {t.name for t in self.skill_func_tool.available_tools()}
+        existing_names = {t.name for t in (self.tools or [])}
+
+        if skill_tool_names.issubset(existing_names):
+            return  # Already added
+
+        if self.tools is None:
+            self.tools = []
+        self.tools.extend(self.skill_func_tool.available_tools())
+        logger.info(
+            f"Skill tools injected into node '{self.get_node_name()}': "
+            f"{[t.name for t in self.skill_func_tool.available_tools()]}"
+        )
 
     def set_permission_callback(self, callback: Callable[[str, str, Dict[str, Any]], Awaitable[bool]]) -> None:
         """
