@@ -32,6 +32,7 @@ from datus.tools.skill_tools import SkillConfig, SkillManager
 class TestSkillDiscoveryIntegration:
     """Test skill discovery from real filesystem directories."""
 
+    @pytest.mark.acceptance
     def test_discovers_all_skills_from_data_dir(self, skill_manager):
         """All 5 skills in tests/data/skills/ are discovered."""
         skills = skill_manager.list_all_skills()
@@ -127,6 +128,7 @@ class TestSkillLoadAndExecuteIntegration:
         # No bash tool for workflow-only skills
         assert skill_func_tool.get_skill_bash_tool("sql-analysis") is None
 
+    @pytest.mark.acceptance
     def test_script_skill_loads_and_executes(self, skill_func_tool):
         """Script skill creates bash tool; execute returns JSON output."""
         result = skill_func_tool.load_skill("report-generator")
@@ -171,6 +173,7 @@ class TestSkillLoadAndExecuteIntegration:
         assert result.success == 0
         assert "not found" in result.error.lower()
 
+    @pytest.mark.acceptance
     def test_denied_command_rejected(self, skill_func_tool):
         """Commands not matching allowed_commands are rejected."""
         skill_func_tool.load_skill("report-generator")
@@ -208,6 +211,7 @@ class TestPermissionIntegration:
         assert "admin-tools" not in xml
         assert "sql-analysis" in xml
 
+    @pytest.mark.acceptance
     def test_deny_blocks_load(self, skill_manager_with_perms):
         """DENY permission blocks load_skill."""
         success, message, content = skill_manager_with_perms.load_skill("admin-tools", "chatbot")
@@ -320,6 +324,7 @@ class TestAgenticNodeSkillFiltering:
         assert agent_config.agentic_nodes["school_report"].get("skills") == "report-*, data-*"
         assert agent_config.agentic_nodes["school_all"].get("skills") == "*"
 
+    @pytest.mark.acceptance
     def test_school_sql_node_sees_only_sql_skills(self, agent_config):
         """school_sql node with skills: "sql-*" only sees sql-analysis and sql-optimization."""
         perm_manager = PermissionManager(global_config=agent_config.permissions_config)
@@ -415,6 +420,7 @@ class TestAgenticNodeSkillFiltering:
 class TestSkillToolsAccumulationIntegration:
     """Test multi-skill loading lifecycle and tool management."""
 
+    @pytest.mark.acceptance
     def test_loaded_tools_accumulate_across_skills(self, skill_func_tool):
         """Loading multiple script skills accumulates bash tools."""
         assert len(skill_func_tool.get_all_skill_bash_tools()) == 0
