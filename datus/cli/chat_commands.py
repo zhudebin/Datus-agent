@@ -21,9 +21,9 @@ from rich.syntax import Syntax
 from rich.table import Table
 
 from datus.agent.node.chat_agentic_node import ChatAgenticNode
+from datus.cli._cli_utils import select_choice
 from datus.cli.action_history_display import ActionHistoryDisplay
-from datus.cli._cli_utils import prompt_input, select_choice
-from datus.cli.blocking_input_manager import blocking_input_manager, suppress_keyboard_input
+from datus.cli.blocking_input_manager import suppress_keyboard_input
 from datus.schemas.action_history import ActionHistory, ActionRole, ActionStatus
 from datus.schemas.node_models import SQLContext
 from datus.utils.loggings import get_logger
