@@ -12,25 +12,21 @@ Tests the skill-related methods in the AgenticNode base class:
 - _get_available_skills_context()
 """
 
-import sys
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
-# Mock problematic imports before importing AgenticNode
-sys.modules["litellm"] = MagicMock()
-
-from datus.agent.node.agentic_node import AgenticNode  # noqa: E402
-from datus.configuration.agent_config import AgentConfig  # noqa: E402
-from datus.tools.permission.permission_config import (  # noqa: E402
+from datus.agent.node.agentic_node import AgenticNode
+from datus.configuration.agent_config import AgentConfig
+from datus.tools.permission.permission_config import (
     PermissionConfig,
     PermissionLevel,
     PermissionRule,
 )
-from datus.tools.permission.permission_manager import PermissionManager  # noqa: E402
-from datus.tools.skill_tools.skill_config import SkillConfig  # noqa: E402
-from datus.tools.skill_tools.skill_func_tool import SkillFuncTool  # noqa: E402
-from datus.tools.skill_tools.skill_manager import SkillManager  # noqa: E402
+from datus.tools.permission.permission_manager import PermissionManager
+from datus.tools.skill_tools.skill_config import SkillConfig
+from datus.tools.skill_tools.skill_func_tool import SkillFuncTool
+from datus.tools.skill_tools.skill_manager import SkillManager
 
 # Globally patch LLMBaseModel.create_model to return None for all tests
 pytestmark = pytest.mark.usefixtures("mock_llm_model")
