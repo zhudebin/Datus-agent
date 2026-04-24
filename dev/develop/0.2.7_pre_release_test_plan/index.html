@@ -1,0 +1,4543 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://docs.datus.ai/dev/develop/0.2.7_pre_release_test_plan/">
+      
+      
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+          <link rel="alternate" href="../../zh/develop/0.2.7_pre_release_test_plan/" hreflang="zh">
+        
+      
+      
+      <link rel="icon" href="../../assets/logo-light.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Datus-Agent 0.2.7 发版前测试计划（研发内部） - Datus Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-8HMXHZDV7F"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-8HMXHZDV7F",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-8HMXHZDV7F",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#datus-agent-027" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Datus Docs" class="md-header__button md-logo" aria-label="Datus Docs" data-md-component="logo">
+      
+  <img src="../../assets/logo-light.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Datus Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Datus-Agent 0.2.7 发版前测试计划（研发内部）
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../zh/develop/0.2.7_pre_release_test_plan/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Datus-ai/Datus-agent" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Datus-ai/Datus-agent
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../release_notes/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Release Notes
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Datus Docs" class="md-nav__button md-logo" aria-label="Datus Docs" data-md-component="logo">
+      
+  <img src="../../assets/logo-light.png" alt="logo">
+
+    </a>
+    Datus Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Datus-ai/Datus-agent" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Datus-ai/Datus-agent
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/Quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/data_engineering_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Engineering Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/contextual_data_engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contextual Data Engineering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/Datus_tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorial
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/dashboard_copilot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dashboard Copilot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CLI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/chat_command/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat Command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/context_command/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Context Command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/execution_command/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Execution Command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/mcp_extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/sql_execution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL Execution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/skill_command/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skill Command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/plan_mode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plan Mode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_4" id="__nav_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subagent
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Subagent
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subagent/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subagent/builtin_subagents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Built-in subagents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subagent/customized_subagent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Customized subagents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subagent/gen_dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generate Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subagent/gen_metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generate Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subagent/gen_semantic_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generate Semantic Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subagent/scheduler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scheduler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subagent/gen_sql_summary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generate SQL Summary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subagent/gen_table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../subagent/gen_job/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Pipeline (ETL + Migration)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web_chatbot/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chatbot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_6" id="__nav_1_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IM Gateway
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    IM Gateway
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gateway/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gateway/slack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Slack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gateway/feishu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feishu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_7" id="__nav_1_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge Base
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Knowledge Base
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../knowledge_base/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../knowledge_base/ext_knowledge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    External Knowledge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../knowledge_base/platform_doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../knowledge_base/metadata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metadata
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../knowledge_base/semantic_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Semantic Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../knowledge_base/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../knowledge_base/reference_sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../knowledge_base/reference_template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_8" id="__nav_1_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workflow
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Workflow
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflow/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflow/nodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nodes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflow/orchestration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflow/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_9" id="__nav_1_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    REST API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../API/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../API/deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deployment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../API/chat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../API/knowledge_base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Knowledge Base API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_10" id="__nav_1_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Configuration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_10_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_10_5" id="__nav_1_10_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_10_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_10_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Services
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/datasources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datasources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/semantic_layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Semantic Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/bi_platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BI Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/schedulers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schedulers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/storage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/nodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nodes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_11" id="__nav_1_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adapters
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Adapters
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/db_adapters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Adapters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/semantic_adapters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Semantic Adapters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/bi_adapters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BI Adapters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/scheduler_adapters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scheduler Adapters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_12" id="__nav_1_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmark
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Benchmark
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../benchmark/benchmark_manual/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_13" id="__nav_1_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metricflow
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Metricflow
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../metricflow/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_14" id="__nav_1_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Integration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration/memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auto Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_15" id="__nav_1_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Training
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../training/llm_trace_usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Trace Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_16" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Develop
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1_16" id="__nav_1_16_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_16">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Develop
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、测试范围与优先级
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、测试范围与优先级">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0（阻塞发版）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1（发版前必过）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2（能跑即可）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、测试分层
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、自动化测试用例设计
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、自动化测试用例设计">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-filesystemfunctool-pathzone588-561" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 FilesystemFuncTool / PathZone（#588 / #561）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-filesystem_strict-d6c610bf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 filesystem_strict 三态（d6c610bf）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-auto-memory498-595" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Auto Memory（#498 / #595）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-rest-api-streaming520-555-538-553" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 REST API / Streaming（#520 / #555 / #538 / #553）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-cli-print-mode-proxy-tools489-501" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 CLI Print Mode / Proxy Tools（#489 / #501）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-gateway-daemon-streaming559-562-565-593-570-568" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Gateway Daemon / Streaming（#559 / #562 / #565 / #593 / #570 / #568）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-session-subagent547-544-594-575-529-516" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Session / Subagent（#547 / #544 / #594 / #575 / #529 / #516）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-kb-587-578" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 KB 路径锚定（#587 / #578）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e2e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、手工 E2E 剧本（发版前必过一次）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、手工 E2E 剧本（发版前必过一次）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#e2e-1cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E2E-1：CLI 默认链路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e2e-2print-mode-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E2E-2：Print Mode + Proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e2e-3-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E2E-3：独立 API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e2e-4gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E2E-4：Gateway 网关（飞书）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e2e-5filesystem-strict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E2E-5：Filesystem Strict
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e2e-6kb-026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E2E-6：KB 迁移验证（从 0.2.6 上来的用户）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e2e-7auto-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E2E-7：Auto Memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、非功能验证
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、回滚预案
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        七、测试分工模板
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklist-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        八、验收 Checklist（发版前最后 24 小时）
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/Datus-ai/Datus-agent/edit/main/docs/develop/0.2.7_pre_release_test_plan.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="datus-agent-027">Datus-Agent 0.2.7 发版前测试计划（研发内部）<a class="headerlink" href="#datus-agent-027" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>目标：在 <code>fstool-fix</code> 合入 <code>main</code> 并打 <code>v0.2.7</code> 前，覆盖 Leo / Felix.Liu 自 <code>v0.2.6</code> 后 39 个提交的回归测试。
+本文档面向研发与 QA；所有测试用例须可重复执行，优先用已有 <code>pytest</code> 标记体系（CI / nightly / regression）。</p>
+</blockquote>
+<hr />
+<h2 id="_1">一、测试范围与优先级<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h3 id="p0">P0（阻塞发版）<a class="headerlink" href="#p0" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>对应 PR</th>
+<th>验证重点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文件系统工具 / PathZone</td>
+<td><a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/578" title="GitHub Issue: Datus-ai/Datus-agent #578">#578</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/588" title="GitHub Issue: Datus-ai/Datus-agent #588">#588</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/561" title="GitHub Issue: Datus-ai/Datus-agent #561">#561</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/587" title="GitHub Issue: Datus-ai/Datus-agent #587">#587</a></td>
+<td>跨 zone 读写、strict 模式拒绝、KB 路径锚定</td>
+</tr>
+<tr>
+<td>Auto Memory（MEMORY.md）</td>
+<td><a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/498" title="GitHub Issue: Datus-ai/Datus-agent #498">#498</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/595" title="GitHub Issue: Datus-ai/Datus-agent #595">#595</a></td>
+<td>注入、空态占位、L1/L2 加载、写入权限</td>
+</tr>
+<tr>
+<td>REST API / Chat API Streaming</td>
+<td><a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/520" title="GitHub Issue: Datus-ai/Datus-agent #520">#520</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/554" title="GitHub Issue: Datus-ai/Datus-agent #554">#554</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/555" title="GitHub Issue: Datus-ai/Datus-agent #555">#555</a></td>
+<td>独立部署、流式事件顺序、interactive 透传</td>
+</tr>
+<tr>
+<td>CLI Print Mode + Proxy Tools</td>
+<td><a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/489" title="GitHub Issue: Datus-ai/Datus-agent #489">#489</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/501" title="GitHub Issue: Datus-ai/Datus-agent #501">#501</a></td>
+<td>stdin/stdout JSON Lines、proxy 往返、resume</td>
+</tr>
+<tr>
+<td>Gateway Daemon + Streaming</td>
+<td><a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/559" title="GitHub Issue: Datus-ai/Datus-agent #559">#559</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/562" title="GitHub Issue: Datus-ai/Datus-agent #562">#562</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/565" title="GitHub Issue: Datus-ai/Datus-agent #565">#565</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/593" title="GitHub Issue: Datus-ai/Datus-agent #593">#593</a></td>
+<td>daemon 起停、飞书 IM 增量下行、跨线程 ContextVar</td>
+</tr>
+<tr>
+<td>filesystem_strict 三态</td>
+<td><code>d6c610bf</code></td>
+<td>YAML / CLI 三态覆盖规则、strict 无人值守</td>
+</tr>
+</tbody>
+</table>
+<h3 id="p1">P1（发版前必过）<a class="headerlink" href="#p1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>对应 PR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SubAgentTaskTool 通用化</td>
+<td><a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/575" title="GitHub Issue: Datus-ai/Datus-agent #575">#575</a></td>
+</tr>
+<tr>
+<td>Session scope / filter by agent</td>
+<td><a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/523" title="GitHub Issue: Datus-ai/Datus-agent #523">#523</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/509" title="GitHub Issue: Datus-ai/Datus-agent #509">#509</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/594" title="GitHub Issue: Datus-ai/Datus-agent #594">#594</a></td>
+</tr>
+<tr>
+<td>SSE subagent depth &amp; parent_action_id</td>
+<td><a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/547" title="GitHub Issue: Datus-ai/Datus-agent #547">#547</a></td>
+</tr>
+<tr>
+<td>session_total_tokens 语义</td>
+<td><a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/544" title="GitHub Issue: Datus-ai/Datus-agent #544">#544</a></td>
+</tr>
+<tr>
+<td>Project-level config / Feedback Agent</td>
+<td><a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/592" title="GitHub Issue: Datus-ai/Datus-agent #592">#592</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/579" title="GitHub Issue: Datus-ai/Datus-agent #579">#579</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="p2">P2（能跑即可）<a class="headerlink" href="#p2" title="Permanent link">&para;</a></h3>
+<p>CLI 底部栏 UX（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/583" title="GitHub Issue: Datus-ai/Datus-agent #583">#583</a>）、ask_user 多选（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/553" title="GitHub Issue: Datus-ai/Datus-agent #553">#553</a>）、API 级 feedback action（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/593" title="GitHub Issue: Datus-ai/Datus-agent #593">#593</a>）、bug fix 小补丁（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/529" title="GitHub Issue: Datus-ai/Datus-agent #529">#529</a>/<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/516" title="GitHub Issue: Datus-ai/Datus-agent #516">#516</a>/<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/505" title="GitHub Issue: Datus-ai/Datus-agent #505">#505</a>/<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/533" title="GitHub Issue: Datus-ai/Datus-agent #533">#533</a>/<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/548" title="GitHub Issue: Datus-ai/Datus-agent #548">#548</a>/<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/531" title="GitHub Issue: Datus-ai/Datus-agent #531">#531</a>/<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/568" title="GitHub Issue: Datus-ai/Datus-agent #568">#568</a>/<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/570" title="GitHub Issue: Datus-ai/Datus-agent #570">#570</a>/<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/577" title="GitHub Issue: Datus-ai/Datus-agent #577">#577</a>）。</p>
+<hr />
+<h2 id="_2">二、测试分层<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>用例前缀</th>
+<th>运行命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CI（零外部依赖）</td>
+<td><code>tests/unit_tests/</code></td>
+<td><code>uv run pytest tests/unit_tests/ -q</code></td>
+</tr>
+<tr>
+<td>Nightly（真实 LLM）</td>
+<td><code>@pytest.mark.nightly</code></td>
+<td><code>uv run pytest -m nightly tests/</code></td>
+</tr>
+<tr>
+<td>Regression（DB / 多 Provider）</td>
+<td><code>@pytest.mark.regression</code></td>
+<td><code>uv run pytest -m "nightly or regression" tests/</code></td>
+</tr>
+<tr>
+<td>手工 E2E</td>
+<td>下方 §4 剧本</td>
+<td>人工</td>
+</tr>
+</tbody>
+</table>
+<p>覆盖率门槛：<code>--cov=datus --cov-fail-under=80</code>；diff coverage <code>uv run diff-cover coverage.xml --compare-branch=upstream/main --fail-under=80</code>。</p>
+<hr />
+<h2 id="_3">三、自动化测试用例设计<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>下列编号对应 <code>tests/unit_tests/...</code> 中的新增或需补齐用例；每个 case 至少 1 条正向 + 1 条反向。</p>
+<h3 id="31-filesystemfunctool-pathzone588-561">3.1 FilesystemFuncTool / PathZone（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/588" title="GitHub Issue: Datus-ai/Datus-agent #588">#588</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/561" title="GitHub Issue: Datus-ai/Datus-agent #561">#561</a>）<a class="headerlink" href="#31-filesystemfunctool-pathzone588-561" title="Permanent link">&para;</a></h3>
+<p><code>tests/unit_tests/tools/func_tool/test_filesystem_func_tool.py</code></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>场景</th>
+<th>输入</th>
+<th>断言</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FS-01</td>
+<td>INTERNAL 读</td>
+<td><code>read_file("./subject/semantic_models/foo.yaml")</code></td>
+<td>成功；无 prompt</td>
+</tr>
+<tr>
+<td>FS-02</td>
+<td>WHITELIST 写 skills</td>
+<td><code>write_file(".datus/skills/x.md", ...)</code></td>
+<td>成功；无 prompt</td>
+</tr>
+<tr>
+<td>FS-03</td>
+<td>WHITELIST memory</td>
+<td><code>write_file(".datus/memory/chat/MEMORY.md", ...)</code></td>
+<td>成功</td>
+</tr>
+<tr>
+<td>FS-04</td>
+<td>HIDDEN 读拒绝</td>
+<td><code>read_file(".datus/sessions/abc.db")</code></td>
+<td><code>PathZone=HIDDEN</code>，非 strict 下走 prompt；strict 下 <code>PermissionDeniedException</code></td>
+</tr>
+<tr>
+<td>FS-05</td>
+<td>EXTERNAL + strict</td>
+<td><code>strict=True</code>, 读 <code>/etc/hosts</code></td>
+<td>硬拒绝，不触达 broker</td>
+</tr>
+<tr>
+<td>FS-06</td>
+<td>EXTERNAL + interactive</td>
+<td><code>strict=False</code>, 同上</td>
+<td>触发权限 prompt</td>
+</tr>
+<tr>
+<td>FS-07</td>
+<td><code>glob</code> 递归</td>
+<td><code>glob("**/*.sql")</code></td>
+<td>返回按 mtime 排序；不命中 <code>.datus/</code> HIDDEN</td>
+</tr>
+<tr>
+<td>FS-08</td>
+<td><code>grep</code> 命中</td>
+<td><code>grep("SELECT", glob="*.sql")</code></td>
+<td>返回含行号的 content</td>
+</tr>
+<tr>
+<td>FS-09</td>
+<td><code>edit_file</code> 唯一性</td>
+<td><code>old_string</code> 重复</td>
+<td>抛错提示非唯一</td>
+</tr>
+<tr>
+<td>FS-10</td>
+<td><code>read_file</code> offset/limit</td>
+<td>10000 行文件，offset=100, limit=50</td>
+<td>返回 50 行，首行号正确</td>
+</tr>
+<tr>
+<td>FS-11</td>
+<td>旧工具已移除</td>
+<td>调用 <code>list_directory</code></td>
+<td><code>AttributeError</code>（保证 <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/561" title="GitHub Issue: Datus-ai/Datus-agent #561">#561</a> 清理彻底）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-filesystem_strict-d6c610bf">3.2 filesystem_strict 三态（<code>d6c610bf</code>）<a class="headerlink" href="#32-filesystem_strict-d6c610bf" title="Permanent link">&para;</a></h3>
+<p><code>tests/unit_tests/configuration/test_agent_config_filesystem_strict.py</code></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>YAML <code>agent.filesystem.strict</code></th>
+<th>CLI flag</th>
+<th>期望 <code>agent_config.filesystem_strict</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STR-01</td>
+<td><code>true</code></td>
+<td>未传</td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td>STR-02</td>
+<td><code>false</code></td>
+<td>未传</td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td>STR-03</td>
+<td><code>true</code></td>
+<td><code>--no-filesystem-strict</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td>STR-04</td>
+<td><code>false</code></td>
+<td><code>--filesystem-strict</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td>STR-05</td>
+<td>未设置</td>
+<td>未传</td>
+<td>默认 <code>False</code></td>
+</tr>
+<tr>
+<td>STR-06</td>
+<td>未设置</td>
+<td><code>--filesystem-strict --no-filesystem-strict</code></td>
+<td>argparse 互斥冲突报错</td>
+</tr>
+</tbody>
+</table>
+<p>同时 <code>tests/unit_tests/agent/node/test_agentic_node_filesystem.py</code>：验证 <code>_resolve_filesystem_strict</code> 直接读取属性，不再依赖动态 attach。</p>
+<h3 id="33-auto-memory498-595">3.3 Auto Memory（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/498" title="GitHub Issue: Datus-ai/Datus-agent #498">#498</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/595" title="GitHub Issue: Datus-ai/Datus-agent #595">#595</a>）<a class="headerlink" href="#33-auto-memory498-595" title="Permanent link">&para;</a></h3>
+<p><code>tests/unit_tests/agent/node/test_chat_agentic_node_memory.py</code></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>场景</th>
+<th>断言</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MEM-01</td>
+<td><code>MEMORY.md</code> 不存在</td>
+<td>prompt 含 <code>"empty -- no memories saved yet"</code></td>
+</tr>
+<tr>
+<td>MEM-02</td>
+<td><code>MEMORY.md</code> 空文件</td>
+<td>同 MEM-01（missing 与 empty 同分支）</td>
+</tr>
+<tr>
+<td>MEM-03</td>
+<td><code>MEMORY.md</code> 有内容</td>
+<td>prompt 内 <code>&lt;memory&gt;...&lt;/memory&gt;</code> 含真实内容</td>
+</tr>
+<tr>
+<td>MEM-04</td>
+<td>内容 &gt; 200 行</td>
+<td>L1 截断到 200 行；L2 子文件列表出现在提示里</td>
+</tr>
+<tr>
+<td>MEM-05</td>
+<td>写入路径</td>
+<td><code>write_file(".datus/memory/{current_node}/MEMORY.md")</code> 在 WHITELIST，成功</td>
+</tr>
+<tr>
+<td>MEM-06</td>
+<td>非 Memory 节点</td>
+<td><code>GenSQLAgenticNode</code> 默认保留 filesystem tools，但 memory 注入可配置开关</td>
+</tr>
+</tbody>
+</table>
+<h3 id="34-rest-api-streaming520-555-538-553">3.4 REST API / Streaming（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/520" title="GitHub Issue: Datus-ai/Datus-agent #520">#520</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/555" title="GitHub Issue: Datus-ai/Datus-agent #555">#555</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/538" title="GitHub Issue: Datus-ai/Datus-agent #538">#538</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/553" title="GitHub Issue: Datus-ai/Datus-agent #553">#553</a>）<a class="headerlink" href="#34-rest-api-streaming520-555-538-553" title="Permanent link">&para;</a></h3>
+<p><code>tests/unit_tests/api/</code> 系列</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>端点</th>
+<th>场景</th>
+<th>断言</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API-01</td>
+<td><code>POST /api/v1/chat</code></td>
+<td><code>stream_response=false</code></td>
+<td>一次性返回完整 payload</td>
+</tr>
+<tr>
+<td>API-02</td>
+<td><code>POST /api/v1/chat</code></td>
+<td><code>stream_response=true</code></td>
+<td>SSE 流；出现 <code>create</code>→<code>append*</code>→<code>update</code>→<code>end</code> 顺序事件</td>
+</tr>
+<tr>
+<td>API-03</td>
+<td><code>POST /api/v1/tools/{tool_name}</code></td>
+<td>合法参数</td>
+<td><code>ToolService</code> 注册表命中；结果结构符合注册签名</td>
+</tr>
+<tr>
+<td>API-04</td>
+<td>同上</td>
+<td>未知工具名</td>
+<td>404</td>
+</tr>
+<tr>
+<td>API-05</td>
+<td><code>GET /api/v1/chat/sessions?subagent_id=X</code></td>
+<td>多 agent 场景</td>
+<td>仅返回匹配 X 的 session</td>
+</tr>
+<tr>
+<td>API-06</td>
+<td><code>ChatInput.interactive=false</code></td>
+<td>请求级覆盖</td>
+<td><code>AgenticNode.interactive_enabled=False</code>；ask_user 不注册</td>
+</tr>
+<tr>
+<td>API-07</td>
+<td><code>UserInteractionInput</code></td>
+<td>multi-select payload <code>[["A","B"],["C"]]</code></td>
+<td>成功反序列化；SSE multiSelect 字段转换正确</td>
+</tr>
+<tr>
+<td>API-08</td>
+<td><code>session_total_tokens</code> 字段</td>
+<td>跑两轮对话</td>
+<td>等于第二轮最后一次模型调用的 input_tokens，而非累加</td>
+</tr>
+</tbody>
+</table>
+<h3 id="35-cli-print-mode-proxy-tools489-501">3.5 CLI Print Mode / Proxy Tools（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/489" title="GitHub Issue: Datus-ai/Datus-agent #489">#489</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/501" title="GitHub Issue: Datus-ai/Datus-agent #501">#501</a>）<a class="headerlink" href="#35-cli-print-mode-proxy-tools489-501" title="Permanent link">&para;</a></h3>
+<p><code>tests/unit_tests/cli/test_print_mode.py</code></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>场景</th>
+<th>断言</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PRN-01</td>
+<td><code>datus --print</code> JSON Lines 输入</td>
+<td>每行对应一次 Action；退出码 0</td>
+</tr>
+<tr>
+<td>PRN-02</td>
+<td><code>--resume &lt;id&gt;</code> 不带 <code>--print</code></td>
+<td>argparse 校验失败</td>
+</tr>
+<tr>
+<td>PRN-03</td>
+<td><code>--proxy_tools query_sql</code></td>
+<td>tool_call 事件从 stdout 流出，stdin 回注结果后会话继续</td>
+</tr>
+<tr>
+<td>PRN-04</td>
+<td>ProxyTool 乱序回传</td>
+<td><code>ToolResultChannel</code> 按 <code>call_id</code> 路由，不出现串返</td>
+</tr>
+<tr>
+<td>PRN-05</td>
+<td>stdin EOF</td>
+<td>工具阻塞但收到 stop_event 后清洁退出</td>
+</tr>
+<tr>
+<td>PRN-06</td>
+<td>Windows 事件循环</td>
+<td><code>run_async()</code> 路径不报 <code>asyncio.run already running</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="36-gateway-daemon-streaming559-562-565-593-570-568">3.6 Gateway Daemon / Streaming（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/559" title="GitHub Issue: Datus-ai/Datus-agent #559">#559</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/562" title="GitHub Issue: Datus-ai/Datus-agent #562">#562</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/565" title="GitHub Issue: Datus-ai/Datus-agent #565">#565</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/593" title="GitHub Issue: Datus-ai/Datus-agent #593">#593</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/570" title="GitHub Issue: Datus-ai/Datus-agent #570">#570</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/568" title="GitHub Issue: Datus-ai/Datus-agent #568">#568</a>）<a class="headerlink" href="#36-gateway-daemon-streaming559-562-565-593-570-568" title="Permanent link">&para;</a></h3>
+<p><code>tests/unit_tests/gateway/test_runtime.py</code> &amp; <code>test_feishu_adapter.py</code></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>场景</th>
+<th>断言</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLW-01</td>
+<td><code>--daemon --action start</code></td>
+<td>产生 pid 文件；<code>status</code> 命中运行中</td>
+</tr>
+<tr>
+<td>CLW-02</td>
+<td><code>--action restart</code></td>
+<td>旧进程退出、新进程起来；始终 daemon=True</td>
+</tr>
+<tr>
+<td>CLW-03</td>
+<td><code>_read_pid</code> 负值/非数字</td>
+<td>拒绝并返回友好错误</td>
+</tr>
+<tr>
+<td>CLW-04</td>
+<td>POSIX-only 调用在 Windows</td>
+<td><code>os.setsid</code> 等被平台守卫跳过</td>
+</tr>
+<tr>
+<td>CLW-05</td>
+<td><code>_run_loop</code> 捕获 <code>path_manager</code></td>
+<td>ContextVar 为空时主动 bind；<code>project_name</code> 不为 <code>""</code></td>
+</tr>
+<tr>
+<td>CLW-06</td>
+<td>飞书 streaming 拼接</td>
+<td><code>"Hi" + " again!"</code> 得到 <code>"Hi again!"</code>（空白不被 strip）</td>
+</tr>
+<tr>
+<td>CLW-07</td>
+<td>whitespace-only delta</td>
+<td>单个 <code>" "</code> token 不被过滤</td>
+</tr>
+<tr>
+<td>CLW-08</td>
+<td>群聊未参与 thread 回复</td>
+<td><code>SessionManager.session_exists()</code> 为 False，bot 不应答</td>
+</tr>
+</tbody>
+</table>
+<h3 id="37-session-subagent547-544-594-575-529-516">3.7 Session / Subagent（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/547" title="GitHub Issue: Datus-ai/Datus-agent #547">#547</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/544" title="GitHub Issue: Datus-ai/Datus-agent #544">#544</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/594" title="GitHub Issue: Datus-ai/Datus-agent #594">#594</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/575" title="GitHub Issue: Datus-ai/Datus-agent #575">#575</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/529" title="GitHub Issue: Datus-ai/Datus-agent #529">#529</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/516" title="GitHub Issue: Datus-ai/Datus-agent #516">#516</a>）<a class="headerlink" href="#37-session-subagent547-544-594-575-529-516" title="Permanent link">&para;</a></h3>
+<p><code>tests/unit_tests/session/test_session_manager.py</code> 等</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>场景</th>
+<th>断言</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SES-01</td>
+<td><code>session_matches_agent</code></td>
+<td>id <code>foo_session_xxx</code> 与 <code>current_subagent_name=foo</code> 匹配；legacy 无前缀 id 归为默认 chat</td>
+</tr>
+<tr>
+<td>SES-02</td>
+<td><code>get_last_turn_usage</code></td>
+<td>仅统计 <code>depth==0</code> 事件；遇到上一次 root USER 断言停止</td>
+</tr>
+<tr>
+<td>SES-03</td>
+<td><code>cmd_chat_info</code> context%</td>
+<td>分母为 <code>session_total_tokens</code>（最后一次 input）</td>
+</tr>
+<tr>
+<td>SES-04</td>
+<td><code>SubAgentTaskTool</code> 2 级上限</td>
+<td>深度=2 时子节点的 task tool 被剥离</td>
+</tr>
+<tr>
+<td>SES-05</td>
+<td><code>allowed_subagents</code> 过滤</td>
+<td><code>chat</code> 默认 <code>'*'</code> 可见全量；<code>gen_sql</code> 默认仅 <code>'explore'</code></td>
+</tr>
+<tr>
+<td>SES-06</td>
+<td>自定义 subagent 解析</td>
+<td><code>_create_node</code> 以 <code>entry["id"]</code> 反查 <code>agentic_nodes</code> key；<code>scoped_context</code> 非空</td>
+</tr>
+<tr>
+<td>SES-07</td>
+<td>fs-dependent 节点</td>
+<td><code>gen_semantic_model / gen_metrics / gen_sql_summary / gen_ext_knowledge</code> 上 <code>filesystem_tools</code> 类别从 proxy 中排除</td>
+</tr>
+</tbody>
+</table>
+<h3 id="38-kb-587-578">3.8 KB 路径锚定（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/587" title="GitHub Issue: Datus-ai/Datus-agent #587">#587</a> / <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/578" title="GitHub Issue: Datus-ai/Datus-agent #578">#578</a>）<a class="headerlink" href="#38-kb-587-578" title="Permanent link">&para;</a></h3>
+<p><code>tests/unit_tests/storage/test_kb_path_anchoring.py</code></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>场景</th>
+<th>断言</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KB-01</td>
+<td>生成 prompt <code>kind_subdir</code></td>
+<td>含前缀 <code>subject/</code>；不含 <code>{current_database}</code></td>
+</tr>
+<tr>
+<td>KB-02</td>
+<td><code>agent.knowledge_base_home</code> 配置</td>
+<td>被静默忽略；实际写入仍在 <code>{project_root}/subject/</code></td>
+</tr>
+<tr>
+<td>KB-03</td>
+<td><code>project_name</code> 派生</td>
+<td><code>os.getcwd()="/"</code> → <code>_root</code>；超长路径以 7 位 md5 截断</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="e2e">四、手工 E2E 剧本（发版前必过一次）<a class="headerlink" href="#e2e" title="Permanent link">&para;</a></h2>
+<h3 id="e2e-1cli">E2E-1：CLI 默认链路<a class="headerlink" href="#e2e-1cli" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>uv sync</code> 升级到 0.2.7 候选。</li>
+<li>在一个干净目录 <code>cd ~/tmp/datus-demo</code> 初始化：<code>datus init</code>。</li>
+<li><code>datus chat</code>，提问 <code>select top 5 from lineitem limit 1</code>，观察 SQL 生成、执行、Ctrl+O 切换思考区。</li>
+<li>退出，再 <code>.sessions</code> + <code>.resume</code>：只看到 chat agent 的 session（<a class="magiclink magiclink-github magiclink-issue" href="https://github.com/Datus-ai/Datus-agent/issues/594" title="GitHub Issue: Datus-ai/Datus-agent #594">#594</a>）。</li>
+<li><code>.rewind</code> 到上一步，继续对话成功。</li>
+</ol>
+<h3 id="e2e-2print-mode-proxy">E2E-2：Print Mode + Proxy<a class="headerlink" href="#e2e-2print-mode-proxy" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>datus chat --print --proxy_tools query_sql &lt; input.jsonl &gt; out.jsonl</code></li>
+<li>外部脚本监听 stdout 的 <code>call-tool</code> 事件，将 mock 结果写回 stdin。</li>
+<li>验证 <code>out.jsonl</code> 含完整 Action / Message 序列；<code>--resume &lt;id&gt;</code> 可恢复。</li>
+</ol>
+<h3 id="e2e-3-api">E2E-3：独立 API<a class="headerlink" href="#e2e-3-api" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>datus-api server --host 127.0.0.1 --port 8080 --stream --interactive</code></li>
+<li>用 <code>curl -N</code> 对 <code>POST /api/v1/chat</code> 发流式请求。</li>
+<li><code>POST /api/v1/tools/search_metrics</code> body=<code>{"keyword": "..."}</code> 验证新 dispatch 路径。</li>
+<li><code>GET /api/v1/chat/sessions?subagent_id=foo</code> 验证过滤。</li>
+</ol>
+<h3 id="e2e-4gateway">E2E-4：Gateway 网关（飞书）<a class="headerlink" href="#e2e-4gateway" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>datus-gateway --daemon --action start --pid-file ~/.datus/run/gateway.pid --daemon-log-file ~/.datus/logs/gateway.log</code></li>
+<li><code>--action status</code> / <code>--action restart</code> / <code>--action stop</code> 全链路验证。</li>
+<li>在飞书单聊发起提问，确认增量下行文本正确（无“Hiagain!”类粘连），群聊 <a class="magiclink magiclink-github magiclink-mention" href="https://github.com/bot" title="GitHub User: bot">@bot</a> 正常，未参与的 thread 回复被忽略。</li>
+</ol>
+<h3 id="e2e-5filesystem-strict">E2E-5：Filesystem Strict<a class="headerlink" href="#e2e-5filesystem-strict" title="Permanent link">&para;</a></h3>
+<ol>
+<li>使用 <code>--filesystem-strict</code> 启动 CLI；让模型尝试 <code>read_file("/etc/hosts")</code> → 硬拒绝。</li>
+<li>切换到 <code>--no-filesystem-strict</code>，同样调用 → 出现权限 prompt；选择 allow once，后续相同路径再次 prompt。</li>
+<li>Gateway / API bootstrap 读取 <code>agent.filesystem.strict=true</code>，无交互环境下外部路径请求直接拒绝，不挂起。</li>
+</ol>
+<h3 id="e2e-6kb-026">E2E-6：KB 迁移验证（从 0.2.6 上来的用户）<a class="headerlink" href="#e2e-6kb-026" title="Permanent link">&para;</a></h3>
+<ol>
+<li>准备一份 0.2.6 的 KB：<code>subject/semantic_models/duckdb_local/foo.yaml</code>。</li>
+<li>升级到 0.2.7 直接 <code>datus chat</code> → 生成新 KB 时路径应为 <code>subject/semantic_models/foo.yaml</code>（不含 <code>duckdb_local/</code>）。</li>
+<li>跑 Release Note 提供的迁移脚本 → 旧内容归位；<code>@subject</code> 命令可识别。</li>
+</ol>
+<h3 id="e2e-7auto-memory">E2E-7：Auto Memory<a class="headerlink" href="#e2e-7auto-memory" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>datus chat</code>，输入 <code>Remember that my project uses PostgreSQL</code>；观察 <code>.datus/memory/chat/MEMORY.md</code> 被写入。</li>
+<li><code>exit</code> 再启 → <code>MEMORY.md</code> 内容出现在系统提示；空态场景（手动清空文件）提示为 <code>empty -- no memories saved yet</code>。</li>
+</ol>
+<hr />
+<h2 id="_4">五、非功能验证<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>检查项</th>
+<th>工具/命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>覆盖率</td>
+<td>整体 ≥ 80%，diff ≥ 80%</td>
+<td><code>uv run pytest tests/unit_tests/ --cov=datus --cov-fail-under=80</code> + <code>diff-cover</code></td>
+</tr>
+<tr>
+<td>Lint / Format</td>
+<td>零错误</td>
+<td><code>uv run ruff format . &amp;&amp; uv run ruff check --fix .</code></td>
+</tr>
+<tr>
+<td>Pre-commit hook</td>
+<td>本地绿灯</td>
+<td><code>.pre-commit hook</code></td>
+</tr>
+<tr>
+<td>文档</td>
+<td><code>release_notes.md</code>、<code>web_chatbot/API*</code>、filesystem strict、memory 新增页</td>
+<td>人工核对</td>
+</tr>
+<tr>
+<td>回归基准</td>
+<td>benchmark 组没有显著回退</td>
+<td><code>uv run pytest -m "nightly or regression" tests/</code></td>
+</tr>
+<tr>
+<td>性能</td>
+<td>流式首字节延迟 P95 ≤ 1.5s（本地 Claude Opus 4.7）</td>
+<td>手工或内置 trace</td>
+</tr>
+<tr>
+<td>并发</td>
+<td>Gateway daemon 多 worker 并发消息 ≥ 10 QPS 无 ContextVar 串扰</td>
+<td>压测脚本（可用 <code>locust</code>）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_5">六、回滚预案<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>无法紧急修复时</strong>：在 PyPI 标记 <code>0.2.7</code> 为 yanked，保留 <code>0.2.6</code> 作为推荐版本。</li>
+<li><strong>KB 目录锚定引发用户数据误读</strong>：在 <code>0.2.7.1</code> 中新增一次性 <code>datus migrate-kb</code> 子命令，按 Release Note §5.3 的逻辑原子搬迁。</li>
+<li><strong>Gateway daemon 存活问题</strong>：提供 <code>--no-daemon</code> 前台兜底，文档明示。</li>
+</ol>
+<hr />
+<h2 id="_6">七、测试分工模板<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>负责人</th>
+<th>CI</th>
+<th>Nightly</th>
+<th>手工 E2E</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文件系统重构</td>
+<td><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/Leo" title="GitHub User: Leo">@Leo</a></td>
+<td>FS-01..11 / STR-01..06</td>
+<td>—</td>
+<td>E2E-5 / E2E-6</td>
+</tr>
+<tr>
+<td>Auto Memory</td>
+<td><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/Leo" title="GitHub User: Leo">@Leo</a></td>
+<td>MEM-01..06</td>
+<td>—</td>
+<td>E2E-7</td>
+</tr>
+<tr>
+<td>REST API / Chat</td>
+<td><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/Leo" title="GitHub User: Leo">@Leo</a> + <a class="magiclink magiclink-github magiclink-mention" href="https://github.com/ArnoZhang" title="GitHub User: ArnoZhang">@ArnoZhang</a></td>
+<td>API-01..08</td>
+<td>真实模型下 streaming</td>
+<td>E2E-3</td>
+</tr>
+<tr>
+<td>CLI Print / Proxy</td>
+<td><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/Leo" title="GitHub User: Leo">@Leo</a></td>
+<td>PRN-01..06</td>
+<td>—</td>
+<td>E2E-2</td>
+</tr>
+<tr>
+<td>Gateway / Feishu</td>
+<td><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/Leo" title="GitHub User: Leo">@Leo</a></td>
+<td>GW-01..08</td>
+<td>真实 Feishu webhook</td>
+<td>E2E-4</td>
+</tr>
+<tr>
+<td>Session / Subagent</td>
+<td><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/Leo" title="GitHub User: Leo">@Leo</a></td>
+<td>SES-01..07</td>
+<td>—</td>
+<td>E2E-1</td>
+</tr>
+<tr>
+<td>KB 路径</td>
+<td><a class="magiclink magiclink-github magiclink-mention" href="https://github.com/Leo" title="GitHub User: Leo">@Leo</a></td>
+<td>KB-01..03</td>
+<td>—</td>
+<td>E2E-6</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="checklist-24">八、验收 Checklist（发版前最后 24 小时）<a class="headerlink" href="#checklist-24" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>uv run pytest tests/unit_tests/ -q</code> 全绿。</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>uv run pytest -m nightly tests/</code> 全绿（允许因外部服务抖动二次重跑）。</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>uv run ruff format . &amp;&amp; uv run ruff check .</code> 零错误零警告。</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Coverage ≥ 80%；diff coverage ≥ 80%。</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 七个 E2E 剧本均由至少一位 QA 实操通过。</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Release Note 中的迁移脚本在至少一台 0.2.6 旧数据环境上验证无损。</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>docs/release_notes.md</code> 顶部追加 <code>0.2.7</code> 小节并链接到本 Release Note（中文版）。</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> PR 标题前缀符合 <code>[Feature]/[Enhancement]/[Refactor]/[BugFix]</code> 约定；CI 通过。</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>pyproject.toml</code> 中 <code>version</code> 从 <code>0.2.6</code> 更新到 <code>0.2.7</code>；打 tag <code>v0.2.7</code>。</li>
+</ul>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2025 Datus AI
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.datus.ai" target="_blank" rel="noopener" title="www.datus.ai" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Datus-ai/Datus-agent" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://join.slack.com/t/datus-ai/shared_invite/zt-3g6h4fsdg-iOl5uNoz6A4GOc4xKKWUYg" target="_blank" rel="noopener" title="join.slack.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M94.1 315.1c0 25.9-21.2 47.1-47.1 47.1S0 341 0 315.1 21.2 268 47.1 268h47.1v47.1zm23.7 0c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1v117.8c0 25.9-21.2 47.1-47.1 47.1s-47.1-21.2-47.1-47.1zm47.1-189c-25.9 0-47.1-21.2-47.1-47.1s21.2-47 47.1-47S212 53.2 212 79.1v47.1h-47.1zm0 23.7c25.9 0 47.1 21.2 47.1 47.1S190.8 244 164.9 244H47.1C21.2 244 0 222.8 0 196.9s21.2-47.1 47.1-47.1zm189 47.1c0-25.9 21.2-47.1 47.1-47.1s47 21.2 47 47.1-21.2 47.1-47.1 47.1h-47.1v-47.1zm-23.7 0c0 25.9-21.2 47.1-47.1 47.1S236 222.8 236 196.9V79.1c0-25.9 21.2-47.1 47.1-47.1s47.1 21.2 47.1 47.1zm-47.1 189c25.9 0 47.1 21.2 47.1 47.1s-21.2 47-47.1 47-47.1-21.2-47.1-47.1v-47.1h47.1zm0-23.7c-25.9 0-47.1-21.2-47.1-47.1s21.2-47.1 47.1-47.1h117.8c25.9 0 47.1 21.2 47.1 47.1s-21.2 47.1-47.1 47.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/company/datusai" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.footer", "navigation.tabs", "navigation.tracking", "navigation.indexes", "content.code.copy", "content.code.select", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
