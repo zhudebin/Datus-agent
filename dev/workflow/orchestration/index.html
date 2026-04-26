@@ -4171,10 +4171,10 @@
 <h3 id="workflow-parameters">Workflow Parameters<a class="headerlink" href="#workflow-parameters" title="Permanent link">&para;</a></h3>
 <p>Workflows can be configured with parameters:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Use specific workflow</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>datus<span class="w"> </span>run<span class="w"> </span>--database<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;your query&quot;</span><span class="w"> </span>--plan<span class="w"> </span>reflection
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>datus-agent<span class="w"> </span>run<span class="w"> </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;your query&quot;</span><span class="w"> </span>--task_db_name<span class="w"> </span>&lt;database&gt;<span class="w"> </span>--workflow<span class="w"> </span>reflection
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Use custom workflow</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>datus<span class="w"> </span>run<span class="w"> </span>--database<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;your query&quot;</span><span class="w"> </span>--plan<span class="w"> </span>custom_analytics
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>datus-agent<span class="w"> </span>run<span class="w"> </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;your query&quot;</span><span class="w"> </span>--task_db_name<span class="w"> </span>&lt;database&gt;<span class="w"> </span>--workflow<span class="w"> </span>custom_analytics
 </span></code></pre></div>
 <h3 id="available-parameters">Available Parameters<a class="headerlink" href="#available-parameters" title="Permanent link">&para;</a></h3>
 <table>
@@ -4188,16 +4188,22 @@
 </thead>
 <tbody>
 <tr>
-<td><code>--plan</code></td>
+<td><code>--workflow</code></td>
 <td>Workflow type to execute</td>
 <td><code>reflection</code></td>
 <td><code>reflection</code>, <code>fixed</code>, <code>metric_to_sql</code>, custom</td>
 </tr>
 <tr>
-<td><code>--database</code></td>
+<td><code>--datasource</code></td>
 <td>Database datasource</td>
 <td>Required</td>
 <td>Any configured datasource</td>
+</tr>
+<tr>
+<td><code>--task_db_name</code></td>
+<td>Target database name for the task</td>
+<td>Required</td>
+<td>Any configured database name</td>
 </tr>
 <tr>
 <td><code>--task</code></td>
@@ -4206,16 +4212,10 @@
 <td>Any string</td>
 </tr>
 <tr>
-<td><code>--max_iterations</code></td>
-<td>Maximum reflection rounds</td>
-<td><code>3</code></td>
+<td><code>--max_steps</code></td>
+<td>Maximum workflow steps</td>
+<td><code>20</code></td>
 <td>Integer</td>
-</tr>
-<tr>
-<td><code>--save_dir</code></td>
-<td>Directory to save workflow state</td>
-<td><code>./save</code></td>
-<td>Any valid path</td>
 </tr>
 </tbody>
 </table>
@@ -4241,13 +4241,10 @@
 </ul>
 <h3 id="debugging-and-monitoring">Debugging and Monitoring<a class="headerlink" href="#debugging-and-monitoring" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Enable debug mode for detailed logging</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>datus<span class="w"> </span>run<span class="w"> </span>--database<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;your query&quot;</span><span class="w"> </span>--debug
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>datus-agent<span class="w"> </span>--debug<span class="w"> </span>run<span class="w"> </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;your query&quot;</span><span class="w"> </span>--task_db_name<span class="w"> </span>&lt;database&gt;
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Save workflow state for inspection</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>datus<span class="w"> </span>run<span class="w"> </span>--database<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;your query&quot;</span><span class="w"> </span>--save_dir<span class="w"> </span>./debug_session
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># Resume from saved state</span>
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>datus<span class="w"> </span>resume<span class="w"> </span>--save_dir<span class="w"> </span>./debug_session
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Save LLM input/output traces for inspection</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>datus-agent<span class="w"> </span>--save_llm_trace<span class="w"> </span>run<span class="w"> </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;your query&quot;</span><span class="w"> </span>--task_db_name<span class="w"> </span>&lt;database&gt;
 </span></code></pre></div>
 <h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
 <p>Workflow orchestration is the backbone of Datus Agent's intelligent SQL generation capabilities. By understanding the different workflow types and their appropriate use cases, you can leverage the full power of the system to solve complex data analysis problems efficiently and reliably.</p>

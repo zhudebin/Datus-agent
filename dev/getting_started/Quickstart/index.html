@@ -4050,8 +4050,8 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>datus-agent<span class="w"> </span>init
 </span></code></pre></div>
 <p>This generates an <code>AGENTS.md</code> file describing your project's architecture, directory structure, services, and data assets. The LLM analyzes your directory and README to produce the content.</p>
-<p>You can also use <code>--database</code> to include database schema information:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>datus-agent<span class="w"> </span>init<span class="w"> </span>--database<span class="w"> </span>demo
+<p>You can also use <code>--datasource</code> to include datasource schema information:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>datus-agent<span class="w"> </span>init<span class="w"> </span>--datasource<span class="w"> </span>duckdb-demo
 </span></code></pre></div>
 <h2 id="step-2-launch-datus-cli">Step 2: Launch Datus CLI<a class="headerlink" href="#step-2-launch-datus-cli" title="Permanent link">&para;</a></h2>
 <p>Start the Datus CLI with your configured database:</p>
@@ -4059,7 +4059,7 @@
 <p class="admonition-title">Multiple Databases</p>
 <p>You can add more databases anytime with <code>datus-agent configure</code>. Use <code>datus-agent service list</code> to see all configured databases.</p>
 </div>
-<p><div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>datus-cli<span class="w"> </span>--database<span class="w"> </span>duckdb-demo
+<p><div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>datus-cli<span class="w"> </span>--datasource<span class="w"> </span>duckdb-demo
 </span></code></pre></div>
 <div class="language-yaml no-copy highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="l l-Scalar l-Scalar-Plain">Initializing AI capabilities in background...</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>

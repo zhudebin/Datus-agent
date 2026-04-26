@@ -3974,7 +3974,7 @@
 </span></code></pre></div>
 <p><code>datus-agent init</code> 会读取你已经通过 <code>datus-agent configure</code> 保存的默认模型和数据库配置，扫描当前目录，并生成项目级 <code>AGENTS.md</code>。</p>
 <p>如需把某个已配置数据库的表结构摘要一并写入 <code>AGENTS.md</code>，可额外指定：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>datus-agent<span class="w"> </span>init<span class="w"> </span>--database<span class="w"> </span>duckdb-demo
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>datus-agent<span class="w"> </span>init<span class="w"> </span>--datasource<span class="w"> </span>duckdb-demo
 </span></code></pre></div>
 <h2 id="2-datus-cli">步骤 2：启动 Datus CLI<a class="headerlink" href="#2-datus-cli" title="Permanent link">&para;</a></h2>
 <p>使用已配置的数据库启动 Datus CLI：</p>
@@ -3982,7 +3982,7 @@
 <p class="admonition-title">配置提示</p>
 <p>你可以随时通过 <code>datus-agent configure</code> 继续添加模型或数据库。详见我们的<a href="../../configuration/introduction/">配置指南</a>。</p>
 </div>
-<p><div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>datus-cli<span class="w"> </span>--database<span class="w"> </span>duckdb-demo
+<p><div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>datus-cli<span class="w"> </span>--datasource<span class="w"> </span>duckdb-demo
 </span></code></pre></div>
 <div class="language-yaml no-copy highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="l l-Scalar l-Scalar-Plain">Initializing AI capabilities in background...</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>

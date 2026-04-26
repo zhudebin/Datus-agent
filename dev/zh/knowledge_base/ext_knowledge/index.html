@@ -4813,7 +4813,7 @@
 </span></code></pre></div>
 <h4 id="5">步骤 5：验证结果<a class="headerlink" href="#5" title="Permanent link">&para;</a></h4>
 <p>启动 CLI，先用 <code>/subject</code> 浏览生成的知识条目，然后用原始问题测试：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>datus-agent<span class="w"> </span>--datasource<span class="w"> </span>california_schools
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>datus-cli<span class="w"> </span>--datasource<span class="w"> </span>california_schools
 </span></code></pre></div>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a># 浏览知识树和条目
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Datus&gt; /subject
@@ -4831,7 +4831,7 @@
 <h3 id="subagent">方式二：Subagent 交互模式<a class="headerlink" href="#subagent" title="Permanent link">&para;</a></h3>
 <p>适用于临时知识创建、探索调试或优化单个条目。</p>
 <h4 id="1-cli">步骤 1：启动 CLI<a class="headerlink" href="#1-cli" title="Permanent link">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>datus-agent<span class="w"> </span>--datasource<span class="w"> </span>california_schools
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>datus-cli<span class="w"> </span>--datasource<span class="w"> </span>california_schools
 </span></code></pre></div>
 <h4 id="2-subagent">步骤 2：调用 Subagent<a class="headerlink" href="#2-subagent" title="Permanent link">&para;</a></h4>
 <p>使用 <code>/gen_ext_knowledge</code> 斜杠命令，将问题和参考 SQL 一起粘贴到消息中：</p>

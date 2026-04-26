@@ -3724,7 +3724,7 @@
 <p>See <a href="../builtin_subagents/">Built-in subagents</a> for details.</p>
 <h2 id="custom-subagents">Custom Subagents<a class="headerlink" href="#custom-subagents" title="Permanent link">&para;</a></h2>
 <p>Custom subagents are configured under <code>agent.agentic_nodes</code>.</p>
-<p>The <code>/subagent</code> wizard currently creates <code>gen_sql</code>-style or <code>gen_report</code>-style custom subagents. If you want to alias more specialized node classes such as <code>explore</code>, <code>gen_table</code>, <code>gen_skill</code>, <code>gen_dashboard</code>, or <code>scheduler</code>, edit <code>agent.yml</code> manually.</p>
+<p>The unified agent TUI (<code>/agent</code> or <code>/subagent</code>) Custom-tab wizard currently creates <code>gen_sql</code>-style or <code>gen_report</code>-style custom subagents. If you want to alias more specialized node classes such as <code>explore</code>, <code>gen_table</code>, <code>gen_skill</code>, <code>gen_dashboard</code>, or <code>scheduler</code>, edit <code>agent.yml</code> manually.</p>
 <p>Example:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">agent</span><span class="p">:</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
@@ -3755,7 +3755,7 @@
 <h2 id="how-to-use-subagents">How to Use Subagents<a class="headerlink" href="#how-to-use-subagents" title="Permanent link">&para;</a></h2>
 <h3 id="method-1-cli-slash-command">Method 1: CLI Slash Command<a class="headerlink" href="#method-1-cli-slash-command" title="Permanent link">&para;</a></h3>
 <p>Start the CLI:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>datus<span class="w"> </span>--database<span class="w"> </span>production
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>datus<span class="w"> </span>--datasource<span class="w"> </span>production
 </span></code></pre></div>
 <p>Then launch a subagent with <code>/[name]</code>:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/gen_metrics Generate a revenue metric from this SQL: SELECT SUM(revenue) FROM orders
@@ -3763,10 +3763,10 @@
 </span></code></pre></div>
 <h3 id="method-2-web-interface">Method 2: Web Interface<a class="headerlink" href="#method-2-web-interface" title="Permanent link">&para;</a></h3>
 <p>Start the web interface:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--database<span class="w"> </span>production
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--datasource<span class="w"> </span>production
 </span></code></pre></div>
 <p>Open a specific subagent directly:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--database<span class="w"> </span>production<span class="w"> </span>--subagent<span class="w"> </span>finance_report
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--datasource<span class="w"> </span>production<span class="w"> </span>--subagent<span class="w"> </span>finance_report
 </span></code></pre></div>
 <p>Direct URLs also work:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>http://localhost:8501/?subagent=gen_metrics

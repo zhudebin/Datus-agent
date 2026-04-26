@@ -3940,6 +3940,7 @@
 <ul>
 <li>Connects to a configured Airflow instance via the <code>datus-scheduler-airflow</code> package</li>
 <li>Provides 12 tools covering the complete job lifecycle: submit, trigger, pause, resume, update, delete, and monitor</li>
+<li>Provides filesystem tools so it can write generated SQL into project files before submitting jobs</li>
 <li>Supports both SQL and SparkSQL job types</li>
 <li>Enables log fetching and troubleshooting for failed or running jobs</li>
 </ul>
@@ -3973,12 +3974,13 @@
 <p>When submitting a new job:</p>
 <ol>
 <li>LLM identifies the SQL file path, connection, and schedule from the user request</li>
+<li>If the SQL is generated during the conversation, <code>write_file</code> saves it under a project path such as <code>jobs/&lt;job_name&gt;.sql</code></li>
 <li><code>list_scheduler_connections</code> is called to discover available Airflow connections</li>
 <li><code>submit_sql_job</code> or <code>submit_sparksql_job</code> reads the <code>.sql</code> file and creates the Airflow DAG with the specified cron schedule</li>
 <li>The job ID and status are returned in <code>scheduler_result</code></li>
 </ol>
 <blockquote>
-<p><strong>Note:</strong> <code>submit_sql_job</code> and <code>submit_sparksql_job</code> require a <code>sql_file_path</code> pointing to an existing <code>.sql</code> file on the host. The scheduler node does not include filesystem tools (write_file, etc.), so SQL files must be prepared before invoking the scheduler subagent.</p>
+<p><strong>Note:</strong> <code>submit_sql_job</code> and <code>submit_sparksql_job</code> require a <code>sql_file_path</code> pointing to an existing <code>.sql</code> file on the host. The scheduler subagent can create or update that file with filesystem tools before submitting.</p>
 </blockquote>
 <h2 id="available-tools">Available Tools<a class="headerlink" href="#available-tools" title="Permanent link">&para;</a></h2>
 <table>
@@ -4036,6 +4038,10 @@
 <tr>
 <td><code>get_run_log</code></td>
 <td>Fetch execution logs for a specific job run</td>
+</tr>
+<tr>
+<td><code>read_file</code> / <code>write_file</code> / <code>edit_file</code></td>
+<td>Read, create, or update SQL files used by scheduled jobs</td>
 </tr>
 </tbody>
 </table>

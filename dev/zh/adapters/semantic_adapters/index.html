@@ -4235,7 +4235,8 @@
 默认情况下，Datus 会把 MetricFlow 指向当前项目的语义模型目录：
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>{project_root}/subject/semantic_models/
 </span></code></pre></div>
-- <code>project_root</code> 是当前 Datus 项目的根目录。</p>
+- <code>project_root</code> 是当前 Datus 项目的根目录。
+- 配置中的语义模型目录会被视为权威来源。即使生成的 YAML 位于项目本地或被 gitignore 忽略的目录中，也会参与 MetricFlow 验证。</p>
 <h3 id="_7">选择规则<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>services.semantic_layer</code> 下的 key <strong>必须等于 adapter type</strong>（例如 <code>metricflow</code>）。如果同时写了 <code>type:</code> 字段，其值必须与 key 一致，否则 Datus 会在启动时抛出配置错误。比较时会先对 key 与 <code>type</code> 做 lowercase + trim 处理，因此 <code>MetricFlow</code> 或 <code>metricflow</code> 也会被视为与 <code>metricflow</code> 匹配。</li>
@@ -4365,7 +4366,7 @@
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dry_run_example</span><span class="p">())</span>
 </span></code></pre></div>
 <h3 id="_14">从适配器同步数据<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--database<span class="w"> </span>my_project<span class="w"> </span>--components<span class="w"> </span>metrics<span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--datasource<span class="w"> </span>my_project<span class="w"> </span>--components<span class="w"> </span>metrics<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>--from_adapter<span class="w"> </span>metricflow<span class="w"> </span>--kb-update-strategy<span class="w"> </span>overwrite
 </span></code></pre></div>
 <h2 id="_15">适配器功能<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
@@ -4383,6 +4384,7 @@
 <li>完整的 MetricFlow API 集成</li>
 <li>基于 YAML 的语义模型文件</li>
 <li>三阶段验证（lint、parse、semantic）</li>
+<li>即使无效 YAML 导致 MetricFlow client 无法完整初始化，验证也会返回具体 YAML 问题</li>
 <li>SQL 生成和执行计划</li>
 <li>支持时间粒度的时间范围过滤</li>
 </ul>

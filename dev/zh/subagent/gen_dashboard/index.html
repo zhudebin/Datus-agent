@@ -1272,10 +1272,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#superset-5" class="md-nav__link">
+  <a href="#superset" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Superset 工作流（5 步）
+        Superset 工作流
       
     </span>
   </a>
@@ -1283,10 +1283,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#grafana-3" class="md-nav__link">
+  <a href="#grafana" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Grafana 工作流（3 步）
+        Grafana 工作流
       
     </span>
   </a>
@@ -1386,7 +1386,18 @@
   <a href="#_11" class="md-nav__link">
     <span class="md-ellipsis">
       
-        创建新仪表盘
+        两步流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serving-db" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        直接调用（表已就位于 serving DB）
       
     </span>
   </a>
@@ -3726,10 +3737,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#superset-5" class="md-nav__link">
+  <a href="#superset" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Superset 工作流（5 步）
+        Superset 工作流
       
     </span>
   </a>
@@ -3737,10 +3748,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#grafana-3" class="md-nav__link">
+  <a href="#grafana" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Grafana 工作流（3 步）
+        Grafana 工作流
       
     </span>
   </a>
@@ -3840,7 +3851,18 @@
   <a href="#_11" class="md-nav__link">
     <span class="md-ellipsis">
       
-        创建新仪表盘
+        两步流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serving-db" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        直接调用（表已就位于 serving DB）
       
     </span>
   </a>
@@ -3912,14 +3934,20 @@
 
 <h1 id="bi">BI 仪表盘生成指南<a class="headerlink" href="#bi" title="Permanent link">&para;</a></h1>
 <h2 id="_1">概览<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p>BI 仪表盘生成 subagent 通过 AI 助手在 Apache Superset 和 Grafana 上创建、更新和管理仪表盘。它由聊天 agent 通过 <code>task(type="gen_dashboard")</code> 调用，使用 <code>BIFuncTool</code> 层的 LLM function calling 驱动完整的仪表盘创建工作流。</p>
+<p>BI 仪表盘生成 subagent 通过 AI 助手在 Apache Superset 和 Grafana 上创建、更新和管理仪表盘。它由聊天 agent 通过 <code>task(type="gen_dashboard")</code> 调用，基于 BI 平台已注册数据库中的现有表或 SQL dataset 创建 BI 资产。</p>
+<p><code>gen_dashboard</code> 不用 BI 工具直接搬数据，也不再派发数据准备 subagent。Dashboard 创建应作为第二步执行：</p>
+<ol>
+<li>先用 <code>gen_job</code> 或 <code>scheduler</code> 单独准备 / 刷新 serving 表。</li>
+<li>再调用 <code>gen_dashboard</code>，传入已经存在的表或 SQL dataset。</li>
+<li><code>gen_dashboard</code> 加载平台 skill，基于 <code>bi_database_name</code> 对应的 BI 数据库创建 dataset / chart / dashboard。</li>
+</ol>
 <h2 id="bi-subagent">什么是 BI 仪表盘 Subagent？<a class="headerlink" href="#bi-subagent" title="Permanent link">&para;</a></h2>
 <p>gen_dashboard subagent 是一个专用节点（<code>GenDashboardAgenticNode</code>），它：</p>
 <ul>
 <li>通过 <code>datus-bi-adapters</code> 注册表连接到已配置的 BI 平台（Superset 或 Grafana）</li>
 <li>根据 adapter Mixin 能力动态暴露适合当前平台的工具</li>
-<li>通过 <code>write_query</code> 将源数据库查询结果物化到 BI 平台自有数据库</li>
-<li>遵循平台特定的 skill 工作流，构建完整可发布的仪表盘</li>
+<li>把已经存在的物化表注册为 dataset / datasource，在其上建图、建面板、组装仪表盘</li>
+<li>agent 结束后自动运行 <code>bi-validation</code></li>
 </ul>
 <h2 id="_2">快速开始<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>确保已在 <code>agent.yml</code> 中配置 <code>agent.services.bi_platforms</code> 并安装了对应的 adapter 包：</p>
@@ -3927,35 +3955,33 @@
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># 或</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>pip<span class="w"> </span>install<span class="w"> </span>datus-bi-grafana<span class="w">    </span><span class="c1"># Grafana</span>
 </span></code></pre></div>
-<p>然后从对话界面调用 subagent：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/gen_dashboard<span class="w"> </span>创建一个包含按地区营收趋势的销售仪表盘
+<p>然后直接调用 <code>gen_dashboard</code>，或让 chat agent 自动委派给它：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>基于<span class="w"> </span>bi_public.rpt_daily_major_ac_count<span class="w"> </span>在<span class="w"> </span>Superset<span class="w"> </span>上创建一个<span class="w"> </span>dashboard
 </span></code></pre></div>
 <h2 id="_3">工作原理<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <h3 id="_4">生成工作流<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph LR
-    A[用户自然语言请求] --&gt; B[ChatAgenticNode]
-    B --&gt;|task type=gen_dashboard| C[GenDashboardAgenticNode]
-    C --&gt; D[_setup_bi_tools]
-    D --&gt; E[adapter_registry.get platform]
-    E --&gt; F[BIFuncTool.available_tools]
-    F --&gt; G[LLM 选择 Skill 工作流]
-    G --&gt;|Superset| H[write_query → create_dataset → create_chart → create_dashboard → add_chart_to_dashboard]
-    G --&gt;|Grafana| I[write_query → create_dashboard → create_chart]
-    H --&gt; J[返回 dashboard_result]
-    I --&gt; J</code></pre>
-<h3 id="superset-5">Superset 工作流（5 步）<a class="headerlink" href="#superset-5" title="Permanent link">&para;</a></h3>
+    A[包含现有 serving 表的用户请求] --&gt; B[gen_dashboard]
+    B --&gt; H[平台 dashboard skill]
+    H --&gt;|Superset| I[list_bi_databases → create_dataset → create_chart → create_dashboard → add_chart_to_dashboard]
+    H --&gt;|Grafana| J[create_dashboard → create_chart]
+    I --&gt; K[ValidationHook.on_end]
+    J --&gt; K
+    K --&gt; L[dashboard_result]</code></pre>
+<h3 id="superset">Superset 工作流<a class="headerlink" href="#superset" title="Permanent link">&para;</a></h3>
 <ol>
-<li><code>write_query(sql, table_name)</code> — 在源数据库执行 SQL，将结果物化到 Superset 数据库</li>
-<li><code>create_dataset(name, database_id)</code> — 将物化表注册为 Superset 数据集</li>
+<li><code>list_bi_databases()</code> — 根据 <code>dataset_db.bi_database_name</code> 匹配得到 <code>database_id</code></li>
+<li><code>create_dataset(name, database_id)</code> — 把已存在的表注册为 Superset 数据集</li>
 <li><code>create_chart(type, title, dataset_id, metrics, ...)</code> — 创建可视化图表</li>
 <li><code>create_dashboard(title)</code> — 创建仪表盘容器</li>
-<li><code>add_chart_to_dashboard(chart_id, dashboard_id)</code> — 将图表组装进仪表盘</li>
+<li><code>add_chart_to_dashboard(chart_id, dashboard_id)</code> — 把图表组装进仪表盘</li>
+<li>结束本次运行；<code>bi-validation</code> 会通过 <code>ValidationHook.on_end</code> 自动执行</li>
 </ol>
-<h3 id="grafana-3">Grafana 工作流（3 步）<a class="headerlink" href="#grafana-3" title="Permanent link">&para;</a></h3>
+<h3 id="grafana">Grafana 工作流<a class="headerlink" href="#grafana" title="Permanent link">&para;</a></h3>
 <ol>
-<li><code>write_query(sql, table_name)</code> — 在源数据库执行 SQL，将结果物化到 Grafana 数据库</li>
 <li><code>create_dashboard(title)</code> — 创建仪表盘</li>
-<li><code>create_chart(type, title, sql=..., dashboard_id=...)</code> — 创建内嵌 SQL 的面板</li>
+<li><code>create_chart(type, title, sql=..., dashboard_id=...)</code> — 创建内嵌 SQL 的面板，SQL 指向已存在的表；datasource 根据 <code>dataset_db.bi_database_name</code> 自动解析</li>
+<li>结束本次运行；<code>bi-validation</code> 会通过 <code>ValidationHook.on_end</code> 自动执行</li>
 </ol>
 <h2 id="_5">可用工具<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
 <p>工具根据平台 adapter 实现的 Mixin 动态暴露：</p>
@@ -4049,38 +4075,50 @@
 <td>删除数据集</td>
 </tr>
 <tr>
-<td><code>write_query</code></td>
-<td>已配置 <code>dataset_db_uri</code></td>
-<td>将查询结果物化到 BI 数据库</td>
+<td><code>get_bi_serving_target</code></td>
+<td>已配置 <code>dataset_db</code></td>
+<td>给编排层返回 serving DB 契约</td>
 </tr>
 </tbody>
 </table>
+<p><code>gen_dashboard</code> 不再暴露直接物化工具。数据搬运应在 dashboard 创建前作为单独的
+<code>gen_job</code> / <code>scheduler</code> 步骤完成。</p>
 <h2 id="_6">配置<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
 <h3 id="agentyml">agent.yml<a class="headerlink" href="#agentyml" title="Permanent link">&para;</a></h3>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">agent</span><span class="p">:</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">bi_platforms</span><span class="p">:</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">superset</span><span class="p">:</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8088&quot;</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_USER}&quot;</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_PASSWORD}&quot;</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">        </span><span class="nt">dataset_db</span><span class="p">:</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">          </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_DB_URI}&quot;</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">          </span><span class="nt">schema</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;public&quot;</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">      </span><span class="nt">grafana</span><span class="p">:</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grafana</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:3000&quot;</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">        </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${GRAFANA_API_KEY}&quot;</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">        </span><span class="nt">dataset_db</span><span class="p">:</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">          </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${GRAFANA_DB_URI}&quot;</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">          </span><span class="nt">datasource_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PostgreSQL&quot;</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="nt">gen_dashboard</span><span class="p">:</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># 可选：默认使用已配置的模型</span>
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># 可选：默认为 30</span>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span><span class="w">   </span><span class="c1"># 可选：当只配置一个 BI 平台时可自动检测</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">datasources</span><span class="p">:</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">serving_pg</span><span class="p">:</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">127.0.0.1</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5433</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset_examples</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">        </span><span class="nt">schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bi_public</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SERVING_WRITE_USER}&quot;</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SERVING_WRITE_PASSWORD}&quot;</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="nt">bi_platforms</span><span class="p">:</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="nt">superset</span><span class="p">:</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8088&quot;</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_USER}&quot;</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_PASSWORD}&quot;</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">        </span><span class="nt">dataset_db</span><span class="p">:</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">          </span><span class="nt">datasource_ref</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">serving_pg</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">          </span><span class="nt">bi_database_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">examples</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">      </span><span class="nt">grafana</span><span class="p">:</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">grafana</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:3000&quot;</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">        </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${GRAFANA_API_KEY}&quot;</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">        </span><span class="nt">dataset_db</span><span class="p">:</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">          </span><span class="nt">datasource_ref</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">serving_pg</span><span class="w">          </span><span class="c1"># 可以共用同一个 serving DB</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">          </span><span class="nt">bi_database_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PostgreSQL</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">    </span><span class="nt">gen_dashboard</span><span class="p">:</span>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># 可选：默认使用已配置的模型</span>
+</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># 可选：默认为 30</span>
+</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span><span class="w">   </span><span class="c1"># 可选：当只配置一个 BI 平台时可自动检测</span>
 </span></code></pre></div>
 <h3 id="_7">配置参数<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
 <table>
@@ -4142,21 +4180,15 @@
 <td>—</td>
 </tr>
 <tr>
-<td><code>services.bi_platforms.&lt;platform&gt;.dataset_db.uri</code></td>
+<td><code>services.bi_platforms.&lt;platform&gt;.dataset_db.datasource_ref</code></td>
 <td>是</td>
-<td>物化目标数据库的 SQLAlchemy URI</td>
+<td><code>services.datasources</code> 中的条目名；Datus 通过该 datasource 做 schema 探查与写入</td>
 <td>—</td>
 </tr>
 <tr>
-<td><code>services.bi_platforms.&lt;platform&gt;.dataset_db.schema</code></td>
-<td>否</td>
-<td>物化表的 schema</td>
-<td>—</td>
-</tr>
-<tr>
-<td><code>services.bi_platforms.&lt;platform&gt;.dataset_db.datasource_name</code></td>
-<td>Grafana</td>
-<td>Grafana datasource 名称</td>
+<td><code>services.bi_platforms.&lt;platform&gt;.dataset_db.bi_database_name</code></td>
+<td>推荐</td>
+<td>BI 平台中该 DB 的注册别名</td>
 <td>—</td>
 </tr>
 </tbody>
@@ -4190,8 +4222,8 @@
 </tr>
 <tr>
 <td>数据库连接</td>
-<td><code>database_id</code> + dataset</td>
-<td><code>datasource_name</code> 自动解析</td>
+<td><code>database_id</code> 来自 <code>list_bi_databases()</code></td>
+<td>Datasource 由 <code>bi_database_name</code> 自动解析</td>
 </tr>
 <tr>
 <td><code>update_chart</code> 支持</td>
@@ -4205,7 +4237,7 @@
 </tr>
 <tr>
 <td>工作流步骤数</td>
-<td>5 步</td>
+<td>6 步</td>
 <td>3 步</td>
 </tr>
 <tr>
@@ -4226,23 +4258,28 @@
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">}</span>
 </span></code></pre></div>
 <h2 id="_10">使用示例<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
-<h3 id="_11">创建新仪表盘<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/gen_dashboard<span class="w"> </span>创建一个包含按地区营收趋势和<span class="w"> </span>GMV<span class="w"> </span>总量大数字卡片的销售仪表盘
+<h3 id="_11">两步流程<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>用<span class="w"> </span>gen_job<span class="w"> </span>把过去<span class="w"> </span><span class="m">90</span><span class="w"> </span>天每日营收写入<span class="w"> </span><span class="sb">`</span>serving_pg<span class="sb">`</span><span class="w"> </span>datasource，目标表为<span class="w"> </span><span class="sb">`</span>bi_public.rpt_revenue_daily<span class="sb">`</span>。
+</span></code></pre></div>
+<p>表准备好之后：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/gen_dashboard<span class="w"> </span>基于<span class="w"> </span>bi_public.rpt_revenue_daily<span class="w"> </span>创建一个<span class="w"> </span>Superset<span class="w"> </span>dashboard
+</span></code></pre></div>
+<h3 id="serving-db">直接调用（表已就位于 serving DB）<a class="headerlink" href="#serving-db" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>/gen_dashboard<span class="w"> </span>基于<span class="w"> </span>bi_public.rpt_sales_daily<span class="w"> </span>在<span class="w"> </span>Superset<span class="w"> </span>建一个销售仪表盘
 </span></code></pre></div>
 <h3 id="_12">更新现有仪表盘<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/gen_dashboard<span class="w"> </span>向仪表盘<span class="w"> </span><span class="m">42</span><span class="w"> </span>添加一个月活跃用户图表
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>/gen_dashboard<span class="w"> </span>向仪表盘<span class="w"> </span><span class="m">42</span><span class="w"> </span>添加一个月活跃用户图表
 </span></code></pre></div>
 <h3 id="_13">列出现有仪表盘<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>/gen_dashboard<span class="w"> </span>列出所有与营收相关的仪表盘
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>/gen_dashboard<span class="w"> </span>列出所有与营收相关的仪表盘
 </span></code></pre></div>
 <h3 id="gen_dashboard-subagent">使用 gen_dashboard 节点类的自定义 subagent<a class="headerlink" href="#gen_dashboard-subagent" title="Permanent link">&para;</a></h3>
-<p>你可以在 <code>agent.yml</code> 中配置使用 <code>gen_dashboard</code> 节点类的自定义 subagent：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">sales_dashboard</span><span class="p">:</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_dashboard</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">sales_dashboard</span><span class="p">:</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_dashboard</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
 </span></code></pre></div>
 <p>然后通过 <code>/sales_dashboard 创建季度营收报告仪表盘</code> 调用。</p>
 

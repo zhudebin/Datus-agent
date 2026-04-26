@@ -3724,7 +3724,7 @@
 <p>详细说明见 <a href="../builtin_subagents/">内置 subagent</a>。</p>
 <h2 id="subagent_3">自定义 Subagent<a class="headerlink" href="#subagent_3" title="Permanent link">&para;</a></h2>
 <p>自定义 subagent 配置在 <code>agent.agentic_nodes</code> 下。</p>
-<p><code>/subagent</code> 向导当前可以创建 <code>gen_sql</code> 风格或 <code>gen_report</code> 风格的自定义 subagent。如果你想把更专用的节点类别名成一个自定义入口，例如 <code>explore</code>、<code>gen_table</code>、<code>gen_skill</code>、<code>gen_dashboard</code>、<code>scheduler</code>，需要直接手工编辑 <code>agent.yml</code>。</p>
+<p>统一 agent TUI（<code>/agent</code> 或 <code>/subagent</code>）Custom Tab 的向导当前可以创建 <code>gen_sql</code> 风格或 <code>gen_report</code> 风格的自定义 subagent。如果你想把更专用的节点类别名成一个自定义入口，例如 <code>explore</code>、<code>gen_table</code>、<code>gen_skill</code>、<code>gen_dashboard</code>、<code>scheduler</code>，需要直接手工编辑 <code>agent.yml</code>。</p>
 <p>示例：</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">agent</span><span class="p">:</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
@@ -3755,7 +3755,7 @@
 <h2 id="subagent_4">如何使用 Subagent<a class="headerlink" href="#subagent_4" title="Permanent link">&para;</a></h2>
 <h3 id="1cli">方法 1：CLI 斜杠命令<a class="headerlink" href="#1cli" title="Permanent link">&para;</a></h3>
 <p>先启动 CLI：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>datus<span class="w"> </span>--database<span class="w"> </span>production
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>datus<span class="w"> </span>--datasource<span class="w"> </span>production
 </span></code></pre></div>
 <p>然后使用 <code>/[name]</code> 启动 subagent：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/gen_metrics 根据这段 SQL 生成收入指标：SELECT SUM(revenue) FROM orders
@@ -3763,10 +3763,10 @@
 </span></code></pre></div>
 <h3 id="2web">方法 2：Web 界面<a class="headerlink" href="#2web" title="Permanent link">&para;</a></h3>
 <p>启动 Web：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--database<span class="w"> </span>production
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--datasource<span class="w"> </span>production
 </span></code></pre></div>
 <p>直接打开某个 subagent：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--database<span class="w"> </span>production<span class="w"> </span>--subagent<span class="w"> </span>finance_report
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--datasource<span class="w"> </span>production<span class="w"> </span>--subagent<span class="w"> </span>finance_report
 </span></code></pre></div>
 <p>也可以直接访问 URL：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>http://localhost:8501/?subagent=gen_metrics

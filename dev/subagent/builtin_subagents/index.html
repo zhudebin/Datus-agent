@@ -1238,10 +1238,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interactive-confirmation" class="md-nav__link">
+  <a href="#sync-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interactive Confirmation
+        Sync Behavior
       
     </span>
   </a>
@@ -1377,10 +1377,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interactive-confirmation_1" class="md-nav__link">
+  <a href="#validation-and-sync" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interactive Confirmation
+        Validation and Sync
       
     </span>
   </a>
@@ -1516,10 +1516,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interactive-confirmation_2" class="md-nav__link">
+  <a href="#validation-and-sync_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interactive Confirmation
+        Validation and Sync
       
     </span>
   </a>
@@ -1699,10 +1699,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interactive-confirmation_3" class="md-nav__link">
+  <a href="#sync-behavior_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interactive Confirmation
+        Sync Behavior
       
     </span>
   </a>
@@ -4657,10 +4657,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interactive-confirmation" class="md-nav__link">
+  <a href="#sync-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interactive Confirmation
+        Sync Behavior
       
     </span>
   </a>
@@ -4796,10 +4796,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interactive-confirmation_1" class="md-nav__link">
+  <a href="#validation-and-sync" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interactive Confirmation
+        Validation and Sync
       
     </span>
   </a>
@@ -4935,10 +4935,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interactive-confirmation_2" class="md-nav__link">
+  <a href="#validation-and-sync_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interactive Confirmation
+        Validation and Sync
       
     </span>
   </a>
@@ -5118,10 +5118,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interactive-confirmation_3" class="md-nav__link">
+  <a href="#sync-behavior_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interactive Confirmation
+        Sync Behavior
       
     </span>
   </a>
@@ -5804,9 +5804,9 @@
 </ul>
 <p><strong>Built-in configurations</strong> (no setup needed):
 - <strong>Tools</strong>: Automatically configured based on subagent type
-- <strong>Hooks</strong>: User confirmation workflow in interactive mode
+- <strong>Hooks</strong>: Workflow-specific validation and Knowledge Base sync
 - <strong>MCP Servers</strong>: MetricFlow validation (for gen_semantic_model and gen_metrics)
-- <strong>System Prompts</strong>: Built-in templates version 1.0
+- <strong>System Prompts</strong>: Built-in templates; latest versions are used unless <code>prompt_version</code> is set
 - <strong>Workspace</strong>: <code>~/.datus/data/{datasource}/</code> with subagent-specific subdirectories</p>
 <hr />
 <h2 id="gen_sql_summary">gen_sql_summary<a class="headerlink" href="#gen_sql_summary" title="Permanent link">&para;</a></h2>
@@ -5831,8 +5831,7 @@
     C --&gt; D[Generates unique ID]
     D --&gt; E[Creates YAML]
     E --&gt; F[Saves file]
-    F --&gt; G[User confirms]
-    G --&gt; H[Syncs to Knowledge Base]</code></pre>
+    F --&gt; G[Syncs to Knowledge Base]</code></pre>
 <p><strong>Detailed Steps:</strong></p>
 <ol>
 <li><strong>Understand SQL</strong>: The AI analyzes your query structure and business logic</li>
@@ -5844,50 +5843,36 @@
 <li><strong>Classify Query</strong>: Assigns domain, layer1, layer2, and tags following existing patterns</li>
 <li><strong>Generate YAML</strong>: Creates structured summary document</li>
 <li><strong>Save File</strong>: Writes YAML to workspace using <code>write_file()</code> tool</li>
-<li><strong>User Confirmation</strong>: Shows the generated YAML and prompts for approval</li>
 <li><strong>Sync to Knowledge Base</strong>: Stores in LanceDB for semantic search</li>
 </ol>
-<h3 id="interactive-confirmation">Interactive Confirmation<a class="headerlink" href="#interactive-confirmation" title="Permanent link">&para;</a></h3>
-<p>After generation, you'll see:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>==========================================================
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Generated Reference SQL YAML
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>File: /path/to/sql_summary.yml
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>==========================================================
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>[YAML content with syntax highlighting]
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  SYNC TO KNOWLEDGE BASE?
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  1. Yes - Save to Knowledge Base
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  2. No - Keep file only
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>Please enter your choice: [1/2]
-</span></code></pre></div>
+<h3 id="sync-behavior">Sync Behavior<a class="headerlink" href="#sync-behavior" title="Permanent link">&para;</a></h3>
+<p>In interactive mode, after the YAML file is written successfully, the generation hook syncs it to the Knowledge Base automatically. In workflow/API mode, use the corresponding explicit sync step or tool.</p>
 <h3 id="subject-tree-categorization">Subject Tree Categorization<a class="headerlink" href="#subject-tree-categorization" title="Permanent link">&para;</a></h3>
 <p>Subject tree allows organizing SQL summaries by domain and layers. In CLI mode, include it in your question:</p>
 <p><strong>Example with subject_tree:</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/gen_sql_summary<span class="w"> </span>Analyze<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>revenue<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>sales,<span class="w"> </span>subject_tree:<span class="w"> </span>sales/reporting/revenue_analysis
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/gen_sql_summary<span class="w"> </span>Analyze<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>revenue<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>sales,<span class="w"> </span>subject_tree:<span class="w"> </span>sales/reporting/revenue_analysis
 </span></code></pre></div></p>
 <p><strong>Example without subject_tree:</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/gen_sql_summary<span class="w"> </span>Analyze<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>revenue<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>sales
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/gen_sql_summary<span class="w"> </span>Analyze<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>revenue<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>sales
 </span></code></pre></div></p>
 <p>When not provided, the agent suggests categories based on existing subject trees and similar queries in the Knowledge Base.</p>
 <h3 id="yaml-structure">YAML Structure<a class="headerlink" href="#yaml-structure" title="Permanent link">&para;</a></h3>
 <p>The generated SQL summary follows this structure:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;abc123def456...&quot;</span><span class="w">                      </span><span class="c1"># Auto-generated MD5 hash</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">Region&quot;</span><span class="w">                  </span><span class="c1"># Descriptive name (max 20 chars)</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                                     </span><span class="c1"># Complete SQL query</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="no">SELECT</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="no">region,</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="no">SUM(revenue) as total_revenue</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="no">FROM sales</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="no">GROUP BY region</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Calculate</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">grouped</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">region&quot;</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;This</span><span class="nv"> </span><span class="s">query</span><span class="nv"> </span><span class="s">aggregates</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">sales</span><span class="nv"> </span><span class="s">table,</span><span class="nv"> </span><span class="s">grouping</span><span class="nv"> </span><span class="s">results</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">geographic</span><span class="nv"> </span><span class="s">region.</span><span class="nv"> </span><span class="s">It</span><span class="nv"> </span><span class="s">uses</span><span class="nv"> </span><span class="s">SUM</span><span class="nv"> </span><span class="s">aggregation</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">calculate</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">totals</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">region.&quot;</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/Users/you/.datus/data/reference_sql/revenue_by_region.yml&quot;</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sales&quot;</span><span class="w">                            </span><span class="c1"># Business domain</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="nt">layer1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Reporting&quot;</span><span class="w">                        </span><span class="c1"># Primary category</span>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="nt">layer2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">Analysis&quot;</span><span class="w">                 </span><span class="c1"># Secondary category</span>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;revenue,</span><span class="nv"> </span><span class="s">region,</span><span class="nv"> </span><span class="s">aggregation&quot;</span><span class="w">       </span><span class="c1"># Comma-separated tags</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;abc123def456...&quot;</span><span class="w">                      </span><span class="c1"># Auto-generated MD5 hash</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">Region&quot;</span><span class="w">                  </span><span class="c1"># Descriptive name (max 20 chars)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                                     </span><span class="c1"># Complete SQL query</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="no">SELECT</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="no">region,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="no">SUM(revenue) as total_revenue</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="no">FROM sales</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="no">GROUP BY region</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Calculate</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">grouped</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">region&quot;</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;This</span><span class="nv"> </span><span class="s">query</span><span class="nv"> </span><span class="s">aggregates</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">sales</span><span class="nv"> </span><span class="s">table,</span><span class="nv"> </span><span class="s">grouping</span><span class="nv"> </span><span class="s">results</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">geographic</span><span class="nv"> </span><span class="s">region.</span><span class="nv"> </span><span class="s">It</span><span class="nv"> </span><span class="s">uses</span><span class="nv"> </span><span class="s">SUM</span><span class="nv"> </span><span class="s">aggregation</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">calculate</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">totals</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">region.&quot;</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/Users/you/.datus/data/reference_sql/revenue_by_region.yml&quot;</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sales&quot;</span><span class="w">                            </span><span class="c1"># Business domain</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="nt">layer1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Reporting&quot;</span><span class="w">                        </span><span class="c1"># Primary category</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="nt">layer2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">Analysis&quot;</span><span class="w">                 </span><span class="c1"># Secondary category</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;revenue,</span><span class="nv"> </span><span class="s">region,</span><span class="nv"> </span><span class="s">aggregation&quot;</span><span class="w">       </span><span class="c1"># Comma-separated tags</span>
 </span></code></pre></div>
 <h4 id="field-descriptions">Field Descriptions<a class="headerlink" href="#field-descriptions" title="Permanent link">&para;</a></h4>
 <table>
@@ -5975,8 +5960,8 @@
 <li><strong>Data Source</strong>: Connection to your database table</li>
 </ul>
 <h3 id="quick-start_1">Quick Start<a class="headerlink" href="#quick-start_1" title="Permanent link">&para;</a></h3>
-<p>Start Datus CLI with <code>datus --database &lt;datasource&gt;</code>, and begin with a subagent command:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>/gen_semantic_model<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>semantic<span class="w"> </span>model<span class="w"> </span><span class="k">for</span><span class="w"> </span>table<span class="w"> </span>&lt;table_name&gt;
+<p>Start Datus CLI with <code>datus --datasource &lt;datasource&gt;</code>, and begin with a subagent command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/gen_semantic_model<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>semantic<span class="w"> </span>model<span class="w"> </span><span class="k">for</span><span class="w"> </span>table<span class="w"> </span>&lt;table_name&gt;
 </span></code></pre></div>
 <h3 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
 <h4 id="interactive-generation">Interactive Generation<a class="headerlink" href="#interactive-generation" title="Permanent link">&para;</a></h4>
@@ -5986,72 +5971,53 @@
 <li>Checks if a semantic model already exists</li>
 <li>Generates a comprehensive YAML file</li>
 <li>Validates the configuration using MetricFlow</li>
-<li>Prompts you to save it to the Knowledge Base</li>
+<li>Syncs it to the Knowledge Base after validation passes</li>
 </ol>
 <h4 id="generation-workflow_1">Generation Workflow<a class="headerlink" href="#generation-workflow_1" title="Permanent link">&para;</a></h4>
 <pre class="mermaid"><code>graph LR
     A[User Request] --&gt; B[DDL Analysis]
     B --&gt; C[YAML Generation]
     C --&gt; D[Validation]
-    D --&gt; E[User Confirmation]
-    E --&gt; F[Storage]</code></pre>
-<h3 id="interactive-confirmation_1">Interactive Confirmation<a class="headerlink" href="#interactive-confirmation_1" title="Permanent link">&para;</a></h3>
-<p>After generating the semantic model, you'll see:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>=============================================================
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Generated YAML: table_name.yml
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Path: /path/to/file.yml
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>=============================================================
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>[YAML content with syntax highlighting]
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>SYNC TO KNOWLEDGE BASE?
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>1. Yes - Save to Knowledge Base
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>2. No - Keep file only
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>Please enter your choice: [1/2]
-</span></code></pre></div>
-<p><strong>Options:</strong></p>
-<ul>
-<li><strong>Option 1</strong>: Saves the semantic model to your Knowledge Base (RAG storage) for AI-powered queries</li>
-<li><strong>Option 2</strong>: Keeps the YAML file only without syncing to the Knowledge Base</li>
-</ul>
+    D --&gt; E[Knowledge Base Sync]</code></pre>
+<h3 id="validation-and-sync">Validation and Sync<a class="headerlink" href="#validation-and-sync" title="Permanent link">&para;</a></h3>
+<p>The agent calls <code>validate_semantic()</code> before publishing. If validation fails, it edits the YAML and retries. In interactive mode, once validation passes, <code>end_semantic_model_generation</code> triggers automatic Knowledge Base sync; in workflow/API mode, use the explicit semantic sync step or tool.</p>
 <h3 id="semantic-model-structure">Semantic Model Structure<a class="headerlink" href="#semantic-model-structure" title="Permanent link">&para;</a></h3>
 <h4 id="basic-template">Basic Template<a class="headerlink" href="#basic-template" title="Permanent link">&para;</a></h4>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">data_source</span><span class="p">:</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">table_name</span><span class="w">                    </span><span class="c1"># Required: lowercase with underscores</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Table</span><span class="nv"> </span><span class="s">description&quot;</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nt">sql_table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema.table_name</span><span class="w">        </span><span class="c1"># For databases with schemas</span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span><span class="c1"># OR</span>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="nt">sql_query</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                        </span><span class="c1"># For custom queries</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="no">SELECT * FROM table_name</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">  </span><span class="nt">measures</span><span class="p">:</span>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_amount</span><span class="w">              </span><span class="c1"># Required</span>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">      </span><span class="nt">agg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SUM</span><span class="w">                        </span><span class="c1"># Required: SUM|COUNT|AVERAGE|etc.</span>
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amount_column</span><span class="w">             </span><span class="c1"># Column or SQL expression</span>
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">      </span><span class="nt">create_metric</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">             </span><span class="c1"># Auto-create queryable metric</span>
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Total</span><span class="nv"> </span><span class="s">transaction</span><span class="nv"> </span><span class="s">amount&quot;</span>
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">  </span><span class="nt">dimensions</span><span class="p">:</span>
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">created_date</span>
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIME</span><span class="w">                      </span><span class="c1"># Required: TIME|CATEGORICAL</span>
-</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="w">      </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="w">        </span><span class="nt">is_primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">              </span><span class="c1"># One primary time dimension required</span>
-</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="w">        </span><span class="nt">time_granularity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DAY</span><span class="w">         </span><span class="c1"># Required for TIME: DAY|WEEK|MONTH|etc.</span>
-</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>
-</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status</span>
-</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CATEGORICAL</span>
-</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Order</span><span class="nv"> </span><span class="s">status&quot;</span>
-</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>
-</span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="w">  </span><span class="nt">identifiers</span><span class="p">:</span>
-</span><span id="__span-8-29"><a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_id</span>
-</span><span id="__span-8-30"><a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PRIMARY</span><span class="w">                   </span><span class="c1"># PRIMARY|FOREIGN|UNIQUE|NATURAL</span>
-</span><span id="__span-8-31"><a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_id</span>
-</span><span id="__span-8-32"><a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>
-</span><span id="__span-8-33"><a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customer</span>
-</span><span id="__span-8-34"><a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FOREIGN</span>
-</span><span id="__span-8-35"><a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customer_id</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">data_source</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">table_name</span><span class="w">                    </span><span class="c1"># Required: lowercase with underscores</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Table</span><span class="nv"> </span><span class="s">description&quot;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">sql_table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema.table_name</span><span class="w">        </span><span class="c1"># For databases with schemas</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="c1"># OR</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">sql_query</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                        </span><span class="c1"># For custom queries</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="no">SELECT * FROM table_name</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="nt">measures</span><span class="p">:</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_amount</span><span class="w">              </span><span class="c1"># Required</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">agg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SUM</span><span class="w">                        </span><span class="c1"># Required: SUM|COUNT|AVERAGE|etc.</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amount_column</span><span class="w">             </span><span class="c1"># Column or SQL expression</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">      </span><span class="nt">create_metric</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">             </span><span class="c1"># Auto-create queryable metric</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Total</span><span class="nv"> </span><span class="s">transaction</span><span class="nv"> </span><span class="s">amount&quot;</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">  </span><span class="nt">dimensions</span><span class="p">:</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">created_date</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIME</span><span class="w">                      </span><span class="c1"># Required: TIME|CATEGORICAL</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">      </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">        </span><span class="nt">is_primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">              </span><span class="c1"># One primary time dimension required</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">        </span><span class="nt">time_granularity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DAY</span><span class="w">         </span><span class="c1"># Required for TIME: DAY|WEEK|MONTH|etc.</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CATEGORICAL</span>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Order</span><span class="nv"> </span><span class="s">status&quot;</span>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">  </span><span class="nt">identifiers</span><span class="p">:</span>
+</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_id</span>
+</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PRIMARY</span><span class="w">                   </span><span class="c1"># PRIMARY|FOREIGN|UNIQUE|NATURAL</span>
+</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_id</span>
+</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a>
+</span><span id="__span-6-33"><a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customer</span>
+</span><span id="__span-6-34"><a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FOREIGN</span>
+</span><span id="__span-6-35"><a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customer_id</span>
 </span></code></pre></div>
 <h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
 <p>The semantic model generation feature provides:</p>
@@ -6059,8 +6025,8 @@
 <li>✅ Automated YAML generation from table DDL</li>
 <li>✅ Built-in tools, hooks, and MCP server integration</li>
 <li>✅ Interactive validation and error fixing</li>
-<li>✅ User confirmation before storage</li>
-<li>✅ Knowledge Base integration</li>
+<li>✅ Validation-gated Knowledge Base sync</li>
+<li>✅ Interactive auto-sync and workflow/API explicit sync</li>
 <li>✅ Duplicate prevention</li>
 <li>✅ MetricFlow compatibility</li>
 </ul>
@@ -6078,8 +6044,8 @@
 </ul>
 <p><strong>Example</strong>: Instead of writing <code>SELECT SUM(revenue) / COUNT(DISTINCT customer_id)</code> repeatedly, define an <code>avg_customer_revenue</code> metric once.</p>
 <h3 id="quick-start_2">Quick Start<a class="headerlink" href="#quick-start_2" title="Permanent link">&para;</a></h3>
-<p>Start Datus CLI with <code>datus --database &lt;datasource&gt;</code>, and use the metrics generation subagent:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions,<span class="w"> </span>the<span class="w"> </span>corresponding<span class="w"> </span>question<span class="w"> </span>is<span class="w"> </span>total<span class="w"> </span>amount<span class="w"> </span>of<span class="w"> </span>all<span class="w"> </span>transactions
+<p>Start Datus CLI with <code>datus --datasource &lt;datasource&gt;</code>, and use the metrics generation subagent:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions,<span class="w"> </span>the<span class="w"> </span>corresponding<span class="w"> </span>question<span class="w"> </span>is<span class="w"> </span>total<span class="w"> </span>amount<span class="w"> </span>of<span class="w"> </span>all<span class="w"> </span>transactions
 </span></code></pre></div>
 <h3 id="how-it-works_1">How It Works<a class="headerlink" href="#how-it-works_1" title="Permanent link">&para;</a></h3>
 <h4 id="generation-workflow_2">Generation Workflow<a class="headerlink" href="#generation-workflow_2" title="Permanent link">&para;</a></h4>
@@ -6091,7 +6057,7 @@
     E --&gt; F[Generates metric YAML]
     F --&gt; G[Writes metric to metrics file]
     G --&gt; H[Validates]
-    H --&gt; I[User confirms]
+    H --&gt; I[Dry-run SQL]
     I --&gt; J[Syncs to Knowledge Base]</code></pre>
 <h4 id="important-limitations">Important Limitations<a class="headerlink" href="#important-limitations" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -6099,111 +6065,95 @@
 <p>The current version <strong>only supports generating metrics from single-table SQL queries</strong>. Multi-table JOINs are not supported.</p>
 </blockquote>
 <p><strong>Supported:</strong>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">revenue</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">transactions</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">customer_id</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">revenue</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">transactions</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">customer_id</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span>
 </span></code></pre></div></p>
 <p><strong>Not Supported:</strong>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">amount</span><span class="p">)</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="n">o</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">customer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">id</span><span class="w">  </span><span class="c1">-- ❌ JOIN not supported</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">amount</span><span class="p">)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="n">o</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">customer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">id</span><span class="w">  </span><span class="c1">-- ❌ JOIN not supported</span>
 </span></code></pre></div></p>
-<h3 id="interactive-confirmation_2">Interactive Confirmation<a class="headerlink" href="#interactive-confirmation_2" title="Permanent link">&para;</a></h3>
-<p>After generation, you'll see:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>==========================================================
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Generated YAML: transactions.yml
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Path: /Users/you/.datus/data/semantic_models/transactions.yml
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>==========================================================
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>[YAML content with syntax highlighting showing the new metric]
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>  SYNC TO KNOWLEDGE BASE?
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>  1. Yes - Save to Knowledge Base
-</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>  2. No - Keep file only
-</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
-</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>Please enter your choice: [1/2]
-</span></code></pre></div>
-<p><strong>Options:</strong>
-- <strong>Option 1</strong>: Syncs the metric to your Knowledge Base for AI-powered semantic search
-- <strong>Option 2</strong>: Keeps the YAML file only without syncing to the Knowledge Base</p>
+<h3 id="validation-and-sync_1">Validation and Sync<a class="headerlink" href="#validation-and-sync_1" title="Permanent link">&para;</a></h3>
+<p>Before publishing, the agent validates the YAML with <code>validate_semantic()</code> and compiles SQL with <code>query_metrics(..., dry_run=True)</code>. In interactive mode, after both checks pass, <code>end_metric_generation</code> triggers automatic Knowledge Base sync; in workflow/API mode, use the explicit metric sync step or tool.</p>
 <h3 id="subject-tree-categorization_1">Subject Tree Categorization<a class="headerlink" href="#subject-tree-categorization_1" title="Permanent link">&para;</a></h3>
 <p>Subject tree allows organizing metrics by domain and layers. In CLI mode, include it in your question:</p>
 <p><strong>Example with subject_tree:</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions,<span class="w"> </span>subject_tree:<span class="w"> </span>finance/revenue/transactions
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions,<span class="w"> </span>subject_tree:<span class="w"> </span>finance/revenue/transactions
 </span></code></pre></div></p>
 <p><strong>Example without subject_tree:</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions
 </span></code></pre></div></p>
 <p>When not provided, the agent operates in learning mode and suggests categories based on existing metrics in the Knowledge Base.</p>
 <h3 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">&para;</a></h3>
 <h4 id="example-1-simple-aggregation">Example 1: Simple Aggregation<a class="headerlink" href="#example-1-simple-aggregation" title="Permanent link">&para;</a></h4>
 <p><strong>User Input:</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span><span class="k">for</span><span class="w"> </span>total<span class="w"> </span>order<span class="w"> </span>count
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span><span class="k">for</span><span class="w"> </span>total<span class="w"> </span>order<span class="w"> </span>count
 </span></code></pre></div></p>
 <p><strong>Agent Actions:</strong>
 1. Finds <code>orders.yml</code> semantic model
 2. Reads file to discover <code>order_count</code> measure
 3. Generates MEASURE_PROXY metric:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nn">---</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nt">metric</span><span class="p">:</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_orders</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Total number of orders</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measure_proxy</span>
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
-</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Total</span><span class="nv"> </span><span class="s">Orders&quot;</span>
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nn">---</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nt">metric</span><span class="p">:</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_orders</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Total number of orders</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measure_proxy</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Total</span><span class="nv"> </span><span class="s">Orders&quot;</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
 <h4 id="example-2-conversion-rate">Example 2: Conversion Rate<a class="headerlink" href="#example-2-conversion-rate" title="Permanent link">&para;</a></h4>
 <p><strong>User Input:</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>/gen_metrics<span class="w"> </span>Create<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>SELECT
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>CASE<span class="w"> </span>WHEN<span class="w"> </span><span class="nv">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span><span class="w"> </span>THEN<span class="w"> </span>order_id<span class="w"> </span>END<span class="o">)</span><span class="w"> </span>/
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>order_id<span class="o">)</span><span class="w"> </span>AS<span class="w"> </span>completion_rate
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>FROM<span class="w"> </span>orders
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>/gen_metrics<span class="w"> </span>Create<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>SELECT
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>CASE<span class="w"> </span>WHEN<span class="w"> </span><span class="nv">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span><span class="w"> </span>THEN<span class="w"> </span>order_id<span class="w"> </span>END<span class="o">)</span><span class="w"> </span>/
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>order_id<span class="o">)</span><span class="w"> </span>AS<span class="w"> </span>completion_rate
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>FROM<span class="w"> </span>orders
 </span></code></pre></div></p>
 <p><strong>Agent Actions:</strong>
 1. Analyzes SQL logic (ratio with conditional counting)
 2. Finds <code>orders.yml</code> and reads measures
 3. Generates RATIO metric with constraint:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nn">---</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">metric</span><span class="p">:</span>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_completion_rate</span>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Percentage of orders that reached completed status</span>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span>
-</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
-</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">      </span><span class="nt">constraint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status = &#39;completed&#39;</span>
-</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
-</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
-</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Order</span><span class="nv"> </span><span class="s">Completion</span><span class="nv"> </span><span class="s">Rate&quot;</span>
-</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">    </span><span class="nt">value_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;.2%&quot;</span>
-</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nn">---</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nt">metric</span><span class="p">:</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_completion_rate</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Percentage of orders that reached completed status</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">      </span><span class="nt">constraint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status = &#39;completed&#39;</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Order</span><span class="nv"> </span><span class="s">Completion</span><span class="nv"> </span><span class="s">Rate&quot;</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">    </span><span class="nt">value_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;.2%&quot;</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
 <h4 id="example-3-complex-calculation">Example 3: Complex Calculation<a class="headerlink" href="#example-3-complex-calculation" title="Permanent link">&para;</a></h4>
 <p><strong>User Input:</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>average<span class="w"> </span>basket<span class="w"> </span>size<span class="w"> </span>metric:
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>SELECT<span class="w"> </span>SUM<span class="o">(</span>total_amount<span class="o">)</span><span class="w"> </span>/<span class="w"> </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>order_id<span class="o">)</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>FROM<span class="w"> </span>order_items
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>average<span class="w"> </span>basket<span class="w"> </span>size<span class="w"> </span>metric:
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>SELECT<span class="w"> </span>SUM<span class="o">(</span>total_amount<span class="o">)</span><span class="w"> </span>/<span class="w"> </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>order_id<span class="o">)</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>FROM<span class="w"> </span>order_items
 </span></code></pre></div></p>
 <p><strong>Agent Actions:</strong>
 1. Locates <code>order_items.yml</code>
 2. Identifies this as a RATIO (average)
 3. Generates metric:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nn">---</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nt">metric</span><span class="p">:</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg_basket_size</span>
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Average order value (basket size)</span>
-</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
-</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_amount</span>
-</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
-</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
-</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Average</span><span class="nv"> </span><span class="s">Basket</span><span class="nv"> </span><span class="s">Size&quot;</span>
-</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">    </span><span class="nt">value_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;$$,.2f&quot;</span>
-</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">    </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dollars&quot;</span>
-</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nn">---</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="nt">metric</span><span class="p">:</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg_basket_size</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Average order value (basket size)</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_amount</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Average</span><span class="nv"> </span><span class="s">Basket</span><span class="nv"> </span><span class="s">Size&quot;</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">    </span><span class="nt">value_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;$$,.2f&quot;</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">    </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dollars&quot;</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
 <h3 id="how-metrics-are-stored">How Metrics Are Stored<a class="headerlink" href="#how-metrics-are-stored" title="Permanent link">&para;</a></h3>
 <h4 id="file-organization">File Organization<a class="headerlink" href="#file-organization" title="Permanent link">&para;</a></h4>
@@ -6213,31 +6163,31 @@
 <li><strong>Metrics</strong>: <code>metrics/{table_name}_metrics.yml</code> — one or more metric definitions, separated by the YAML document separator <code>---</code></li>
 </ul>
 <p><strong>Semantic Model File</strong> (<code>transactions.yml</code>):
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nt">data_source</span><span class="p">:</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transactions</span>
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="nt">sql_table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transactions</span>
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span><span class="nt">measures</span><span class="p">:</span>
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">      </span><span class="nt">agg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SUM</span>
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amount</span>
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">  </span><span class="nt">dimensions</span><span class="p">:</span>
-</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transaction_date</span>
-</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIME</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">data_source</span><span class="p">:</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transactions</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nt">sql_table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transactions</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="nt">measures</span><span class="p">:</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">      </span><span class="nt">agg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SUM</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amount</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">  </span><span class="nt">dimensions</span><span class="p">:</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transaction_date</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIME</span>
 </span></code></pre></div></p>
 <p><strong>Metrics File</strong> (<code>metrics/transactions_metrics.yml</code>):
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nt">metric</span><span class="p">:</span>
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_revenue</span>
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measure_proxy</span>
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
-</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
-</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="nn">---</span>
-</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="nt">metric</span><span class="p">:</span>
-</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg_transaction_value</span>
-</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
-</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
-</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transaction_count</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">metric</span><span class="p">:</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_revenue</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measure_proxy</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="nn">---</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="nt">metric</span><span class="p">:</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg_transaction_value</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transaction_count</span>
 </span></code></pre></div></p>
 <p><strong>Why separate files?</strong>
 - Clear separation between schema definitions and business metrics
@@ -6245,7 +6195,7 @@
 - MetricFlow validates all YAML documents under the semantic model directory together</p>
 <p>See <a href="../gen_metrics/">gen_metrics</a> for full details.</p>
 <h4 id="knowledge-base-storage">Knowledge Base Storage<a class="headerlink" href="#knowledge-base-storage" title="Permanent link">&para;</a></h4>
-<p>When you choose "1. Yes - Save to Knowledge Base", the metric is stored in a Vector Database with:</p>
+<p>After validation and dry-run SQL succeed, the metric is synced to the Knowledge Base with:</p>
 <ol>
 <li><strong>Metadata</strong>: Name, description, type, domain/layer classification</li>
 <li><strong>LLM Text</strong>: Natural language representation for semantic search</li>
@@ -6260,7 +6210,7 @@
 <li>✅ <strong>Duplicate Prevention</strong>: Checks for existing metrics before generation</li>
 <li>✅ <strong>Subject Tree Support</strong>: Organize by domain/layer1/layer2 with predefined or learned categories</li>
 <li>✅ <strong>Validation</strong>: MetricFlow validation ensures correctness</li>
-<li>✅ <strong>Interactive Workflow</strong>: Review and approve before syncing</li>
+<li>✅ <strong>Publish Gate</strong>: Syncs only after semantic validation and dry-run SQL succeed</li>
 <li>✅ <strong>Knowledge Base Integration</strong>: Semantic search for metric discovery</li>
 <li>✅ <strong>File Management</strong>: Maintains dedicated per-table metrics files under <code>metrics/</code></li>
 </ul>
@@ -6278,20 +6228,20 @@
 <p>This knowledge helps the AI agent understand your business context when generating SQL queries or analyzing data.</p>
 <h3 id="quick-start_3">Quick Start<a class="headerlink" href="#quick-start_3" title="Permanent link">&para;</a></h3>
 <p>Launch the external knowledge generation subagent:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>--<span class="w"> </span>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
-</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>--<span class="w"> </span>SQL:<span class="w"> </span>
-</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>SELECT<span class="w"> </span>
-</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span><span class="sb">`</span>Free<span class="w"> </span>Meal<span class="w"> </span>Count<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span><span class="w"> </span>/<span class="w"> </span><span class="sb">`</span>Enrollment<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span><span class="w"> </span>
-</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>FROM<span class="w"> </span>
-</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">  </span>frpm<span class="w"> </span>
-</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>WHERE<span class="w"> </span>
-</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">  </span><span class="sb">`</span>County<span class="w"> </span>Name<span class="sb">`</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Alameda&#39;</span><span class="w"> </span>
-</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>ORDER<span class="w"> </span>BY<span class="w"> </span>
-</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">  </span><span class="o">(</span>
-</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="w">    </span>CAST<span class="o">(</span><span class="sb">`</span>Free<span class="w"> </span>Meal<span class="w"> </span>Count<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span><span class="w"> </span>AS<span class="w"> </span>REAL<span class="o">)</span><span class="w"> </span>/<span class="w"> </span><span class="sb">`</span>Enrollment<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span>
-</span><span id="__span-23-13"><a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="w">  </span><span class="o">)</span><span class="w"> </span>DESC<span class="w"> </span>
-</span><span id="__span-23-14"><a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>LIMIT<span class="w"> </span><span class="m">1</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>--<span class="w"> </span>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>--<span class="w"> </span>SQL:<span class="w"> </span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>SELECT<span class="w"> </span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">  </span><span class="sb">`</span>Free<span class="w"> </span>Meal<span class="w"> </span>Count<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span><span class="w"> </span>/<span class="w"> </span><span class="sb">`</span>Enrollment<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span><span class="w"> </span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>FROM<span class="w"> </span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">  </span>frpm<span class="w"> </span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>WHERE<span class="w"> </span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">  </span><span class="sb">`</span>County<span class="w"> </span>Name<span class="sb">`</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Alameda&#39;</span><span class="w"> </span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>ORDER<span class="w"> </span>BY<span class="w"> </span>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">  </span><span class="o">(</span>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">    </span>CAST<span class="o">(</span><span class="sb">`</span>Free<span class="w"> </span>Meal<span class="w"> </span>Count<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span><span class="w"> </span>AS<span class="w"> </span>REAL<span class="o">)</span><span class="w"> </span>/<span class="w"> </span><span class="sb">`</span>Enrollment<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span>
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">  </span><span class="o">)</span><span class="w"> </span>DESC<span class="w"> </span>
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a>LIMIT<span class="w"> </span><span class="m">1</span>
 </span></code></pre></div>
 <h3 id="generation-workflow_3">Generation Workflow<a class="headerlink" href="#generation-workflow_3" title="Permanent link">&para;</a></h3>
 <p>The workflow follows a <strong>knowledge gap discovery</strong> approach: the agent first attempts to solve the problem independently, then compares with the reference SQL to identify implicit business knowledge.</p>
@@ -6302,8 +6252,7 @@
     D --&gt; E[Check for duplicates]
     E --&gt; F[Generate YAML]
     F --&gt; G[Save file]
-    G --&gt; H[User confirms]
-    H --&gt; I[Sync to Knowledge Base]</code></pre>
+    G --&gt; H[Sync to Knowledge Base]</code></pre>
 <p><strong>Detailed Steps:</strong></p>
 <ol>
 <li><strong>Understand the Problem</strong>: Read the question from SQL comments and understand the goal</li>
@@ -6313,51 +6262,35 @@
 <li><strong>Check for Duplicates</strong>: Use <code>search_knowledge</code> to verify extracted knowledge doesn't already exist</li>
 <li><strong>Generate YAML</strong>: Create structured knowledge entries with unique IDs via <code>generate_ext_knowledge_id()</code></li>
 <li><strong>Save File</strong>: Write YAML using <code>write_file(path, content, file_type="ext_knowledge")</code></li>
-<li><strong>User Confirmation</strong>: Review generated YAML and approve</li>
 <li><strong>Sync to Knowledge Base</strong>: Store in vector database for semantic search</li>
 </ol>
 <blockquote>
 <p><strong>Important</strong>: If no knowledge gaps are found (agent's attempt matches reference SQL), no knowledge file is generated.</p>
 </blockquote>
-<h3 id="interactive-confirmation_3">Interactive Confirmation<a class="headerlink" href="#interactive-confirmation_3" title="Permanent link">&para;</a></h3>
-<p>After generation, you'll see:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>============================================================
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>Generated External Knowledge YAML
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>File: /Users/liuyufei/DatusProject/bird/datus/ext_knowledge/bird_sqlite_with_knowledge/sat_school_administration_knowledge.yaml
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>============================================================
-</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>
-</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>
-</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>  SYNC TO KNOWLEDGE BASE?
-</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>
-</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>  1. Yes - Save to Knowledge Base
-</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>  2. No - Keep file only
-</span><span id="__span-24-11"><a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>
-</span><span id="__span-24-12"><a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a>Please enter your choice: [1/2] 1
-</span><span id="__span-24-13"><a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>✓ Syncing to Knowledge Base...
-</span><span id="__span-24-14"><a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a>✓ Successfully synced external knowledge to Knowledge Base
-</span></code></pre></div>
+<h3 id="sync-behavior_1">Sync Behavior<a class="headerlink" href="#sync-behavior_1" title="Permanent link">&para;</a></h3>
+<p>In interactive mode, after the YAML file is written successfully, the generation hook syncs it to the Knowledge Base automatically. In workflow/API mode, use the explicit sync step or tool.</p>
 <h3 id="subject-path-categorization">Subject Path Categorization<a class="headerlink" href="#subject-path-categorization" title="Permanent link">&para;</a></h3>
 <p>Subject path allows organizing external knowledge hierarchically. In CLI mode, include it in your question:</p>
 <p><strong>Example with subject_path:</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
-</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>subject_tree:<span class="w"> </span>education/schools/data_integration
-</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>SQL:<span class="w"> </span>***
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>subject_tree:<span class="w"> </span>education/schools/data_integration
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>SQL:<span class="w"> </span>***
 </span></code></pre></div></p>
 <p><strong>Example without subject_path:</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>SQL:<span class="w"> </span>***
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>SQL:<span class="w"> </span>***
 </span></code></pre></div></p>
 <p>When not provided, the agent operates in learning mode and suggests categories based on existing subject trees in the Knowledge Base.</p>
 <h3 id="yaml-structure_1">YAML Structure<a class="headerlink" href="#yaml-structure_1" title="Permanent link">&para;</a></h3>
 <p>The generated external knowledge follows this structure:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">education/schools/data_integration/CDS code school identifier California Department of Education join tables</span><span class="w">                                                                </span>
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CDS Code as School Identifier</span><span class="w">                                                                                                                                             </span>
-</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="nt">search_text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CDS code school identifier California Department of Education join tables</span><span class="w">                                                                                          </span>
-</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="nt">explanation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                                                                                                                                                                  </span>
-</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">  </span><span class="no">The CDS (California Department of Education) code serves as the primary identifier for linking educational datasets in California. Use `cds` field in SAT scores table to join</span>
-</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="nt">subject_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">education/schools/data_integration</span><span class="w">       </span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">education/schools/data_integration/CDS code school identifier California Department of Education join tables</span><span class="w">                                                                </span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CDS Code as School Identifier</span><span class="w">                                                                                                                                             </span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="nt">search_text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CDS code school identifier California Department of Education join tables</span><span class="w">                                                                                          </span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="nt">explanation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                                                                                                                                                                  </span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span><span class="no">The CDS (California Department of Education) code serves as the primary identifier for linking educational datasets in California. Use `cds` field in SAT scores table to join</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="nt">subject_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">education/schools/data_integration</span><span class="w">       </span>
 </span></code></pre></div>
 <h4 id="field-descriptions_1">Field Descriptions<a class="headerlink" href="#field-descriptions_1" title="Permanent link">&para;</a></h4>
 <table>
@@ -6416,11 +6349,11 @@
 <li><strong>File</strong>: Browse workspace SQL files and documentation</li>
 </ul>
 <h3 id="configuration_1">Configuration<a class="headerlink" href="#configuration_1" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">    </span><span class="nt">explore</span><span class="p">:</span>
-</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">haiku</span><span class="w">           </span><span class="c1"># Recommended: use a smaller model (haiku, gpt-4o-mini)</span>
-</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span><span class="w">           </span><span class="c1"># Optional: defaults to 15</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="nt">explore</span><span class="p">:</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">haiku</span><span class="w">           </span><span class="c1"># Recommended: use a smaller model (haiku, gpt-4o-mini)</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span><span class="w">           </span><span class="c1"># Optional: defaults to 15</span>
 </span></code></pre></div>
 <blockquote>
 <p><strong>Tip</strong>: The explore subagent is optimized for tool-calling rather than reasoning. Using a smaller, faster model (e.g., <code>haiku</code>, <code>gpt-4o-mini</code>) is recommended to reduce cost and improve speed without sacrificing quality.</p>
@@ -6468,7 +6401,7 @@
 </ul>
 <h3 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h3>
 <p>The explore subagent is typically invoked automatically by the chat agent via <code>task(type="explore")</code>, but can also be launched manually:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>/explore<span class="w"> </span>Discover<span class="w"> </span>tables<span class="w"> </span>related<span class="w"> </span>to<span class="w"> </span>customer<span class="w"> </span>revenue<span class="w"> </span>and<span class="w"> </span>find<span class="w"> </span>relevant<span class="w"> </span>metrics
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>/explore<span class="w"> </span>Discover<span class="w"> </span>tables<span class="w"> </span>related<span class="w"> </span>to<span class="w"> </span>customer<span class="w"> </span>revenue<span class="w"> </span>and<span class="w"> </span>find<span class="w"> </span>relevant<span class="w"> </span>metrics
 </span></code></pre></div>
 <hr />
 <h2 id="gen_sql">gen_sql<a class="headerlink" href="#gen_sql" title="Permanent link">&para;</a></h2>
@@ -6482,11 +6415,11 @@
 <li><strong>Modification support</strong>: Returns unified diff format when modifying existing queries</li>
 </ul>
 <h3 id="configuration_2">Configuration<a class="headerlink" href="#configuration_2" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="nt">gen_sql</span><span class="p">:</span>
-</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># Optional: defaults to configured model</span>
-</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># Optional: defaults to 30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="nt">gen_sql</span><span class="p">:</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># Optional: defaults to configured model</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># Optional: defaults to 30</span>
 </span></code></pre></div>
 <h3 id="how-it-works_2">How It Works<a class="headerlink" href="#how-it-works_2" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph LR
@@ -6499,23 +6432,23 @@
 <h3 id="output-format_1">Output Format<a class="headerlink" href="#output-format_1" title="Permanent link">&para;</a></h3>
 <p>The gen_sql subagent returns results in one of two formats:</p>
 <p><strong>Inline SQL</strong> (for shorter queries):
-<div class="language-json highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="p">{</span>
-</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span><span class="nt">&quot;sql&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELECT region, SUM(revenue) FROM sales GROUP BY region&quot;</span><span class="p">,</span>
-</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Explanation of the query...&quot;</span><span class="p">,</span>
-</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span>
-</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="p">{</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span><span class="nt">&quot;sql&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELECT region, SUM(revenue) FROM sales GROUP BY region&quot;</span><span class="p">,</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Explanation of the query...&quot;</span><span class="p">,</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="p">}</span>
 </span></code></pre></div></p>
 <p><strong>File-based SQL</strong> (for complex queries 50+ lines):
-<div class="language-json highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="p">{</span>
-</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">  </span><span class="nt">&quot;sql_file_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/generated_query.sql&quot;</span><span class="p">,</span>
-</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">  </span><span class="nt">&quot;sql_preview&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;First few lines of the query...&quot;</span><span class="p">,</span>
-</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Explanation of the query...&quot;</span><span class="p">,</span>
-</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5678</span>
-</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="p">{</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">  </span><span class="nt">&quot;sql_file_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/generated_query.sql&quot;</span><span class="p">,</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">  </span><span class="nt">&quot;sql_preview&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;First few lines of the query...&quot;</span><span class="p">,</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Explanation of the query...&quot;</span><span class="p">,</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5678</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="p">}</span>
 </span></code></pre></div></p>
 <h3 id="usage_1">Usage<a class="headerlink" href="#usage_1" title="Permanent link">&para;</a></h3>
 <p>The gen_sql subagent is typically invoked automatically by the chat agent via <code>task(type="gen_sql")</code> for complex queries, but can also be launched manually:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>/gen_sql<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>query<span class="w"> </span>to<span class="w"> </span>calculate<span class="w"> </span>customer<span class="w"> </span>lifetime<span class="w"> </span>value<span class="w"> </span>with<span class="w"> </span>cohort<span class="w"> </span>analysis
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>/gen_sql<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>query<span class="w"> </span>to<span class="w"> </span>calculate<span class="w"> </span>customer<span class="w"> </span>lifetime<span class="w"> </span>value<span class="w"> </span>with<span class="w"> </span>cohort<span class="w"> </span>analysis
 </span></code></pre></div>
 <hr />
 <h2 id="gen_report">gen_report<a class="headerlink" href="#gen_report" title="Permanent link">&para;</a></h2>
@@ -6529,12 +6462,12 @@
 <li><strong>Configuration-driven</strong>: Tool setup and system prompts are driven by <code>agent.yml</code> configuration</li>
 </ul>
 <h3 id="configuration_3">Configuration<a class="headerlink" href="#configuration_3" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">    </span><span class="nt">gen_report</span><span class="p">:</span>
-</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># Optional: defaults to configured model</span>
-</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># Optional: defaults to 30</span>
-</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="w">      </span><span class="nt">tools</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semantic_tools.*,</span><span class="nv"> </span><span class="s">db_tools.*,</span><span class="nv"> </span><span class="s">context_search_tools.list_subject_tree&quot;</span><span class="w">  </span><span class="c1"># Optional: customize available tools</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="nt">gen_report</span><span class="p">:</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># Optional: defaults to configured model</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># Optional: defaults to 30</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">      </span><span class="nt">tools</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semantic_tools.*,</span><span class="nv"> </span><span class="s">db_tools.*,</span><span class="nv"> </span><span class="s">context_search_tools.list_subject_tree&quot;</span><span class="w">  </span><span class="c1"># Optional: customize available tools</span>
 </span></code></pre></div>
 <p><strong>Tool patterns:</strong></p>
 <table>
@@ -6577,24 +6510,24 @@
     E --&gt; F[Return structured result]</code></pre>
 <h3 id="output-format_2">Output Format<a class="headerlink" href="#output-format_2" title="Permanent link">&para;</a></h3>
 <p>The gen_report subagent returns results as a structured report:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">{</span>
-</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span><span class="nt">&quot;report&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Structured report content with analysis...&quot;</span><span class="p">,</span>
-</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Summary explanation...&quot;</span><span class="p">,</span>
-</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2345</span>
-</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="p">{</span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span><span class="nt">&quot;report&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Structured report content with analysis...&quot;</span><span class="p">,</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Summary explanation...&quot;</span><span class="p">,</span>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2345</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="usage_2">Usage<a class="headerlink" href="#usage_2" title="Permanent link">&para;</a></h3>
 <p>The gen_report subagent can be launched manually or invoked by the chat agent via <code>task(type="gen_report")</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>/gen_report<span class="w"> </span>Analyze<span class="w"> </span>the<span class="w"> </span>revenue<span class="w"> </span>trend<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>last<span class="w"> </span>quarter<span class="w"> </span>and<span class="w"> </span>provide<span class="w"> </span>insights
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>/gen_report<span class="w"> </span>Analyze<span class="w"> </span>the<span class="w"> </span>revenue<span class="w"> </span>trend<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>last<span class="w"> </span>quarter<span class="w"> </span>and<span class="w"> </span>provide<span class="w"> </span>insights
 </span></code></pre></div>
 <h3 id="custom-report-subagents">Custom Report Subagents<a class="headerlink" href="#custom-report-subagents" title="Permanent link">&para;</a></h3>
 <p>You can create custom subagents that use the gen_report node class by configuring them in <code>agent.yml</code>:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">    </span><span class="nt">attribution_report</span><span class="p">:</span>
-</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_report</span>
-</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">      </span><span class="nt">tools</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semantic_tools.*,</span><span class="nv"> </span><span class="s">db_tools.*,</span><span class="nv"> </span><span class="s">context_search_tools.*&quot;</span>
-</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">    </span><span class="nt">attribution_report</span><span class="p">:</span>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_report</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="w">      </span><span class="nt">tools</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semantic_tools.*,</span><span class="nv"> </span><span class="s">db_tools.*,</span><span class="nv"> </span><span class="s">context_search_tools.*&quot;</span>
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
 </span></code></pre></div>
 <p>Then use it via <code>/attribution_report Analyze the conversion attribution for campaign X</code>.</p>
 <hr />
@@ -6609,67 +6542,77 @@
 <li><strong>Validation support</strong>: built-in <code>validate_skill</code> checks before finishing</li>
 </ul>
 <h3 id="configuration_4">Configuration<a class="headerlink" href="#configuration_4" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">    </span><span class="nt">gen_skill</span><span class="p">:</span>
-</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span>
-</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">    </span><span class="nt">gen_skill</span><span class="p">:</span>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span>
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
 </span></code></pre></div>
 <h3 id="output-format_3">Output Format<a class="headerlink" href="#output-format_3" title="Permanent link">&para;</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="p">{</span>
-</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Created a new validation skill for finance dashboards.&quot;</span><span class="p">,</span>
-</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">  </span><span class="nt">&quot;skill_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;finance-dashboard-validation&quot;</span><span class="p">,</span>
-</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">  </span><span class="nt">&quot;skill_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/skills/finance-dashboard-validation&quot;</span><span class="p">,</span>
-</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1980</span>
-</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">{</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Created a new validation skill for finance dashboards.&quot;</span><span class="p">,</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">  </span><span class="nt">&quot;skill_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;finance-dashboard-validation&quot;</span><span class="p">,</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">  </span><span class="nt">&quot;skill_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/skills/finance-dashboard-validation&quot;</span><span class="p">,</span>
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1980</span>
+</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="usage_3">Usage<a class="headerlink" href="#usage_3" title="Permanent link">&para;</a></h3>
 <p>Launch it directly:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>/gen_skill<span class="w"> </span>Create<span class="w"> </span>a<span class="w"> </span>skill<span class="w"> </span>that<span class="w"> </span>validates<span class="w"> </span>daily<span class="w"> </span>revenue<span class="w"> </span>dashboards<span class="w"> </span>before<span class="w"> </span>publishing
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>/gen_skill<span class="w"> </span>Create<span class="w"> </span>a<span class="w"> </span>skill<span class="w"> </span>that<span class="w"> </span>validates<span class="w"> </span>daily<span class="w"> </span>revenue<span class="w"> </span>dashboards<span class="w"> </span>before<span class="w"> </span>publishing
 </span></code></pre></div>
 <p>Or let the chat agent delegate via <code>task(type="gen_skill")</code>.</p>
 <hr />
 <h2 id="gen_dashboard">gen_dashboard<a class="headerlink" href="#gen_dashboard" title="Permanent link">&para;</a></h2>
 <h3 id="overview_9">Overview<a class="headerlink" href="#overview_9" title="Permanent link">&para;</a></h3>
-<p>The gen_dashboard subagent creates, updates, and manages BI dashboards on Superset and Grafana. It is invoked by the chat agent via <code>task(type="gen_dashboard")</code> and uses the BI tools from <code>BIFuncTool</code> to drive the full dashboard creation workflow through LLM function calling.</p>
+<p>The gen_dashboard subagent creates, updates, and manages BI dashboards on Superset and Grafana. It is invoked by the chat agent via <code>task(type="gen_dashboard")</code> and uses BI tools from <code>BIFuncTool</code> to build dashboard assets on existing serving tables or SQL datasets.</p>
 <h3 id="key-features_4">Key Features<a class="headerlink" href="#key-features_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Multi-platform</strong>: Supports Apache Superset and Grafana; platform is explicit via <code>bi_platform</code> or auto-detected from <code>agent.services.bi_platforms</code></li>
 <li><strong>Dynamic tool exposure</strong>: Tools are exposed based on adapter Mixin capabilities — only operations the platform actually supports appear as LLM tools</li>
-<li><strong>Data materialization</strong>: <code>write_query</code> bridges source database results to the BI platform's own database, decoupling source data from visualization</li>
-<li><strong>Skill-guided workflows</strong>: The built-in <code>gen-dashboard</code> skill provides step-by-step workflow guidance for each platform</li>
+<li><strong>Existing serving data only</strong>: data preparation is handled separately by <code>gen_job</code> / <code>scheduler</code>; gen_dashboard builds BI dataset / chart / dashboard assets</li>
+<li><strong>Skill-guided workflows</strong>: Platform skills (<code>superset-dashboard</code>, <code>grafana-dashboard</code>) provide step-by-step workflow guidance; <code>bi-validation</code> runs automatically after creation</li>
 </ul>
 <h3 id="configuration_5">Configuration<a class="headerlink" href="#configuration_5" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">    </span><span class="nt">bi_platforms</span><span class="p">:</span>
-</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">      </span><span class="nt">superset</span><span class="p">:</span>
-</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
-</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8088&quot;</span>
-</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_USER}&quot;</span>
-</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_PASSWORD}&quot;</span>
-</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="w">        </span><span class="nt">dataset_db</span><span class="p">:</span>
-</span><span id="__span-41-10"><a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="w">          </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_DB_URI}&quot;</span>
-</span><span id="__span-41-11"><a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a><span class="w">          </span><span class="nt">schema</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;public&quot;</span>
-</span><span id="__span-41-12"><a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a>
-</span><span id="__span-41-13"><a id="__codelineno-41-13" name="__codelineno-41-13" href="#__codelineno-41-13"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-41-14"><a id="__codelineno-41-14" name="__codelineno-41-14" href="#__codelineno-41-14"></a><span class="w">    </span><span class="nt">gen_dashboard</span><span class="p">:</span>
-</span><span id="__span-41-15"><a id="__codelineno-41-15" name="__codelineno-41-15" href="#__codelineno-41-15"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># Optional: defaults to configured model</span>
-</span><span id="__span-41-16"><a id="__codelineno-41-16" name="__codelineno-41-16" href="#__codelineno-41-16"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># Optional: defaults to 30</span>
-</span><span id="__span-41-17"><a id="__codelineno-41-17" name="__codelineno-41-17" href="#__codelineno-41-17"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span><span class="w">   </span><span class="c1"># Optional: auto-detected when only one BI platform is configured</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">    </span><span class="nt">datasources</span><span class="p">:</span>
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">      </span><span class="nt">serving_pg</span><span class="p">:</span>
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">        </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">127.0.0.1</span>
+</span><span id="__span-37-7"><a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="w">        </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5433</span>
+</span><span id="__span-37-8"><a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="w">        </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset_examples</span>
+</span><span id="__span-37-9"><a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a><span class="w">        </span><span class="nt">schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bi_public</span>
+</span><span id="__span-37-10"><a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SERVING_WRITE_USER}&quot;</span>
+</span><span id="__span-37-11"><a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SERVING_WRITE_PASSWORD}&quot;</span>
+</span><span id="__span-37-12"><a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a>
+</span><span id="__span-37-13"><a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a><span class="w">    </span><span class="nt">bi_platforms</span><span class="p">:</span>
+</span><span id="__span-37-14"><a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a><span class="w">      </span><span class="nt">superset</span><span class="p">:</span>
+</span><span id="__span-37-15"><a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
+</span><span id="__span-37-16"><a id="__codelineno-37-16" name="__codelineno-37-16" href="#__codelineno-37-16"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8088&quot;</span>
+</span><span id="__span-37-17"><a id="__codelineno-37-17" name="__codelineno-37-17" href="#__codelineno-37-17"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_USER}&quot;</span>
+</span><span id="__span-37-18"><a id="__codelineno-37-18" name="__codelineno-37-18" href="#__codelineno-37-18"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_PASSWORD}&quot;</span>
+</span><span id="__span-37-19"><a id="__codelineno-37-19" name="__codelineno-37-19" href="#__codelineno-37-19"></a><span class="w">        </span><span class="nt">dataset_db</span><span class="p">:</span>
+</span><span id="__span-37-20"><a id="__codelineno-37-20" name="__codelineno-37-20" href="#__codelineno-37-20"></a><span class="w">          </span><span class="nt">datasource_ref</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">serving_pg</span>
+</span><span id="__span-37-21"><a id="__codelineno-37-21" name="__codelineno-37-21" href="#__codelineno-37-21"></a><span class="w">          </span><span class="nt">bi_database_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">examples</span>
+</span><span id="__span-37-22"><a id="__codelineno-37-22" name="__codelineno-37-22" href="#__codelineno-37-22"></a>
+</span><span id="__span-37-23"><a id="__codelineno-37-23" name="__codelineno-37-23" href="#__codelineno-37-23"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-37-24"><a id="__codelineno-37-24" name="__codelineno-37-24" href="#__codelineno-37-24"></a><span class="w">    </span><span class="nt">gen_dashboard</span><span class="p">:</span>
+</span><span id="__span-37-25"><a id="__codelineno-37-25" name="__codelineno-37-25" href="#__codelineno-37-25"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># Optional: defaults to configured model</span>
+</span><span id="__span-37-26"><a id="__codelineno-37-26" name="__codelineno-37-26" href="#__codelineno-37-26"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># Optional: defaults to 30</span>
+</span><span id="__span-37-27"><a id="__codelineno-37-27" name="__codelineno-37-27" href="#__codelineno-37-27"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span><span class="w">   </span><span class="c1"># Optional: auto-detected when only one BI platform is configured</span>
 </span></code></pre></div>
 <p><strong>Requirements:</strong>
 - <code>agent.services.bi_platforms</code> section in <code>agent.yml</code> with platform credentials
 - <code>datus-bi-superset</code> or <code>datus-bi-grafana</code> package installed</p>
 <h3 id="how-it-works_4">How It Works<a class="headerlink" href="#how-it-works_4" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph LR
-    A[chat agent] --&gt;|task type=gen_dashboard| B[GenDashboardAgenticNode]
-    B --&gt; C[_setup_bi_tools]
-    C --&gt; D[adapter_registry.get platform]
-    D --&gt; E[BIFuncTool.available_tools]
-    E --&gt; F[LLM Function Calling]
-    F --&gt;|Superset| G[write_query → create_dataset → create_chart → create_dashboard]
-    F --&gt;|Grafana| H[write_query → create_dashboard → create_chart]</code></pre>
+    A[task gen_dashboard] --&gt; C[GenDashboardAgenticNode]
+    C --&gt; D[BIFuncTool.available_tools]
+    D --&gt; E[LLM Function Calling]
+    E --&gt;|Superset| F[list_bi_databases → create_dataset → create_chart → create_dashboard → add_chart_to_dashboard]
+    E --&gt;|Grafana| G[create_dashboard → create_chart]
+    F --&gt; H[ValidationHook.on_end]
+    G --&gt; H</code></pre>
 <h3 id="available-tools_1">Available Tools<a class="headerlink" href="#available-tools_1" title="Permanent link">&para;</a></h3>
 <p>Tools are exposed dynamically based on which Mixins the platform adapter implements:</p>
 <table>
@@ -6762,33 +6705,33 @@
 <td>Delete a dataset</td>
 </tr>
 <tr>
-<td><code>write_query</code></td>
-<td><code>dataset_db_uri</code> configured</td>
-<td>Materialize query results to BI database</td>
+<td><code>get_bi_serving_target</code></td>
+<td><code>dataset_db</code> configured</td>
+<td>Return serving DB contract for orchestrator hand-off</td>
 </tr>
 </tbody>
 </table>
 <h3 id="output-format_4">Output Format<a class="headerlink" href="#output-format_4" title="Permanent link">&para;</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="p">{</span>
-</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Created sales dashboard with 3 revenue trend charts.&quot;</span><span class="p">,</span>
-</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">  </span><span class="nt">&quot;dashboard_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="w">    </span><span class="nt">&quot;dashboard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
-</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8088/superset/dashboard/42/&quot;</span>
-</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="w">  </span><span class="p">},</span>
-</span><span id="__span-42-7"><a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3210</span>
-</span><span id="__span-42-8"><a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="p">{</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Created sales dashboard with 3 revenue trend charts.&quot;</span><span class="p">,</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">  </span><span class="nt">&quot;dashboard_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">    </span><span class="nt">&quot;dashboard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8088/superset/dashboard/42/&quot;</span>
+</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-38-7"><a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3210</span>
+</span><span id="__span-38-8"><a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="usage_4">Usage<a class="headerlink" href="#usage_4" title="Permanent link">&para;</a></h3>
 <p>The gen_dashboard subagent is invoked automatically by the chat agent via <code>task(type="gen_dashboard")</code>, or launched manually:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>/gen_dashboard<span class="w"> </span>Create<span class="w"> </span>a<span class="w"> </span>sales<span class="w"> </span>dashboard<span class="w"> </span>with<span class="w"> </span>revenue<span class="w"> </span>trends<span class="w"> </span>by<span class="w"> </span>region
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>/gen_dashboard<span class="w"> </span>Create<span class="w"> </span>a<span class="w"> </span>sales<span class="w"> </span>dashboard<span class="w"> </span>with<span class="w"> </span>revenue<span class="w"> </span>trends<span class="w"> </span>by<span class="w"> </span>region
 </span></code></pre></div>
 <p>You can also create a custom subagent using the <code>gen_dashboard</code> node class:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">    </span><span class="nt">sales_dashboard</span><span class="p">:</span>
-</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_dashboard</span>
-</span><span id="__span-44-5"><a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
-</span><span id="__span-44-6"><a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">    </span><span class="nt">sales_dashboard</span><span class="p">:</span>
+</span><span id="__span-40-4"><a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_dashboard</span>
+</span><span id="__span-40-5"><a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
+</span><span id="__span-40-6"><a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
 </span></code></pre></div>
 <hr />
 <h2 id="scheduler">scheduler<a class="headerlink" href="#scheduler" title="Permanent link">&para;</a></h2>
@@ -6798,25 +6741,26 @@
 <ul>
 <li><strong>Full job lifecycle</strong>: Submit, trigger, pause, resume, update, and delete Airflow DAG jobs</li>
 <li><strong>SQL and SparkSQL support</strong>: Submit both SQL and SparkSQL job types</li>
+<li><strong>SQL file management</strong>: Create or update job SQL files with filesystem tools before submission</li>
 <li><strong>Monitoring</strong>: List job runs, fetch run logs, and troubleshoot failures</li>
 <li><strong>Connection discovery</strong>: List available Airflow connections for job configuration</li>
 </ul>
 <h3 id="configuration_6">Configuration<a class="headerlink" href="#configuration_6" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">    </span><span class="nt">schedulers</span><span class="p">:</span>
-</span><span id="__span-45-4"><a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="w">      </span><span class="nt">airflow_prod</span><span class="p">:</span>
-</span><span id="__span-45-5"><a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">airflow</span>
-</span><span id="__span-45-6"><a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_URL}&quot;</span>
-</span><span id="__span-45-7"><a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_USER}&quot;</span>
-</span><span id="__span-45-8"><a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_PASSWORD}&quot;</span>
-</span><span id="__span-45-9"><a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a><span class="w">        </span><span class="nt">dags_folder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_DAGS_DIR}&quot;</span>
-</span><span id="__span-45-10"><a id="__codelineno-45-10" name="__codelineno-45-10" href="#__codelineno-45-10"></a>
-</span><span id="__span-45-11"><a id="__codelineno-45-11" name="__codelineno-45-11" href="#__codelineno-45-11"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-45-12"><a id="__codelineno-45-12" name="__codelineno-45-12" href="#__codelineno-45-12"></a><span class="w">    </span><span class="nt">scheduler</span><span class="p">:</span>
-</span><span id="__span-45-13"><a id="__codelineno-45-13" name="__codelineno-45-13" href="#__codelineno-45-13"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">                  </span><span class="c1"># Optional: defaults to configured model</span>
-</span><span id="__span-45-14"><a id="__codelineno-45-14" name="__codelineno-45-14" href="#__codelineno-45-14"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">                  </span><span class="c1"># Optional: defaults to 30</span>
-</span><span id="__span-45-15"><a id="__codelineno-45-15" name="__codelineno-45-15" href="#__codelineno-45-15"></a><span class="w">      </span><span class="nt">scheduler_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">airflow_prod</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">    </span><span class="nt">schedulers</span><span class="p">:</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">      </span><span class="nt">airflow_prod</span><span class="p">:</span>
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">airflow</span>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_URL}&quot;</span>
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_USER}&quot;</span>
+</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_PASSWORD}&quot;</span>
+</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="w">        </span><span class="nt">dags_folder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_DAGS_DIR}&quot;</span>
+</span><span id="__span-41-10"><a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a>
+</span><span id="__span-41-11"><a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-41-12"><a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a><span class="w">    </span><span class="nt">scheduler</span><span class="p">:</span>
+</span><span id="__span-41-13"><a id="__codelineno-41-13" name="__codelineno-41-13" href="#__codelineno-41-13"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">                  </span><span class="c1"># Optional: defaults to configured model</span>
+</span><span id="__span-41-14"><a id="__codelineno-41-14" name="__codelineno-41-14" href="#__codelineno-41-14"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">                  </span><span class="c1"># Optional: defaults to 30</span>
+</span><span id="__span-41-15"><a id="__codelineno-41-15" name="__codelineno-41-15" href="#__codelineno-41-15"></a><span class="w">      </span><span class="nt">scheduler_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">airflow_prod</span>
 </span></code></pre></div>
 <p><strong>Requirements:</strong>
 - <code>agent.services.schedulers</code> section in <code>agent.yml</code> with Airflow credentials
@@ -6825,10 +6769,11 @@
 <pre class="mermaid"><code>graph LR
     A[chat agent] --&gt;|task type=scheduler| B[SchedulerAgenticNode]
     B --&gt; C[LLM Function Calling]
-    C --&gt; D[submit_sql_job / submit_sparksql_job]
-    C --&gt; E[trigger_scheduler_job]
-    C --&gt; F[pause_job / resume_job]
-    C --&gt; G[list_job_runs / get_run_log]</code></pre>
+    C --&gt; D[write_file / edit_file]
+    D --&gt; E[submit_sql_job / submit_sparksql_job]
+    C --&gt; F[trigger_scheduler_job]
+    C --&gt; G[pause_job / resume_job]
+    C --&gt; H[list_job_runs / get_run_log]</code></pre>
 <h3 id="available-tools_2">Available Tools<a class="headerlink" href="#available-tools_2" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -6845,6 +6790,10 @@
 <tr>
 <td><code>submit_sparksql_job</code></td>
 <td>Submit a scheduled SparkSQL job from a <code>.sql</code> file</td>
+</tr>
+<tr>
+<td><code>read_file</code> / <code>write_file</code> / <code>edit_file</code></td>
+<td>Read, create, or update SQL files used by scheduled jobs</td>
 </tr>
 <tr>
 <td><code>trigger_scheduler_job</code></td>
@@ -6889,26 +6838,26 @@
 </tbody>
 </table>
 <h3 id="output-format_5">Output Format<a class="headerlink" href="#output-format_5" title="Permanent link">&para;</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="p">{</span>
-</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Submitted daily SQL job &#39;daily_revenue&#39; scheduled at 8:00 AM every day.&quot;</span><span class="p">,</span>
-</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">  </span><span class="nt">&quot;scheduler_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-46-4"><a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">    </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;daily_revenue_dag&quot;</span><span class="p">,</span>
-</span><span id="__span-46-5"><a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;active&quot;</span><span class="p">,</span>
-</span><span id="__span-46-6"><a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="w">    </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 8 * * *&quot;</span>
-</span><span id="__span-46-7"><a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="w">  </span><span class="p">},</span>
-</span><span id="__span-46-8"><a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1580</span>
-</span><span id="__span-46-9"><a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="p">{</span>
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Submitted daily SQL job &#39;daily_revenue&#39; scheduled at 8:00 AM every day.&quot;</span><span class="p">,</span>
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">  </span><span class="nt">&quot;scheduler_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="w">    </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;daily_revenue_dag&quot;</span><span class="p">,</span>
+</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;active&quot;</span><span class="p">,</span>
+</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="w">    </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 8 * * *&quot;</span>
+</span><span id="__span-42-7"><a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-42-8"><a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1580</span>
+</span><span id="__span-42-9"><a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="usage_5">Usage<a class="headerlink" href="#usage_5" title="Permanent link">&para;</a></h3>
 <p>The scheduler subagent is invoked automatically by the chat agent via <code>task(type="scheduler")</code>, or launched manually:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>/scheduler<span class="w"> </span>Submit<span class="w"> </span>/opt/sql/daily_revenue.sql<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>daily<span class="w"> </span>job<span class="w"> </span>at<span class="w"> </span>8am<span class="w"> </span>using<span class="w"> </span>the<span class="w"> </span>postgres_prod<span class="w"> </span>connection
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>/scheduler<span class="w"> </span>Submit<span class="w"> </span>/opt/sql/daily_revenue.sql<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>daily<span class="w"> </span>job<span class="w"> </span>at<span class="w"> </span>8am<span class="w"> </span>using<span class="w"> </span>the<span class="w"> </span>postgres_prod<span class="w"> </span>connection
 </span></code></pre></div>
 <p>You can also create a custom subagent using the <code>scheduler</code> node class:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-48-2"><a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-48-3"><a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="w">    </span><span class="nt">etl_scheduler</span><span class="p">:</span>
-</span><span id="__span-48-4"><a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scheduler</span>
-</span><span id="__span-48-5"><a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">    </span><span class="nt">etl_scheduler</span><span class="p">:</span>
+</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scheduler</span>
+</span><span id="__span-44-5"><a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
 </span></code></pre></div>
 <hr />
 <h2 id="summary_2">Summary<a class="headerlink" href="#summary_2" title="Permanent link">&para;</a></h2>
@@ -6981,10 +6930,10 @@
 </tr>
 <tr>
 <td><code>gen_job</code></td>
-<td>Data pipeline jobs (intra-DB ETL + cross-DB migration)</td>
-<td>Job / migration result</td>
+<td>Data pipeline jobs (intra-DB ETL + cross-DB transfer)</td>
+<td>Job / transfer result</td>
 <td>Source + target databases</td>
-<td>DDL/DML execution, cross-dialect type mapping via MigrationTargetMixin, <code>transfer_query_result</code>, mandatory reconciliation when source ≠ target</td>
+<td>DDL/DML execution, cross-dialect type mapping via MigrationTargetMixin, <code>transfer_query_result</code>, lightweight reconciliation when source != target</td>
 </tr>
 <tr>
 <td><code>gen_skill</code></td>
@@ -6998,7 +6947,7 @@
 <td>BI dashboard CRUD (Superset, Grafana)</td>
 <td>Dashboard result</td>
 <td>BI platform</td>
-<td>Dynamic tool exposure, data materialization, multi-platform</td>
+<td>Dynamic tool exposure, existing serving data, multi-platform</td>
 </tr>
 <tr>
 <td><code>scheduler</code></td>
@@ -7012,8 +6961,8 @@
 <p><strong>Built-in Features Across All Subagents:</strong>
 - Minimal configuration required (only <code>model</code> and <code>max_turns</code> optional)
 - Automatic tool setup, hooks, and MCP server integration
-- Built-in system prompts (version 1.0)
-- User confirmation workflow in interactive mode
+- Built-in system prompts, with the latest available version selected by default
+- Workflow-specific validation and Knowledge Base sync
 - Knowledge Base integration for semantic search
 - Automatic workspace management</p>
 <p>Together, these subagents automate the <strong>data engineering knowledge pipeline</strong> — from <strong>data exploration → query generation → model definition → metric generation → business knowledge capture → searchable Knowledge Base</strong>.</p>

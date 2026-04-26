@@ -1432,7 +1432,7 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        跨库迁移额外要求
+        跨库传输额外要求
       
     </span>
   </a>
@@ -1482,7 +1482,7 @@
   <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        跨库迁移
+        跨库传输
       
     </span>
   </a>
@@ -1498,12 +1498,12 @@
   <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
-        跨库迁移详解
+        跨库传输详解
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="跨库迁移详解">
+    <nav class="md-nav" aria-label="跨库传输详解">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1543,7 +1543,7 @@
   <a href="#_12" class="md-nav__link">
     <span class="md-ellipsis">
       
-        对数校验
+        对账校验
       
     </span>
   </a>
@@ -3757,7 +3757,7 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        跨库迁移额外要求
+        跨库传输额外要求
       
     </span>
   </a>
@@ -3807,7 +3807,7 @@
   <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        跨库迁移
+        跨库传输
       
     </span>
   </a>
@@ -3823,12 +3823,12 @@
   <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
-        跨库迁移详解
+        跨库传输详解
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="跨库迁移详解">
+    <nav class="md-nav" aria-label="跨库传输详解">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -3868,7 +3868,7 @@
   <a href="#_12" class="md-nav__link">
     <span class="md-ellipsis">
       
-        对数校验
+        对账校验
       
     </span>
   </a>
@@ -3990,15 +3990,15 @@
 
 <h1 id="gen_job">数据管道 (gen_job)<a class="headerlink" href="#gen_job" title="Permanent link">&para;</a></h1>
 <h2 id="_1">概览<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<p><code>gen_job</code> 是一个内置 subagent，同时覆盖 <strong>单库 ETL</strong> 和 <strong>跨库迁移</strong>。从一个或多个源表构建或更新目标表，在源库与目标库不同时执行数据传输，并校验结果。</p>
-<p>agent 会根据用户的 prompt 自动判断路径：源库和目标库相同则走单库 ETL（CREATE TABLE AS SELECT / INSERT FROM SELECT）；不同则走跨库迁移（通过 <code>transfer_query_result</code>），并激活 <code>data-migration</code> skill 执行强制对数校验。</p>
+<p><code>gen_job</code> 是一个内置 subagent，同时覆盖 <strong>单库 ETL</strong> 和 <strong>跨库传输</strong>。从一个或多个源表构建或更新目标表，在源库与目标库不同时执行数据传输，并校验结果。</p>
+<p>agent 会根据用户的 prompt 自动判断路径：源库和目标库相同则走单库 ETL（CREATE TABLE AS SELECT / INSERT FROM SELECT）；不同则走跨库传输（通过 <code>transfer_query_result</code>），并激活 <code>data-migration</code> skill 执行轻量对账校验。</p>
 <h2 id="_2">快速开始<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>启动 Datus CLI 后使用 gen_job subagent：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 单库 ETL</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>/gen_job<span class="w"> </span>从<span class="w"> </span>orders<span class="w"> </span>和<span class="w"> </span>customers<span class="w"> </span>表构建一个汇总表
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 跨库迁移</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>/gen_job<span class="w"> </span>把<span class="w"> </span>local_duckdb<span class="w"> </span>里的<span class="w"> </span>users<span class="w"> </span>表迁移到<span class="w"> </span>greenplum
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 跨库传输</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>/gen_job<span class="w"> </span>把<span class="w"> </span>local_duckdb<span class="w"> </span>里的<span class="w"> </span>users<span class="w"> </span>表传输到<span class="w"> </span>greenplum
 </span></code></pre></div>
 <p>chat agent 检测到 ETL 或迁移任务时也会自动委派给 gen_job。</p>
 <h2 id="_3">前置条件<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
@@ -4030,7 +4030,7 @@
 </span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">        </span><span class="nt">catalog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default_catalog</span>
 </span></code></pre></div>
 <p>每个数据库条目有一个 <strong>逻辑名</strong>（YAML key，如 <code>local_duckdb</code>、<code>greenplum</code>）。指定源库和目标库时使用此逻辑名。</p>
-<h3 id="_5">跨库迁移额外要求<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<h3 id="_5">跨库传输额外要求<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
 <ul>
 <li>源库和目标库都必须可访问</li>
 <li>源库需支持 pandas 查询执行（DuckDB、PostgreSQL 等）</li>
@@ -4104,19 +4104,19 @@
 <h3 id="etl">单库 ETL<a class="headerlink" href="#etl" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>阶段 1：检查源表和目标表
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>阶段 2：生成并执行 DDL / DML
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>阶段 3：验证结果（行数、schema、数据质量）
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>阶段 3：验证结果（内置存在性/行数检查，加上显式 schema 契约检查）
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>阶段 4：输出摘要
 </span></code></pre></div>
-<h3 id="_8">跨库迁移<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<h3 id="_8">跨库传输<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>阶段 1：发现数据库（list_databases）并检查源表
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>阶段 2：对目标库调用 get_migration_capabilities() 获取方言提示
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>        + 对 OLAP 目标调用 suggest_table_layout()
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>阶段 3：草拟目标 DDL → validate_ddl() → execute_ddl()
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>阶段 4：传输数据（transfer_query_result）
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>阶段 5：对数校验（7 项检查）
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>阶段 5：行数对账和目标侧 sanity check
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>阶段 6：输出迁移报告
 </span></code></pre></div>
-<h2 id="_9">跨库迁移详解<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<h2 id="_9">跨库传输详解<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
 <h3 id="_10">数据库发现<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
 <p>agent 首先调用 <code>list_databases()</code> 发现可用数据库：</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">[</span>
@@ -4148,17 +4148,14 @@
 - 单次传输最大 1,000,000 行
 - 部分失败不支持事务回滚
 - 通过批量 INSERT 写入（非 COPY 或 stream load）</p>
-<h3 id="_12">对数校验<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
-<p>迁移后自动执行 7 项对数检查：</p>
+<h3 id="_12">对账校验<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p><code>transfer_query_result</code> 之后会自动执行轻量对账校验：</p>
 <ol>
-<li><strong>行数</strong> — 源端与目标端总行数比较</li>
-<li><strong>空值率</strong> — 各列空值数量比较</li>
-<li><strong>最值</strong> — 数值/日期列的 MIN/MAX 比较</li>
-<li><strong>去重计数</strong> — 关键列基数比较</li>
-<li><strong>重复键</strong> — 目标表重复键检查</li>
-<li><strong>样本对比</strong> — 按键排序取前 10 行比较</li>
-<li><strong>数值聚合</strong> — SUM/AVG 比较</li>
+<li><strong>工具返回的行数一致性</strong> — 比较 <code>source_row_count</code> 与 <code>transferred_row_count</code>。</li>
+<li><strong>目标侧行数</strong> — 在目标表上执行一次 <code>COUNT(*)</code>，与 <code>transferred_row_count</code> 对比。</li>
+<li><strong>目标侧样本</strong> — 可选读取少量目标表样本，确认表可查询。</li>
 </ol>
+<p>空值率、最值、去重计数、重复键、样本 diff、数值聚合等更重的检查应按项目需要写成项目级 validator skill。</p>
 <h2 id="_13">可选配置<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
 <p>gen_job 开箱即用。可在 <code>agent.yml</code> 中自定义：</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">agent</span><span class="p">:</span>
@@ -4169,8 +4166,8 @@
 <h2 id="skill">使用的 Skill<a class="headerlink" href="#skill" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>gen-table</strong> — 建表和 DDL 决策</li>
-<li><strong>table-validation</strong> — Schema 和数据质量检查</li>
-<li><strong>data-migration</strong> — 跨库迁移工作流和对数校验</li>
+<li><strong>table-validation</strong> — 显式 schema 契约检查</li>
+<li><strong>data-migration</strong> — 跨库传输工作流和轻量对账校验</li>
 </ul>
 <h2 id="_14">示例<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
 <h3 id="1">示例 1：构建汇总表<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
@@ -4199,7 +4196,7 @@
 </span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>  6. execute_ddl(database=&quot;greenplum&quot;) 执行 DDL
 </span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>  7. transfer_query_result(source_database=&quot;local_duckdb&quot;,
 </span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>     target_database=&quot;greenplum&quot;, mode=&quot;replace&quot;)
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>  8. 激活 data-migration skill，执行 7 项对数检查
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>  8. 激活 data-migration skill，执行行数和目标侧 sanity check
 </span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>  9. 输出迁移报告，标注各检查项 pass/fail
 </span></code></pre></div>
 <h3 id="3mysql-starrocks">示例 3：MySQL 迁移到 StarRocks<a class="headerlink" href="#3mysql-starrocks" title="Permanent link">&para;</a></h3>
@@ -4213,7 +4210,7 @@
 </span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>  3. 按建议 + type_hints 草拟 CREATE TABLE
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>  4. validate_ddl() 发现键列缺 NOT NULL → LLM 修正
 </span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>  5. 在 starrocks 上执行 DDL
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  6. transfer_query_result + 7 项对数校验
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  6. transfer_query_result + 轻量对账校验
 </span></code></pre></div>
 <h2 id="gen_table">与 gen_table 的区别<a class="headerlink" href="#gen_table" title="Permanent link">&para;</a></h2>
 <table>

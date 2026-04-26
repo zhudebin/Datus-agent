@@ -1395,10 +1395,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interactive-confirmation" class="md-nav__link">
+  <a href="#sync-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interactive Confirmation
+        Sync Behavior
       
     </span>
   </a>
@@ -3693,10 +3693,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interactive-confirmation" class="md-nav__link">
+  <a href="#sync-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interactive Confirmation
+        Sync Behavior
       
     </span>
   </a>
@@ -3847,7 +3847,7 @@
 <h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
 <h3 id="generation-workflow">Generation Workflow<a class="headerlink" href="#generation-workflow" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>User provides SQL + description → Agent analyzes query → Automatically retrieves context (taxonomy + similar queries) →
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Generates unique ID → Creates YAML → Saves file → User confirms → Syncs to Knowledge Base
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Generates unique ID → Creates YAML → Saves file → Syncs to Knowledge Base
 </span></code></pre></div>
 <h3 id="step-by-step-process">Step-by-Step Process<a class="headerlink" href="#step-by-step-process" title="Permanent link">&para;</a></h3>
 <ol>
@@ -3860,36 +3860,22 @@
 <li><strong>Classify Query</strong>: Assigns domain, layer1, layer2, and tags following existing patterns</li>
 <li><strong>Generate YAML</strong>: Creates structured summary document</li>
 <li><strong>Save File</strong>: Writes YAML to workspace using <code>write_file()</code> tool</li>
-<li><strong>User Confirmation</strong>: Shows the generated YAML and prompts for approval</li>
 <li><strong>Sync to Knowledge Base</strong>: Stores in LanceDB for semantic search</li>
 </ol>
-<h3 id="interactive-confirmation">Interactive Confirmation<a class="headerlink" href="#interactive-confirmation" title="Permanent link">&para;</a></h3>
-<p>After generation, you'll see:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>==========================================================
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Generated Reference SQL YAML
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>File: /path/to/sql_summary.yml
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>==========================================================
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>[YAML content with syntax highlighting]
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  SYNC TO KNOWLEDGE BASE?
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  1. Yes - Save to Knowledge Base
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  2. No - Keep file only
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>Please enter your choice: [1/2]
-</span></code></pre></div>
+<h3 id="sync-behavior">Sync Behavior<a class="headerlink" href="#sync-behavior" title="Permanent link">&para;</a></h3>
+<p>After the YAML is written successfully, the generation hook syncs it to the Knowledge Base automatically.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <h3 id="agent-configuration">Agent Configuration<a class="headerlink" href="#agent-configuration" title="Permanent link">&para;</a></h3>
 <p>Most configurations are built-in. In <code>agent.yml</code>, minimal setup is needed:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">gen_sql_summary</span><span class="p">:</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek</span><span class="w">      </span><span class="c1"># Optional: defaults to configured model</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">        </span><span class="c1"># Optional: defaults to 30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">gen_sql_summary</span><span class="p">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepseek</span><span class="w">      </span><span class="c1"># Optional: defaults to configured model</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">        </span><span class="c1"># Optional: defaults to 30</span>
 </span></code></pre></div>
 <p><strong>Built-in configurations</strong> (automatically enabled):
 - <strong>Tools</strong>: Filesystem tools (<code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>) and <code>generate_sql_summary_id</code>
-- <strong>Hooks</strong>: User confirmation workflow in interactive mode
-- <strong>System Prompt</strong>: Built-in template version 1.0
+- <strong>Hooks</strong>: Knowledge Base sync
+- <strong>System Prompt</strong>: Built-in template; the latest available version is used unless <code>prompt_version</code> is set
 - <strong>Workspace</strong>: <code>~/.datus/data/{datasource}/reference_sql</code>
 - <strong>Context Retrieval</strong>: Automatically queries existing subject trees and similar SQLs from Knowledge Base</p>
 <h3 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">&para;</a></h3>
@@ -3920,31 +3906,31 @@
 <h3 id="subject-tree-categorization">Subject Tree Categorization<a class="headerlink" href="#subject-tree-categorization" title="Permanent link">&para;</a></h3>
 <p>Subject tree allows organizing SQL summaries by domain and layers. In CLI mode, include it in your question:</p>
 <p><strong>Example with subject_tree:</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/gen_sql_summary Analyze this SQL: SELECT SUM(revenue) FROM sales, subject_tree: sales/reporting/revenue_analysis
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/gen_sql_summary Analyze this SQL: SELECT SUM(revenue) FROM sales, subject_tree: sales/reporting/revenue_analysis
 </span></code></pre></div></p>
 <p><strong>Example without subject_tree:</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/gen_sql_summary Analyze this SQL: SELECT SUM(revenue) FROM sales
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/gen_sql_summary Analyze this SQL: SELECT SUM(revenue) FROM sales
 </span></code></pre></div></p>
 <p>When subject_tree is provided, the SQL summary will be categorized accordingly (e.g., domain: sales, layer1: reporting, layer2: revenue_analysis). If not provided, the agent operates in learning mode and automatically suggests categories based on:
 - Existing subject trees in the Knowledge Base
 - Similar SQL summaries (top 5 most similar queries)</p>
 <h2 id="yaml-structure">YAML Structure<a class="headerlink" href="#yaml-structure" title="Permanent link">&para;</a></h2>
 <p>The generated SQL summary follows this structure:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;abc123def456...&quot;</span><span class="w">                      </span><span class="c1"># Auto-generated MD5 hash</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">Region&quot;</span><span class="w">                  </span><span class="c1"># Descriptive name (max 20 chars)</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                                     </span><span class="c1"># Complete SQL query</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="no">SELECT</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="no">region,</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="no">SUM(revenue) as total_revenue</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="no">FROM sales</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span><span class="no">GROUP BY region</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Calculate</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">grouped</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">region&quot;</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;This</span><span class="nv"> </span><span class="s">query</span><span class="nv"> </span><span class="s">aggregates</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">sales</span><span class="nv"> </span><span class="s">table,</span><span class="nv"> </span><span class="s">grouping</span><span class="nv"> </span><span class="s">results</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">geographic</span><span class="nv"> </span><span class="s">region.</span><span class="nv"> </span><span class="s">It</span><span class="nv"> </span><span class="s">uses</span><span class="nv"> </span><span class="s">SUM</span><span class="nv"> </span><span class="s">aggregation</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">calculate</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">totals</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">region.&quot;</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/Users/you/.datus/data/reference_sql/revenue_by_region.yml&quot;</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sales&quot;</span><span class="w">                            </span><span class="c1"># Business domain</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="nt">layer1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Reporting&quot;</span><span class="w">                        </span><span class="c1"># Primary category</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="nt">layer2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">Analysis&quot;</span><span class="w">                 </span><span class="c1"># Secondary category</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;revenue,</span><span class="nv"> </span><span class="s">region,</span><span class="nv"> </span><span class="s">aggregation&quot;</span><span class="w">       </span><span class="c1"># Comma-separated tags</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;abc123def456...&quot;</span><span class="w">                      </span><span class="c1"># Auto-generated MD5 hash</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">Region&quot;</span><span class="w">                  </span><span class="c1"># Descriptive name (max 20 chars)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                                     </span><span class="c1"># Complete SQL query</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="no">SELECT</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="no">region,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="no">SUM(revenue) as total_revenue</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="no">FROM sales</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="no">GROUP BY region</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Calculate</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">grouped</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">region&quot;</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;This</span><span class="nv"> </span><span class="s">query</span><span class="nv"> </span><span class="s">aggregates</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">sales</span><span class="nv"> </span><span class="s">table,</span><span class="nv"> </span><span class="s">grouping</span><span class="nv"> </span><span class="s">results</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">geographic</span><span class="nv"> </span><span class="s">region.</span><span class="nv"> </span><span class="s">It</span><span class="nv"> </span><span class="s">uses</span><span class="nv"> </span><span class="s">SUM</span><span class="nv"> </span><span class="s">aggregation</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">calculate</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">totals</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">region.&quot;</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/Users/you/.datus/data/reference_sql/revenue_by_region.yml&quot;</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sales&quot;</span><span class="w">                            </span><span class="c1"># Business domain</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="nt">layer1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Reporting&quot;</span><span class="w">                        </span><span class="c1"># Primary category</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="nt">layer2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">Analysis&quot;</span><span class="w">                 </span><span class="c1"># Secondary category</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;revenue,</span><span class="nv"> </span><span class="s">region,</span><span class="nv"> </span><span class="s">aggregation&quot;</span><span class="w">       </span><span class="c1"># Comma-separated tags</span>
 </span></code></pre></div>
 <h3 id="field-descriptions">Field Descriptions<a class="headerlink" href="#field-descriptions" title="Permanent link">&para;</a></h3>
 <table>
@@ -4026,7 +4012,7 @@
 ✅ <strong>Automatic Context Retrieval</strong>: Queries existing subject trees and similar SQLs from Knowledge Base
 ✅ <strong>Deduplication</strong>: Automatic hash-based duplicate detection using <code>generate_sql_summary_id</code> tool
 ✅ <strong>Semantic Search</strong>: Vector embeddings enable intelligent query discovery
-✅ <strong>Interactive Workflow</strong>: Review and approve before syncing (in interactive mode)
+✅ <strong>Automatic Sync</strong>: Syncs generated summaries after the YAML file is written
 ✅ <strong>Subject Tree Support</strong>: Organize by domain/layer1/layer2 with predefined or learned categories
 ✅ <strong>Knowledge Reuse</strong>: Build searchable SQL query library</p>
 

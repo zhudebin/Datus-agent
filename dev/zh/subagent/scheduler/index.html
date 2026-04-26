@@ -3940,6 +3940,7 @@
 <ul>
 <li>通过 <code>datus-scheduler-airflow</code> 包连接到已配置的 Airflow 实例</li>
 <li>提供 12 个工具，覆盖完整的作业生命周期：提交、触发、暂停、恢复、更新、删除和监控</li>
+<li>提供文件系统工具，可先把生成的 SQL 写入项目文件再提交作业</li>
 <li>支持 SQL 和 SparkSQL 两种作业类型</li>
 <li>支持获取日志并对失败或运行中的作业进行排查</li>
 </ul>
@@ -3973,12 +3974,13 @@
 <p>提交新作业时：</p>
 <ol>
 <li>LLM 从用户请求中识别 SQL 文件路径、连接名和调度计划</li>
+<li>如果 SQL 是对话过程中生成的，先用 <code>write_file</code> 写到项目路径，例如 <code>jobs/&lt;job_name&gt;.sql</code></li>
 <li>调用 <code>list_scheduler_connections</code> 发现可用的 Airflow 连接</li>
 <li><code>submit_sql_job</code> 或 <code>submit_sparksql_job</code> 读取 <code>.sql</code> 文件并使用指定的 cron 调度创建 Airflow DAG</li>
 <li>作业 ID 和状态以 <code>scheduler_result</code> 形式返回</li>
 </ol>
 <blockquote>
-<p><strong>注意：</strong> <code>submit_sql_job</code> 和 <code>submit_sparksql_job</code> 需要一个 <code>sql_file_path</code> 参数，指向主机上已有的 <code>.sql</code> 文件。scheduler 节点不包含文件系统工具（write_file 等），因此 SQL 文件必须在调用 scheduler subagent 之前准备好。</p>
+<p><strong>注意：</strong> <code>submit_sql_job</code> 和 <code>submit_sparksql_job</code> 需要一个 <code>sql_file_path</code> 参数，指向主机上已有的 <code>.sql</code> 文件。scheduler subagent 可以在提交前用文件系统工具创建或更新该文件。</p>
 </blockquote>
 <h2 id="_6">可用工具<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
 <table>
@@ -4036,6 +4038,10 @@
 <tr>
 <td><code>get_run_log</code></td>
 <td>获取特定作业运行的执行日志</td>
+</tr>
+<tr>
+<td><code>read_file</code> / <code>write_file</code> / <code>edit_file</code></td>
+<td>读取、创建或更新定时作业使用的 SQL 文件</td>
 </tr>
 </tbody>
 </table>

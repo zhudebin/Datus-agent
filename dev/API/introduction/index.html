@@ -3599,7 +3599,7 @@ by sending a <code>X-Datus-User-Id</code> header whose value matches <code>^[A-Z
 default unscoped session; when present, the user id is used to isolate chat sessions and tool state per user.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>X-Datus-User-Id: alice
 </span></code></pre></div>
-<p>Datasource isolation is controlled separately by the <code>--database</code> CLI flag (or <code>DATUS_DATASOURCE</code> env var) and selects
+<p>Datasource isolation is controlled separately by the <code>--datasource</code> CLI flag (or <code>DATUS_DATASOURCE</code> env var) and selects
 which datasource from <code>agent.yml</code> is used to load databases and knowledge.</p>
 <h2 id="response-envelope">Response envelope<a class="headerlink" href="#response-envelope" title="Permanent link">&para;</a></h2>
 <p>Almost every JSON response is wrapped in a generic <code>Result[T]</code> envelope:</p>

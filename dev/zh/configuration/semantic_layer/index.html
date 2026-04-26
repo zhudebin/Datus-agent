@@ -3577,6 +3577,7 @@
 <ul>
 <li><code>config_path</code> 是可选项。</li>
 <li>Datus 默认会基于当前 <code>services.datasources</code> 中选中的数据源和项目语义模型目录自动构建运行时配置。</li>
+<li>MetricFlow 验证会直接读取配置中的项目语义模型目录，包括位于 gitignore 项目路径下的生成 YAML。</li>
 <li>仅当你需要 MetricFlow 直接读取某个指定的 <code>agent.yml</code> 时才需要设置 <code>config_path</code>。</li>
 </ul>
 

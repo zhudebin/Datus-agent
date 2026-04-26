@@ -4135,10 +4135,10 @@
 <h2 id="step-2-configure-datus">Step 2: Configure Datus<a class="headerlink" href="#step-2-configure-datus" title="Permanent link">&para;</a></h2>
 <p>Configure Datus to connect to both the PostgreSQL database and Superset dashboard.</p>
 <h3 id="install-required-extensions">Install Required Extensions<a class="headerlink" href="#install-required-extensions" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>pip<span class="w"> </span>install<span class="w"> </span>datus-postgresql<span class="w"> </span>datus-semantic-metricflow
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>pip<span class="w"> </span>install<span class="w"> </span>datus-bi-superset<span class="w"> </span>datus-postgresql<span class="w"> </span>datus-semantic-metricflow
 </span></code></pre></div>
 <h3 id="update-agentyml">Update agent.yml<a class="headerlink" href="#update-agentyml" title="Permanent link">&para;</a></h3>
-<p>Add the following configuration to your <code>~/.datus/agent.yml</code>:</p>
+<p>Add the following configuration to your <code>~/.datus/conf/agent.yml</code>:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">agent</span><span class="p">:</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">datasources</span><span class="p">:</span>
@@ -4170,12 +4170,12 @@
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>You can also add the database interactively with <code>datus-agent configure</code> instead of editing YAML manually.</p>
+<p>You can add SQL datasources interactively with <code>datus-agent service add</code>; semantic layer and BI platform entries still need to be edited in YAML.</p>
 </div>
 <h2 id="step-3-bootstrap-from-dashboard">Step 3: Bootstrap from Dashboard<a class="headerlink" href="#step-3-bootstrap-from-dashboard" title="Permanent link">&para;</a></h2>
 <p>Now use the <code>bootstrap-bi</code> command to automatically generate context and subagents from your Superset dashboard. We'll use the World Bank's Data dashboard as an example.</p>
 <h3 id="run-bootstrap-command">Run Bootstrap Command<a class="headerlink" href="#run-bootstrap-command" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>datus-agent<span class="w"> </span>bootstrap-bi<span class="w"> </span>--database<span class="w"> </span>superset
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>datus-agent<span class="w"> </span>bootstrap-bi<span class="w"> </span>--datasource<span class="w"> </span>superset
 </span></code></pre></div>
 <h3 id="interactive-flow">Interactive Flow<a class="headerlink" href="#interactive-flow" title="Permanent link">&para;</a></h3>
 <p>The command will guide you through an interactive process:</p>

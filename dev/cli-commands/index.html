@@ -3495,10 +3495,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#-database-flag" class="md-nav__link">
+  <a href="#-datasource-flag" class="md-nav__link">
     <span class="md-ellipsis">
       
-        --database flag
+        --datasource flag
       
     </span>
   </a>
@@ -3604,18 +3604,18 @@
 </span></code></pre></div>
 <hr />
 <h2 id="database-selection">Database Selection<a class="headerlink" href="#database-selection" title="Permanent link">&para;</a></h2>
-<h3 id="-database-flag"><code>--database</code> flag<a class="headerlink" href="#-database-flag" title="Permanent link">&para;</a></h3>
-<p>Most commands require specifying which database to use:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>datus-cli<span class="w"> </span>--database<span class="w"> </span>my_duckdb
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>datus<span class="w"> </span>run<span class="w"> </span>--database<span class="w"> </span>my_duckdb<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;show tables&quot;</span><span class="w"> </span>--task_db_name<span class="w"> </span>demo
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>datus<span class="w"> </span>check-db<span class="w"> </span>--database<span class="w"> </span>my_duckdb
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>datus<span class="w"> </span>bootstrap-kb<span class="w"> </span>--database<span class="w"> </span>my_duckdb<span class="w"> </span>--components<span class="w"> </span>metadata
+<h3 id="-datasource-flag"><code>--datasource</code> flag<a class="headerlink" href="#-datasource-flag" title="Permanent link">&para;</a></h3>
+<p><code>datus-agent</code> subcommands require specifying which datasource to use. Interactive <code>datus-cli</code> can auto-select a datasource when the configuration is unambiguous.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>datus-cli<span class="w"> </span>--datasource<span class="w"> </span>my_duckdb
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>datus-agent<span class="w"> </span>run<span class="w"> </span>--datasource<span class="w"> </span>my_duckdb<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;show tables&quot;</span><span class="w"> </span>--task_db_name<span class="w"> </span>demo
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>datus-agent<span class="w"> </span>check-db<span class="w"> </span>--datasource<span class="w"> </span>my_duckdb
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--datasource<span class="w"> </span>my_duckdb<span class="w"> </span>--components<span class="w"> </span>metadata
 </span></code></pre></div>
-<p><strong>Auto-selection:</strong> If <code>--database</code> is not specified:
+<p><strong>Interactive CLI auto-selection:</strong> If <code>--datasource</code> is not specified for <code>datus-cli</code>:
 - If a database has <code>default: true</code> in config, it's auto-selected
 - If only one database is configured, it's auto-selected
 - Otherwise, a list of available databases is shown</p>
-<p><strong>Legacy support:</strong> <code>--database</code> still works as an alias for <code>--database</code>.</p>
+<p>The old database-selection flag is no longer accepted by the current CLI; use <code>--datasource</code>.</p>
 <hr />
 
 

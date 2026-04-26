@@ -3971,11 +3971,11 @@
 </table>
 <h2 id="how-to-build">How to Build<a class="headerlink" href="#how-to-build" title="Permanent link">&para;</a></h2>
 <p>You can build it using the <code>datus-agent bootstrap-kb</code> command:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--database<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--kb_update_strategy<span class="w"> </span><span class="o">[</span>check/overwrite/incremental<span class="o">]</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--kb_update_strategy<span class="w"> </span><span class="o">[</span>check/overwrite/incremental<span class="o">]</span>
 </span></code></pre></div>
 <h3 id="command-line-parameter-description">Command Line Parameter Description<a class="headerlink" href="#command-line-parameter-description" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>--database</code>: The key corresponding to your database configuration</li>
+<li><code>--datasource</code>: The key corresponding to your database configuration</li>
 <li><code>--kb_update_strategy</code>: Execution strategy, there are three options:<ul>
 <li><code>check</code>: Check the number of data entries currently constructed</li>
 <li><code>overwrite</code>: Fully overwrite existing data</li>
@@ -3985,13 +3985,13 @@
 </ul>
 <h2 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">&para;</a></h2>
 <h3 id="check-current-status">Check Current Status<a class="headerlink" href="#check-current-status" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--database<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--kb_update_strategy<span class="w"> </span>check
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--kb_update_strategy<span class="w"> </span>check
 </span></code></pre></div>
 <h3 id="full-rebuild">Full Rebuild<a class="headerlink" href="#full-rebuild" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--database<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--kb_update_strategy<span class="w"> </span>overwrite
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--kb_update_strategy<span class="w"> </span>overwrite
 </span></code></pre></div>
 <h3 id="incremental-update">Incremental Update<a class="headerlink" href="#incremental-update" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--database<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--kb_update_strategy<span class="w"> </span>incremental
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span>--kb_update_strategy<span class="w"> </span>incremental
 </span></code></pre></div>
 <h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
 <h3 id="database-configuration">Database Configuration<a class="headerlink" href="#database-configuration" title="Permanent link">&para;</a></h3>

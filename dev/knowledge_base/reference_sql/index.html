@@ -3878,7 +3878,7 @@
 <h3 id="basic-command">Basic Command<a class="headerlink" href="#basic-command" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Initialize Reference SQL component</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>--database<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span>--components<span class="w"> </span>reference_sql<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span>--sql_dir<span class="w"> </span>/path/to/sql/directory<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span>--kb_update_strategy<span class="w"> </span>overwrite
@@ -3895,7 +3895,7 @@
 </thead>
 <tbody>
 <tr>
-<td><code>--database</code></td>
+<td><code>--datasource</code></td>
 <td>✅</td>
 <td>Database datasource</td>
 <td><code>analytics_db</code></td>
@@ -3947,7 +3947,7 @@
 <p><strong>1. Predefined Mode (with --subject_tree)</strong></p>
 <p>When you provide predefined categories, SQL queries will be classified using only these categories:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span>--database<span class="w"> </span>analytics_db<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span>--datasource<span class="w"> </span>analytics_db<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span>--components<span class="w"> </span>reference_sql<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span>--sql_dir<span class="w"> </span>/path/to/sql/queries<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span>--kb_update_strategy<span class="w"> </span>overwrite<span class="w"> </span><span class="se">\</span>
@@ -3962,7 +3962,7 @@
 <li>Builds taxonomy organically over time</li>
 </ul>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span>--database<span class="w"> </span>analytics_db<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span>--datasource<span class="w"> </span>analytics_db<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span>--components<span class="w"> </span>reference_sql<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span>--sql_dir<span class="w"> </span>/path/to/sql/queries<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span>--kb_update_strategy<span class="w"> </span>overwrite

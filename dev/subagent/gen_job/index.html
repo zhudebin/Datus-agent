@@ -1429,10 +1429,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#for-cross-database-migration" class="md-nav__link">
+  <a href="#for-cross-database-transfer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        For Cross-database Migration
+        For Cross-database Transfer
       
     </span>
   </a>
@@ -1479,10 +1479,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cross-database-migration" class="md-nav__link">
+  <a href="#cross-database-transfer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cross-database Migration
+        Cross-database Transfer
       
     </span>
   </a>
@@ -1495,15 +1495,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cross-database-migration-details" class="md-nav__link">
+  <a href="#cross-database-transfer-details" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cross-database Migration Details
+        Cross-database Transfer Details
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Cross-database Migration Details">
+    <nav class="md-nav" aria-label="Cross-database Transfer Details">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1601,10 +1601,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#example-2-migrate-duckdb-to-greenplum" class="md-nav__link">
+  <a href="#example-2-transfer-duckdb-to-greenplum" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example 2: Migrate DuckDB to Greenplum
+        Example 2: Transfer DuckDB to Greenplum
       
     </span>
   </a>
@@ -3743,10 +3743,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#for-cross-database-migration" class="md-nav__link">
+  <a href="#for-cross-database-transfer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        For Cross-database Migration
+        For Cross-database Transfer
       
     </span>
   </a>
@@ -3793,10 +3793,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cross-database-migration" class="md-nav__link">
+  <a href="#cross-database-transfer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cross-database Migration
+        Cross-database Transfer
       
     </span>
   </a>
@@ -3809,15 +3809,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cross-database-migration-details" class="md-nav__link">
+  <a href="#cross-database-transfer-details" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cross-database Migration Details
+        Cross-database Transfer Details
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Cross-database Migration Details">
+    <nav class="md-nav" aria-label="Cross-database Transfer Details">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -3915,10 +3915,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#example-2-migrate-duckdb-to-greenplum" class="md-nav__link">
+  <a href="#example-2-transfer-duckdb-to-greenplum" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example 2: Migrate DuckDB to Greenplum
+        Example 2: Transfer DuckDB to Greenplum
       
     </span>
   </a>
@@ -3968,15 +3968,15 @@
 
 <h1 id="data-pipeline-gen_job">Data Pipeline (gen_job)<a class="headerlink" href="#data-pipeline-gen_job" title="Permanent link">&para;</a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>The <code>gen_job</code> subagent is a built-in data engineering agent that covers BOTH single-database ETL and cross-database migration. It builds or updates target tables from one or more source tables, transferring data across database engines when the source and target differ, and validates the result.</p>
-<p>The agent auto-detects the path based on the user's prompt: if the source and target are the same database, it runs intra-DB ETL (CREATE TABLE AS SELECT / INSERT from SELECT). If they differ, it runs cross-DB migration (via <code>transfer_query_result</code>) and activates the <code>data-migration</code> skill for mandatory reconciliation.</p>
+<p>The <code>gen_job</code> subagent is a built-in data engineering agent that covers BOTH single-database ETL and cross-database transfer. It builds or updates target tables from one or more source tables, transferring data across database engines when the source and target differ, and validates the result.</p>
+<p>The agent auto-detects the path based on the user's prompt: if the source and target are the same database, it runs intra-DB ETL (CREATE TABLE AS SELECT / INSERT from SELECT). If they differ, it runs a cross-DB transfer (via <code>transfer_query_result</code>) and activates the <code>data-migration</code> skill for lightweight reconciliation.</p>
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
 <p>Start Datus CLI and use the gen_job subagent via natural language:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Single-database ETL</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>/gen_job<span class="w"> </span>Build<span class="w"> </span>a<span class="w"> </span>summary<span class="w"> </span>table<span class="w"> </span>from<span class="w"> </span>orders<span class="w"> </span>and<span class="w"> </span>customers<span class="w"> </span>tables
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Cross-database migration</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>/gen_job<span class="w"> </span>Migrate<span class="w"> </span>the<span class="w"> </span>users<span class="w"> </span>table<span class="w"> </span>from<span class="w"> </span>local_duckdb<span class="w"> </span>to<span class="w"> </span>greenplum
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Cross-database transfer</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>/gen_job<span class="w"> </span>Transfer<span class="w"> </span>the<span class="w"> </span>users<span class="w"> </span>table<span class="w"> </span>from<span class="w"> </span>local_duckdb<span class="w"> </span>to<span class="w"> </span>greenplum
 </span></code></pre></div>
 <p>The chat agent can also automatically delegate to gen_job when it detects an ETL or migration task.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
@@ -4008,7 +4008,7 @@
 </span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">        </span><span class="nt">catalog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default_catalog</span>
 </span></code></pre></div>
 <p>Each database entry has a <strong>logical name</strong> (the YAML key, e.g., <code>local_duckdb</code>, <code>greenplum</code>). This is the name you reference when specifying source and target databases.</p>
-<h3 id="for-cross-database-migration">For Cross-database Migration<a class="headerlink" href="#for-cross-database-migration" title="Permanent link">&para;</a></h3>
+<h3 id="for-cross-database-transfer">For Cross-database Transfer<a class="headerlink" href="#for-cross-database-transfer" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Both source and target databases must be accessible</li>
 <li>Source database must support pandas query execution (DuckDB, PostgreSQL, etc.)</li>
@@ -4083,19 +4083,19 @@
 <h3 id="single-database-etl">Single-database ETL<a class="headerlink" href="#single-database-etl" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Phase 1: Inspect source and target tables
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Phase 2: Generate and execute DDL / DML
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Phase 3: Validate result (row count, schema, data quality)
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Phase 3: Validate result (built-in existence/row count plus explicit schema contract checks)
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Phase 4: Summarize
 </span></code></pre></div>
-<h3 id="cross-database-migration">Cross-database Migration<a class="headerlink" href="#cross-database-migration" title="Permanent link">&para;</a></h3>
+<h3 id="cross-database-transfer">Cross-database Transfer<a class="headerlink" href="#cross-database-transfer" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Phase 1: Discover databases (list_databases) and inspect source
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Phase 2: Call get_migration_capabilities() on target for dialect hints
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>         + suggest_table_layout() for OLAP targets
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Phase 3: Draft target DDL → validate_ddl() → execute_ddl()
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Phase 4: Transfer data (transfer_query_result)
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>Phase 5: Reconcile source vs target (7 checks)
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>Phase 5: Reconcile row counts and target-side sanity checks
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Phase 6: Summarize with reconciliation report
 </span></code></pre></div>
-<h2 id="cross-database-migration-details">Cross-database Migration Details<a class="headerlink" href="#cross-database-migration-details" title="Permanent link">&para;</a></h2>
+<h2 id="cross-database-transfer-details">Cross-database Transfer Details<a class="headerlink" href="#cross-database-transfer-details" title="Permanent link">&para;</a></h2>
 <h3 id="database-discovery">Database Discovery<a class="headerlink" href="#database-discovery" title="Permanent link">&para;</a></h3>
 <p>The agent first calls <code>list_databases()</code> to discover available databases:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">[</span>
@@ -4128,16 +4128,13 @@
 - No transaction rollback on partial failure
 - Data is loaded via batch INSERT (not COPY or stream load)</p>
 <h3 id="reconciliation-checks">Reconciliation Checks<a class="headerlink" href="#reconciliation-checks" title="Permanent link">&para;</a></h3>
-<p>After migration, 7 reconciliation checks are run automatically:</p>
+<p>After <code>transfer_query_result</code>, validation runs lightweight reconciliation:</p>
 <ol>
-<li><strong>Row count</strong> - Total row count comparison</li>
-<li><strong>Null ratio</strong> - Null count per column</li>
-<li><strong>Min/max</strong> - Range comparison for numeric/date columns</li>
-<li><strong>Distinct count</strong> - Cardinality comparison</li>
-<li><strong>Duplicate key</strong> - Check for duplicate keys in target</li>
-<li><strong>Sample diff</strong> - Key-based row sample comparison</li>
-<li><strong>Numeric aggregate</strong> - SUM/AVG comparison</li>
+<li><strong>Tool-reported row count parity</strong> - compare <code>source_row_count</code> and <code>transferred_row_count</code>.</li>
+<li><strong>Target row count</strong> - run one target-side <code>COUNT(*)</code> and compare it with <code>transferred_row_count</code>.</li>
+<li><strong>Target sample</strong> - optionally read a small target sample to confirm the table is queryable.</li>
 </ol>
+<p>More expensive checks such as null ratios, min/max, distinct counts, duplicate-key checks, sample diffs, and numeric aggregates should be added as project-specific validator skills when the table contract requires them.</p>
 <h2 id="optional-configuration">Optional Configuration<a class="headerlink" href="#optional-configuration" title="Permanent link">&para;</a></h2>
 <p>gen_job works out of the box. You can optionally customize it in <code>agent.yml</code>:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">agent</span><span class="p">:</span>
@@ -4149,8 +4146,8 @@
 <p>gen_job leverages three skills:</p>
 <ul>
 <li><strong>gen-table</strong> - Table creation and DDL decisions</li>
-<li><strong>table-validation</strong> - Schema and data quality checks</li>
-<li><strong>data-migration</strong> - Cross-database migration workflow and reconciliation</li>
+<li><strong>table-validation</strong> - Explicit schema contract checks</li>
+<li><strong>data-migration</strong> - Cross-database transfer workflow and lightweight reconciliation</li>
 </ul>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="example-1-build-a-summary-table">Example 1: Build a Summary Table<a class="headerlink" href="#example-1-build-a-summary-table" title="Permanent link">&para;</a></h3>
@@ -4164,7 +4161,7 @@
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>  4. Validates row count and schema
 </span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  5. Returns summary
 </span></code></pre></div>
-<h3 id="example-2-migrate-duckdb-to-greenplum">Example 2: Migrate DuckDB to Greenplum<a class="headerlink" href="#example-2-migrate-duckdb-to-greenplum" title="Permanent link">&para;</a></h3>
+<h3 id="example-2-transfer-duckdb-to-greenplum">Example 2: Transfer DuckDB to Greenplum<a class="headerlink" href="#example-2-transfer-duckdb-to-greenplum" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>User: Migrate the users table from local_duckdb to greenplum,
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>      target table public.users_copy
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
@@ -4179,7 +4176,7 @@
 </span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>  6. Executes DDL via execute_ddl(database=&quot;greenplum&quot;)
 </span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>  7. Calls transfer_query_result(source_database=&quot;local_duckdb&quot;,
 </span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>     target_database=&quot;greenplum&quot;, mode=&quot;replace&quot;)
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>  8. Activates data-migration skill; runs 7 reconciliation checks
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>  8. Activates data-migration skill; runs row-count and target-side sanity checks
 </span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>  9. Returns migration report with pass/fail status
 </span></code></pre></div>
 <h3 id="example-3-migrate-mysql-to-starrocks">Example 3: Migrate MySQL to StarRocks<a class="headerlink" href="#example-3-migrate-mysql-to-starrocks" title="Permanent link">&para;</a></h3>
@@ -4193,7 +4190,7 @@
 </span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>  3. Drafts CREATE TABLE with the suggested layout + type_hints
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>  4. validate_ddl() catches a missing NOT NULL on the key column -&gt; LLM fixes it
 </span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>  5. Executes DDL on starrocks
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  6. transfer_query_result + 7-point reconciliation
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  6. transfer_query_result + lightweight reconciliation (tool-reported row-count parity + target-side COUNT(*) + optional sample)
 </span></code></pre></div>
 
 

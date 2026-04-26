@@ -1271,63 +1271,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#command-reference" class="md-nav__link">
+  <a href="#tui-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Command Reference
+        TUI Reference
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Command Reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#subagent-add" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        /subagent add
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#subagent-list" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        /subagent list
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#subagent-update-agent_name" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        /subagent update &lt;agent_name&gt;
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#subagent-remove-agent_name" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        /subagent remove &lt;agent_name&gt;
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -3714,63 +3664,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#command-reference" class="md-nav__link">
+  <a href="#tui-reference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Command Reference
+        TUI Reference
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Command Reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#subagent-add" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        /subagent add
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#subagent-list" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        /subagent list
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#subagent-update-agent_name" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        /subagent update &lt;agent_name&gt;
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#subagent-remove-agent_name" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        /subagent remove &lt;agent_name&gt;
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -3834,15 +3734,13 @@
 
 <h1 id="customized-subagents">Customized Subagents<a class="headerlink" href="#customized-subagents" title="Permanent link">&para;</a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>Use <code>/subagent</code> to manage custom subagents stored under <code>agent.agentic_nodes</code> in <code>agent.yml</code>.</p>
-<p>The current CLI supports:</p>
+<p>Both <code>/agent</code> and <code>/subagent</code> open the <strong>unified agent management TUI</strong>. The TUI has two tabs:</p>
 <ul>
-<li><code>add</code>: create a custom subagent with the interactive wizard</li>
-<li><code>list</code>: list configured custom subagents</li>
-<li><code>update &lt;agent_name&gt;</code>: edit an existing custom subagent</li>
-<li><code>remove &lt;agent_name&gt;</code>: delete a custom subagent</li>
+<li><strong>Built-in</strong> — list the system subagents from <code>SYS_SUB_AGENTS</code>. Press <code>Enter</code> on a row to set it as the current agent, or <code>e</code> to open a single-field form that overrides <code>max_turns</code> (persisted under <code>agent.agentic_nodes.&lt;name&gt;</code>). <code>model</code> is intentionally not editable here — use the global <code>/model</code> picker or edit <code>agent.yml</code> directly if you really need a per-node model override.</li>
+<li><strong>Custom</strong> — list user-defined subagents stored under <code>agent.agentic_nodes</code> in <code>agent.yml</code>. Press <code>Enter</code> on a row to set it as the current agent, <code>e</code> to edit it in the wizard, <code>a</code> to add a new one, or <code>d d</code> (twice) to delete.</li>
 </ul>
-<p>Built-in system subagents from <code>SYS_SUB_AGENTS</code> are reserved and cannot be removed or edited with <code>/subagent</code>.</p>
+<p>The legacy <code>/subagent add|list|remove|update</code> text subcommands have been removed — all operations now live inside the TUI.</p>
+<p><code>/agent &lt;name&gt;</code> still works as a non-TUI shortcut to switch the default directly.</p>
 <h2 id="what-the-wizard-creates">What the Wizard Creates<a class="headerlink" href="#what-the-wizard-creates" title="Permanent link">&para;</a></h2>
 <p>The wizard writes two things:</p>
 <ol>
@@ -3878,56 +3776,90 @@
 <p>When the wizard saves the config, it also records the current database as <code>scoped_context.datasource</code>.</p>
 <h3 id="step-4-rules">Step 4: Rules<a class="headerlink" href="#step-4-rules" title="Permanent link">&para;</a></h3>
 <p>Rules are stored as a string list under <code>rules</code> and appended to the final system prompt.</p>
-<h2 id="command-reference">Command Reference<a class="headerlink" href="#command-reference" title="Permanent link">&para;</a></h2>
-<h3 id="subagent-add"><code>/subagent add</code><a class="headerlink" href="#subagent-add" title="Permanent link">&para;</a></h3>
-<p>Starts the interactive wizard and creates a new custom subagent.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>/subagent<span class="w"> </span>add
-</span></code></pre></div>
-<p><img alt="Add subagent" src="../../assets/add_subagent.png" /></p>
-<h3 id="subagent-list"><code>/subagent list</code><a class="headerlink" href="#subagent-list" title="Permanent link">&para;</a></h3>
-<p>Lists configured custom subagents.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/subagent<span class="w"> </span>list
-</span></code></pre></div>
-<p>The table currently shows:</p>
-<ul>
-<li><code>Name</code></li>
-<li><code>Scoped Context</code></li>
-<li><code>Scoped KB</code></li>
-<li><code>Tools</code></li>
-<li><code>MCPs</code></li>
-<li><code>Rules</code></li>
-</ul>
-<p><code>Scoped KB</code> is a legacy display column and is usually <code>—</code> for new configurations.</p>
-<p>The list is filtered by the current database when a subagent has scoped context.</p>
-<p><img alt="List subagent" src="../../assets/list_subagents.png" /></p>
-<h3 id="subagent-update-agent_name"><code>/subagent update &lt;agent_name&gt;</code><a class="headerlink" href="#subagent-update-agent_name" title="Permanent link">&para;</a></h3>
-<p>Loads the existing config into the wizard and saves changes back to <code>agent.yml</code>.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/subagent<span class="w"> </span>update<span class="w"> </span>finance_report
-</span></code></pre></div>
-<p><img alt="Update subagent" src="../../assets/update_subagent.png" /></p>
-<h3 id="subagent-remove-agent_name"><code>/subagent remove &lt;agent_name&gt;</code><a class="headerlink" href="#subagent-remove-agent_name" title="Permanent link">&para;</a></h3>
-<p>Deletes the config entry and its generated prompt template.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/subagent<span class="w"> </span>remove<span class="w"> </span>finance_report
-</span></code></pre></div>
+<h2 id="tui-reference">TUI Reference<a class="headerlink" href="#tui-reference" title="Permanent link">&para;</a></h2>
+<p>Open the manager with <code>/agent</code> (lands on the Built-in tab) or <code>/subagent</code> (lands on the Custom tab).</p>
+<p>Keyboard shortcuts (agent list view):</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>↑ ↓ / PageUp / PageDown</td>
+<td>Navigate</td>
+</tr>
+<tr>
+<td><code>Tab</code> or ← →</td>
+<td>Switch Built-in ↔ Custom</td>
+</tr>
+<tr>
+<td><code>Enter</code></td>
+<td>Set the highlighted agent as the current agent (the Custom tab's trailing <code>+ Add agent…</code> row opens the wizard instead)</td>
+</tr>
+<tr>
+<td><code>e</code></td>
+<td>Built-in: open the model / max_turns override form. Custom: open the wizard for the selected agent.</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td>(Custom tab) Start the wizard to create a new custom subagent</td>
+</tr>
+<tr>
+<td><code>d</code> twice</td>
+<td>(Custom tab) Delete the highlighted custom subagent (two presses to confirm)</td>
+</tr>
+<tr>
+<td><code>Esc</code> / <code>Ctrl+C</code></td>
+<td>Cancel</td>
+</tr>
+</tbody>
+</table>
+<p>Built-in edit form:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Type integer</td>
+<td>Edit <code>max_turns</code> directly in the input</td>
+</tr>
+<tr>
+<td><code>Enter</code> / <code>Ctrl+S</code></td>
+<td>Save override</td>
+</tr>
+<tr>
+<td><code>Esc</code></td>
+<td>Back to the agent list</td>
+</tr>
+</tbody>
+</table>
+<p>Overrides write only <code>max_turns</code> into <code>agent.agentic_nodes.&lt;name&gt;</code>; sibling keys such as <code>scoped_context</code>, <code>rules</code>, or <code>tools</code> (if present) are preserved, and any hand-edited <code>model</code> override stays intact. Clearing the input (empty <code>max_turns</code>) removes the override; if the node has no other override fields, its entry is dropped from the YAML entirely.</p>
 <h2 id="example-output">Example Output<a class="headerlink" href="#example-output" title="Permanent link">&para;</a></h2>
 <p>A generated config typically looks like this:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">finance_report</span><span class="p">:</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">      </span><span class="nt">system_prompt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">finance_report</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_report</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">      </span><span class="nt">prompt_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0&quot;</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">      </span><span class="nt">prompt_language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">      </span><span class="nt">agent_description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Finance</span><span class="nv"> </span><span class="s">reporting</span><span class="nv"> </span><span class="s">assistant&quot;</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">      </span><span class="nt">tools</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">semantic_tools.*, db_tools.*, context_search_tools.list_subject_tree</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">      </span><span class="nt">mcp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">      </span><span class="nt">rules</span><span class="p">:</span>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefer existing finance metrics before generating new SQL</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">      </span><span class="nt">scoped_context</span><span class="p">:</span>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">        </span><span class="nt">datasource</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">finance</span>
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">        </span><span class="nt">tables</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mart.finance_daily</span>
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">        </span><span class="nt">metrics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">finance.revenue.daily_revenue</span>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">        </span><span class="nt">sqls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">finance.revenue.region_rollup</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">finance_report</span><span class="p">:</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">system_prompt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">finance_report</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_report</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">prompt_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0&quot;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="nt">prompt_language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">en</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">agent_description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Finance</span><span class="nv"> </span><span class="s">reporting</span><span class="nv"> </span><span class="s">assistant&quot;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">tools</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">semantic_tools.*, db_tools.*, context_search_tools.list_subject_tree</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="nt">mcp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">      </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefer existing finance metrics before generating new SQL</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="nt">scoped_context</span><span class="p">:</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="nt">datasource</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">finance</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">        </span><span class="nt">tables</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mart.finance_daily</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">        </span><span class="nt">metrics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">finance.revenue.daily_revenue</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">        </span><span class="nt">sqls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">finance.revenue.region_rollup</span>
 </span></code></pre></div>
 <h2 id="scoped-context-semantics">Scoped Context Semantics<a class="headerlink" href="#scoped-context-semantics" title="Permanent link">&para;</a></h2>
 <p>Current code no longer builds a separate scoped knowledge-base directory for each subagent.</p>
@@ -3946,18 +3878,18 @@
 <h2 id="advanced-manual-configuration">Advanced Manual Configuration<a class="headerlink" href="#advanced-manual-configuration" title="Permanent link">&para;</a></h2>
 <p>The wizard covers the common <code>gen_sql</code> and <code>gen_report</code> cases. For more advanced setups, edit <code>agent.yml</code> directly.</p>
 <p>Example:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">sales_dashboard</span><span class="p">:</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_dashboard</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="nt">etl_scheduler</span><span class="p">:</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scheduler</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">sales_dashboard</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_dashboard</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">etl_scheduler</span><span class="p">:</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scheduler</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
 </span></code></pre></div>
 <p>See <a href="../introduction/">Subagent Guide</a> and <a href="../builtin_subagents/">Built-in subagents</a> for the supported node classes and runtime behavior.</p>
 

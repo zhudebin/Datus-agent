@@ -4512,14 +4512,14 @@
 <h3 id="basic-command">Basic Command<a class="headerlink" href="#basic-command" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># From CSV (direct import)</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>--database<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span>--components<span class="w"> </span>ext_knowledge<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span>--ext_knowledge<span class="w"> </span>/path/to/knowledge.csv<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span>--kb_update_strategy<span class="w"> </span>overwrite
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># From success story (AI generation)</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span>--database<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span>--components<span class="w"> </span>ext_knowledge<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span>--success_story<span class="w"> </span>/path/to/success_story.csv<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span>--kb_update_strategy<span class="w"> </span>overwrite
@@ -4536,7 +4536,7 @@
 </thead>
 <tbody>
 <tr>
-<td><code>--database</code></td>
+<td><code>--datasource</code></td>
 <td>✅</td>
 <td>Database datasource</td>
 <td><code>analytics_db</code></td>
@@ -4683,7 +4683,7 @@
 <h3 id="1-overwrite-mode">1. Overwrite Mode<a class="headerlink" href="#1-overwrite-mode" title="Permanent link">&para;</a></h3>
 <p>Clears existing knowledge and loads fresh data:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span>--database<span class="w"> </span>analytics_db<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span>--datasource<span class="w"> </span>analytics_db<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span>--components<span class="w"> </span>ext_knowledge<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span>--ext_knowledge<span class="w"> </span>/path/to/knowledge.csv<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span>--kb_update_strategy<span class="w"> </span>overwrite
@@ -4691,7 +4691,7 @@
 <h3 id="2-incremental-mode">2. Incremental Mode<a class="headerlink" href="#2-incremental-mode" title="Permanent link">&para;</a></h3>
 <p>Adds new knowledge entries while preserving existing ones. Entries with the same <code>subject_path + name</code> are automatically updated (upsert):</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span>--database<span class="w"> </span>analytics_db<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span>--datasource<span class="w"> </span>analytics_db<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span>--components<span class="w"> </span>ext_knowledge<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span>--success_story<span class="w"> </span>/path/to/success_story.csv<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span>--kb_update_strategy<span class="w"> </span>incremental
@@ -4700,7 +4700,7 @@
 <p>Subject tree provides a hierarchical taxonomy for organizing knowledge entries.</p>
 <h3 id="1-predefined-mode">1. Predefined Mode<a class="headerlink" href="#1-predefined-mode" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span>--database<span class="w"> </span>analytics_db<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span>--datasource<span class="w"> </span>analytics_db<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span>--components<span class="w"> </span>ext_knowledge<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span>--success_story<span class="w"> </span>/path/to/success_story.csv<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span>--kb_update_strategy<span class="w"> </span>overwrite<span class="w"> </span><span class="se">\</span>
@@ -4772,7 +4772,7 @@
 </span></code></pre></div>
 <h4 id="step-2-run-the-bootstrap-command">Step 2: Run the Bootstrap Command<a class="headerlink" href="#step-2-run-the-bootstrap-command" title="Permanent link">&para;</a></h4>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span>--database<span class="w"> </span>california_schools<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span>--datasource<span class="w"> </span>california_schools<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span>--components<span class="w"> </span>ext_knowledge<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span>--success_story<span class="w"> </span>/path/to/success_story.csv<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span>--kb_update_strategy<span class="w"> </span>overwrite<span class="w"> </span><span class="se">\</span>
@@ -4813,7 +4813,7 @@
 </span></code></pre></div>
 <h4 id="step-5-verify-the-result">Step 5: Verify the Result<a class="headerlink" href="#step-5-verify-the-result" title="Permanent link">&para;</a></h4>
 <p>Start the cli, first use <code>/subject</code> to browse the generated knowledge entries, then test with the original question:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>datus-agent<span class="w"> </span>--database<span class="w"> </span>california_schools
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>datus-cli<span class="w"> </span>--datasource<span class="w"> </span>california_schools
 </span></code></pre></div>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a># Browse the knowledge tree and entries
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Datus&gt; /subject
@@ -4831,7 +4831,7 @@
 <h3 id="approach-2-subagent-interactive-mode">Approach 2: Subagent Interactive Mode<a class="headerlink" href="#approach-2-subagent-interactive-mode" title="Permanent link">&para;</a></h3>
 <p>Best for ad-hoc knowledge creation, exploring and debugging, or refining individual entries.</p>
 <h4 id="step-1-start-the-repl">Step 1: Start the REPL<a class="headerlink" href="#step-1-start-the-repl" title="Permanent link">&para;</a></h4>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>datus-agent<span class="w"> </span>--database<span class="w"> </span>california_schools
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>datus-cli<span class="w"> </span>--datasource<span class="w"> </span>california_schools
 </span></code></pre></div>
 <h4 id="step-2-invoke-the-subagent">Step 2: Invoke the Subagent<a class="headerlink" href="#step-2-invoke-the-subagent" title="Permanent link">&para;</a></h4>
 <p>Use the <code>/gen_ext_knowledge</code> slash command, pasting the question and reference SQL together in the message:</p>

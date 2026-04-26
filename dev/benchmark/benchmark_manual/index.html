@@ -4087,7 +4087,7 @@
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>            └── ...
 </span></code></pre></div>
 <p>Then bootstrap the knowledge base for the BIRD dataset:</p>
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--database<span class="w"> </span>bird_sqlite<span class="w"> </span>--benchmark<span class="w"> </span>bird_dev
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>datus-agent<span class="w"> </span>bootstrap-kb<span class="w"> </span>--datasource<span class="w"> </span>bird_sqlite<span class="w"> </span>--benchmark<span class="w"> </span>bird_dev
 </span></code></pre></div>
 <h3 id="step-4-run-benchmark-tests">Step 4: Run Benchmark Tests<a class="headerlink" href="#step-4-run-benchmark-tests" title="Permanent link">&para;</a></h3>
 <div class="admonition warning">
@@ -4103,14 +4103,14 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>datus-agent<span class="w"> </span>benchmark<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>--database<span class="w"> </span>bird_sqlite<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>--datasource<span class="w"> </span>bird_sqlite<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>--benchmark<span class="w"> </span>bird_dev<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>--benchmark_task_ids<span class="w"> </span>&lt;task_id1&gt;<span class="w"> </span>&lt;task_id2&gt;
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>datus-agent<span class="w"> </span>benchmark<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>--database<span class="w"> </span>bird_sqlite<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>--datasource<span class="w"> </span>bird_sqlite<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>--benchmark<span class="w"> </span>bird_dev
 </span></code></pre></div>
 </div>
@@ -4129,14 +4129,14 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>datus-agent<span class="w"> </span>benchmark<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>--database<span class="w"> </span>snowflake<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>--datasource<span class="w"> </span>snowflake<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>--benchmark<span class="w"> </span>spider2<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>--benchmark_task_ids<span class="w"> </span>&lt;task_id1&gt;<span class="w"> </span>&lt;task_id2&gt;
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>datus-agent<span class="w"> </span>benchmark<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>--database<span class="w"> </span>snowflake<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>--datasource<span class="w"> </span>snowflake<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>--benchmark<span class="w"> </span>spider2
 </span></code></pre></div>
 </div>
@@ -4150,7 +4150,7 @@
 </div>
 </div>
 <div class="language-bash highlight"><span class="filename">Run Evaluation</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>datus-agent<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>--database<span class="w"> </span>snowflake<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>--datasource<span class="w"> </span>snowflake<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span>--benchmark<span class="w"> </span>spider2<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span>--output_file<span class="w"> </span>evaluation.json<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span>--task_ids<span class="w"> </span>&lt;task_id1&gt;<span class="w"> </span>&lt;task_id2&gt;
@@ -4161,7 +4161,7 @@
 </div>
 </div>
 <div class="language-bash highlight"><span class="filename">Run Evaluation</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>datus-agent<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span>--database<span class="w"> </span>snowflake<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span>--datasource<span class="w"> </span>snowflake<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span>--output_file<span class="w"> </span>evaluation.json<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span>--benchmark<span class="w"> </span>spider2
 </span></code></pre></div>
@@ -4323,10 +4323,10 @@
 <li>Build reference SQL using the SQL files in <code>benchmark/california_schools/reference_sql</code></li>
 </ol>
 <h3 id="benchmarking-and-evaluation">Benchmarking and evaluation<a class="headerlink" href="#benchmarking-and-evaluation" title="Permanent link">&para;</a></h3>
-<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>datus-agent<span class="w"> </span>benchmark<span class="w"> </span>--database<span class="w"> </span>california_schools<span class="w"> </span>--benchmark<span class="w"> </span>california_schools<span class="w"> </span>--benchmark_task_ids<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--workflow<span class="w"> </span>&lt;your<span class="w"> </span>workflow&gt;
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>datus-agent<span class="w"> </span>benchmark<span class="w"> </span>--datasource<span class="w"> </span>california_schools<span class="w"> </span>--benchmark<span class="w"> </span>california_schools<span class="w"> </span>--benchmark_task_ids<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--workflow<span class="w"> </span>&lt;your<span class="w"> </span>workflow&gt;
 </span></code></pre></div>
 👉 See <a href="#step-4-run-benchmark-tests">Step 4: Run Benchmark Tests</a></p>
-<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>datus-agent<span class="w"> </span><span class="nb">eval</span><span class="w"> </span>--database<span class="w"> </span>california_schools<span class="w"> </span>--benchmark<span class="w"> </span>california_schools<span class="w"> </span>--task_ids<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>datus-agent<span class="w"> </span><span class="nb">eval</span><span class="w"> </span>--datasource<span class="w"> </span>california_schools<span class="w"> </span>--benchmark<span class="w"> </span>california_schools<span class="w"> </span>--task_ids<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span>
 </span></code></pre></div>
 👉 See <a href="#step-5-evaluate-results">Step 5: Evaluate Results</a></p>
 <h2 id="custom-benchmark">Custom Benchmark<a class="headerlink" href="#custom-benchmark" title="Permanent link">&para;</a></h2>
@@ -4405,11 +4405,11 @@
 <h2 id="multi-round-benchmark-and-evaluation">Multi-round Benchmark and Evaluation<a class="headerlink" href="#multi-round-benchmark-and-evaluation" title="Permanent link">&para;</a></h2>
 <p>Execute repeated benchmark + evaluation cycles (as described in <a href="#step-4-run-benchmark-tests">Step 4</a> and <a href="#step-5-evaluate-results">Step 5</a>) and compare the outcomes across rounds. This is useful for measuring the stability and consistency of agent performance.</p>
 <h3 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="8:3"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><input id="__tabbed_8_3" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">datus-agent subcommand</label><label for="__tabbed_8_2">Standalone CLI</label><label for="__tabbed_8_3">Python module</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">datus-agent subcommand</label><label for="__tabbed_8_2">Python module</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>datus-agent<span class="w"> </span>multi-round-benchmark<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span>--database<span class="w"> </span>bird_sqlite<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span>--datasource<span class="w"> </span>bird_sqlite<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span>--benchmark<span class="w"> </span>bird_dev<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span>--workflow<span class="w"> </span>chat_agentic<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span>--round<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
@@ -4417,21 +4417,12 @@
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>datus-multi-benchmark<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span>--database<span class="w"> </span>bird_sqlite<span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>python<span class="w"> </span>-m<span class="w"> </span>datus.multi_round_benchmark<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span>--datasource<span class="w"> </span>bird_sqlite<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span>--benchmark<span class="w"> </span>bird_dev<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span>--workflow<span class="w"> </span>chat_agentic<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span>--round<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">  </span>--workers<span class="w"> </span><span class="m">2</span>
-</span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-bash highlight"><span class="filename">Terminal</span><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>python<span class="w"> </span>-m<span class="w"> </span>datus.multi_round_benchmark<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span>--database<span class="w"> </span>bird_sqlite<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span>--benchmark<span class="w"> </span>bird_dev<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span>--workflow<span class="w"> </span>chat_agentic<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">  </span>--round<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">  </span>--workers<span class="w"> </span><span class="m">2</span>
 </span></code></pre></div>
 </div>
 </div>
@@ -4448,7 +4439,7 @@
 </thead>
 <tbody>
 <tr>
-<td><code>--database</code></td>
+<td><code>--datasource</code></td>
 <td>Yes</td>
 <td>—</td>
 <td>Datasource to benchmark, e.g. <code>bird_sqlite</code></td>
@@ -4529,37 +4520,37 @@
 <h3 id="output-structure">Output Structure<a class="headerlink" href="#output-structure" title="Permanent link">&para;</a></h3>
 <p><code>{timestamp}</code> is the time when the multi-round benchmark starts, formatted as <code>YYYYMMDD_HHmm</code> (e.g. <code>20260129_1530</code>). <code>{ts}</code> is a Unix epoch timestamp in seconds (e.g. <code>1769611836</code>).</p>
 <p>For each round the tool creates an isolated output directory under <code>{agent.home}/integration/</code>. After all rounds finish, a summary Excel file is also exported:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>{agent.home}/integration/
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>├── {group_name}_0/
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>│   ├── save/{datasource}/{timestamp}/
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>│   │   ├── 0.json                                     # Task metadata
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>│   │   ├── 0.sql                                      # Generated SQL
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>│   │   ├── 0.csv                                      # Query execution result
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>│   │   ├── 1.json
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>│   │   ├── 1.sql
-</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>│   │   ├── 1.csv
-</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>│   │   └── ...
-</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>│   ├── trajectory/{datasource}/{timestamp}/
-</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>│   │   ├── 0_{ts}.yaml                                # Workflow trace (e.g. 0_1769611836.yaml)
-</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>│   │   ├── 1_{ts}.yaml
-</span><span id="__span-21-14"><a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>│   │   └── ...
-</span><span id="__span-21-15"><a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a>│   └── evaluation_round_{timestamp}_0.json            # Evaluation report for round 0
-</span><span id="__span-21-16"><a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a>├── {group_name}_1/
-</span><span id="__span-21-17"><a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a>│   ├── save/{datasource}/{timestamp}/
-</span><span id="__span-21-18"><a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a>│   │   ├── 0.json
-</span><span id="__span-21-19"><a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a>│   │   ├── 0.sql
-</span><span id="__span-21-20"><a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a>│   │   ├── 0.csv
-</span><span id="__span-21-21"><a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a>│   │   ├── 1.json
-</span><span id="__span-21-22"><a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a>│   │   ├── 1.sql
-</span><span id="__span-21-23"><a id="__codelineno-21-23" name="__codelineno-21-23" href="#__codelineno-21-23"></a>│   │   ├── 1.csv
-</span><span id="__span-21-24"><a id="__codelineno-21-24" name="__codelineno-21-24" href="#__codelineno-21-24"></a>│   │   └── ...
-</span><span id="__span-21-25"><a id="__codelineno-21-25" name="__codelineno-21-25" href="#__codelineno-21-25"></a>│   ├── trajectory/{datasource}/{timestamp}/
-</span><span id="__span-21-26"><a id="__codelineno-21-26" name="__codelineno-21-26" href="#__codelineno-21-26"></a>│   │   ├── 0_{ts}.yaml
-</span><span id="__span-21-27"><a id="__codelineno-21-27" name="__codelineno-21-27" href="#__codelineno-21-27"></a>│   │   ├── 1_{ts}.yaml
-</span><span id="__span-21-28"><a id="__codelineno-21-28" name="__codelineno-21-28" href="#__codelineno-21-28"></a>│   │   └── ...
-</span><span id="__span-21-29"><a id="__codelineno-21-29" name="__codelineno-21-29" href="#__codelineno-21-29"></a>│   └── evaluation_round_{timestamp}_1.json
-</span><span id="__span-21-30"><a id="__codelineno-21-30" name="__codelineno-21-30" href="#__codelineno-21-30"></a>├── ...
-</span><span id="__span-21-31"><a id="__codelineno-21-31" name="__codelineno-21-31" href="#__codelineno-21-31"></a>└── {group_name}_summary_{timestamp}.xlsx              # Summary report across all rounds
+<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>{agent.home}/integration/
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>├── {group_name}_0/
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>│   ├── save/{datasource}/{timestamp}/
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>│   │   ├── 0.json                                     # Task metadata
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>│   │   ├── 0.sql                                      # Generated SQL
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>│   │   ├── 0.csv                                      # Query execution result
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>│   │   ├── 1.json
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>│   │   ├── 1.sql
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>│   │   ├── 1.csv
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>│   │   └── ...
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>│   ├── trajectory/{datasource}/{timestamp}/
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>│   │   ├── 0_{ts}.yaml                                # Workflow trace (e.g. 0_1769611836.yaml)
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a>│   │   ├── 1_{ts}.yaml
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a>│   │   └── ...
+</span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a>│   └── evaluation_round_{timestamp}_0.json            # Evaluation report for round 0
+</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a>├── {group_name}_1/
+</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a>│   ├── save/{datasource}/{timestamp}/
+</span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a>│   │   ├── 0.json
+</span><span id="__span-20-19"><a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a>│   │   ├── 0.sql
+</span><span id="__span-20-20"><a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a>│   │   ├── 0.csv
+</span><span id="__span-20-21"><a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a>│   │   ├── 1.json
+</span><span id="__span-20-22"><a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a>│   │   ├── 1.sql
+</span><span id="__span-20-23"><a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a>│   │   ├── 1.csv
+</span><span id="__span-20-24"><a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a>│   │   └── ...
+</span><span id="__span-20-25"><a id="__codelineno-20-25" name="__codelineno-20-25" href="#__codelineno-20-25"></a>│   ├── trajectory/{datasource}/{timestamp}/
+</span><span id="__span-20-26"><a id="__codelineno-20-26" name="__codelineno-20-26" href="#__codelineno-20-26"></a>│   │   ├── 0_{ts}.yaml
+</span><span id="__span-20-27"><a id="__codelineno-20-27" name="__codelineno-20-27" href="#__codelineno-20-27"></a>│   │   ├── 1_{ts}.yaml
+</span><span id="__span-20-28"><a id="__codelineno-20-28" name="__codelineno-20-28" href="#__codelineno-20-28"></a>│   │   └── ...
+</span><span id="__span-20-29"><a id="__codelineno-20-29" name="__codelineno-20-29" href="#__codelineno-20-29"></a>│   └── evaluation_round_{timestamp}_1.json
+</span><span id="__span-20-30"><a id="__codelineno-20-30" name="__codelineno-20-30" href="#__codelineno-20-30"></a>├── ...
+</span><span id="__span-20-31"><a id="__codelineno-20-31" name="__codelineno-20-31" href="#__codelineno-20-31"></a>└── {group_name}_summary_{timestamp}.xlsx              # Summary report across all rounds
 </span></code></pre></div>
 <p>The summary Excel file contains a cross-round comparison table:</p>
 <table>

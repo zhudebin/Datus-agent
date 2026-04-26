@@ -4074,7 +4074,7 @@
 <tr>
 <td><code>services.datasources</code></td>
 <td>Database connections used by SQL and KB operations</td>
-<td><code>--database</code> / current database / default database</td>
+<td><code>--datasource</code> / current database / default database</td>
 </tr>
 <tr>
 <td><code>services.semantic_layer</code></td>
@@ -4246,10 +4246,10 @@
 </span></code></pre></div>
 <h2 id="default-database-selection">Default Database Selection<a class="headerlink" href="#default-database-selection" title="Permanent link">&para;</a></h2>
 <p>When running CLI commands, specify which database to use:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>datus-cli<span class="w"> </span>--database<span class="w"> </span>my_duckdb
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>datus-agent<span class="w"> </span>run<span class="w"> </span>--database<span class="w"> </span>my_snowflake<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="w"> </span>--task_db_name<span class="w"> </span>ANALYTICS
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>datus-cli<span class="w"> </span>--datasource<span class="w"> </span>my_duckdb
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>datus-agent<span class="w"> </span>run<span class="w"> </span>--datasource<span class="w"> </span>my_snowflake<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="w"> </span>--task_db_name<span class="w"> </span>ANALYTICS
 </span></code></pre></div>
-<p>If <code>--database</code> is not specified:
+<p>If <code>--datasource</code> is not specified:
 1. If a database has <code>default: true</code> → auto-selected
 2. If only one database configured → auto-selected
 3. If multiple without default → shows available list</p>

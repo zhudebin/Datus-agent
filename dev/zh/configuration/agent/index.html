@@ -4165,7 +4165,7 @@
 <p>这部分配置会被用于：</p>
 <ul>
 <li><code>chat</code>、<code>explore</code>、<code>gen_sql</code>、<code>gen_report</code>、<code>gen_dashboard</code>、<code>scheduler</code> 等内置 agentic 节点</li>
-<li>通过 <code>/subagent</code> 创建的自定义 subagent</li>
+<li>通过统一 agent TUI（<code>/agent</code> 或 <code>/subagent</code>）创建的自定义 subagent</li>
 <li>把自定义名称 alias 到某个内置节点类的高级手工配置</li>
 </ul>
 <h3 id="_5">常见字段<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
@@ -4205,7 +4205,7 @@
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">metrics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">finance.revenue.daily_revenue</span>
 </span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="nt">sqls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">finance.revenue.region_rollup</span>
 </span></code></pre></div>
-<p>手工写 YAML 时请显式填写 <code>datasource</code>。<code>/subagent</code> 向导会自动从当前数据库填充该值。</p>
+<p>手工写 YAML 时请显式填写 <code>datasource</code>。统一 agent TUI 的 Custom Tab 向导会自动从当前数据库填充该值。</p>
 <h3 id="_6">示例<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nt">agent</span><span class="p">:</span>
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>

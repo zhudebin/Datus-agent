@@ -3704,10 +3704,10 @@
 <h2 id="_2">快速开始<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <h3 id="_3">启动网页界面<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
 <p><strong>指定数据源</strong>：
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--database<span class="w"> </span>&lt;your_datasource&gt;
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--datasource<span class="w"> </span>&lt;your_datasource&gt;
 </span></code></pre></div></p>
 <p><strong>使用自定义配置</strong>：
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--config<span class="w"> </span>path/to/agent.yml<span class="w"> </span>--database<span class="w"> </span>snowflake
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--config<span class="w"> </span>path/to/agent.yml<span class="w"> </span>--datasource<span class="w"> </span>snowflake
 </span></code></pre></div></p>
 <p><strong>自定义端口与主机</strong>：
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--port<span class="w"> </span><span class="m">8080</span><span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0
@@ -3753,7 +3753,7 @@
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>http://localhost:8501/?subagent=finance_report
 </span></code></pre></div>
 <p>也可以通过 CLI 直接启动到某个 subagent：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--database<span class="w"> </span>production<span class="w"> </span>--subagent<span class="w"> </span>finance_report
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>datus<span class="w"> </span>--web<span class="w"> </span>--datasource<span class="w"> </span>production<span class="w"> </span>--subagent<span class="w"> </span>finance_report
 </span></code></pre></div>
 <h3 id="3">3. 会话管理<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
 <p><strong>查看会话历史</strong>：</p>

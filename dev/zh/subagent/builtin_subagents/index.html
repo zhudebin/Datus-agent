@@ -1241,7 +1241,7 @@
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        交互式确认
+        同步行为
       
     </span>
   </a>
@@ -1380,7 +1380,7 @@
   <a href="#_15" class="md-nav__link">
     <span class="md-ellipsis">
       
-        交互式确认
+        验证和同步
       
     </span>
   </a>
@@ -1519,7 +1519,7 @@
   <a href="#_25" class="md-nav__link">
     <span class="md-ellipsis">
       
-        交互式确认
+        验证和同步
       
     </span>
   </a>
@@ -1702,7 +1702,7 @@
   <a href="#_36" class="md-nav__link">
     <span class="md-ellipsis">
       
-        交互式确认
+        同步行为
       
     </span>
   </a>
@@ -4660,7 +4660,7 @@
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        交互式确认
+        同步行为
       
     </span>
   </a>
@@ -4799,7 +4799,7 @@
   <a href="#_15" class="md-nav__link">
     <span class="md-ellipsis">
       
-        交互式确认
+        验证和同步
       
     </span>
   </a>
@@ -4938,7 +4938,7 @@
   <a href="#_25" class="md-nav__link">
     <span class="md-ellipsis">
       
-        交互式确认
+        验证和同步
       
     </span>
   </a>
@@ -5121,7 +5121,7 @@
   <a href="#_36" class="md-nav__link">
     <span class="md-ellipsis">
       
-        交互式确认
+        同步行为
       
     </span>
   </a>
@@ -5804,9 +5804,9 @@
 </ul>
 <p><strong>内置配置</strong>（无需设置）：
 - <strong>工具</strong>：根据 subagent 类型自动配置
-- <strong>Hooks</strong>：交互模式下的用户确认工作流
+- <strong>Hooks</strong>：按工作流启用验证和知识库同步
 - <strong>MCP 服务器</strong>：MetricFlow 验证（用于 gen_semantic_model 和 gen_metrics）
-- <strong>系统提示</strong>：内置模板版本 1.0
+- <strong>系统提示</strong>：内置模板；未设置 <code>prompt_version</code> 时使用最新可用版本
 - <strong>工作空间</strong>：<code>~/.datus/data/{datasource}/</code> 及 subagent 特定子目录</p>
 <hr />
 <h2 id="gen_sql_summary">gen_sql_summary<a class="headerlink" href="#gen_sql_summary" title="Permanent link">&para;</a></h2>
@@ -5831,8 +5831,7 @@
     C --&gt; D[生成唯一 ID]
     D --&gt; E[创建 YAML]
     E --&gt; F[保存文件]
-    F --&gt; G[用户确认]
-    G --&gt; H[同步到知识库]</code></pre>
+    F --&gt; G[同步到知识库]</code></pre>
 <p><strong>详细步骤</strong>：</p>
 <ol>
 <li><strong>理解 SQL</strong>：AI 分析你的查询结构和业务逻辑</li>
@@ -5844,50 +5843,36 @@
 <li><strong>分类查询</strong>：按照现有模式分配域、layer1、layer2 和标签</li>
 <li><strong>生成 YAML</strong>：创建结构化摘要文档</li>
 <li><strong>保存文件</strong>：使用 <code>write_file()</code> 工具将 YAML 写入工作空间</li>
-<li><strong>用户确认</strong>：显示生成的 YAML 并提示批准</li>
 <li><strong>同步到知识库</strong>：存储到 LanceDB 用于语义搜索</li>
 </ol>
-<h3 id="_6">交互式确认<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
-<p>生成后，你会看到：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>==========================================================
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Generated Reference SQL YAML
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>File: /path/to/sql_summary.yml
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>==========================================================
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>[带语法高亮的 YAML 内容]
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  SYNC TO KNOWLEDGE BASE?
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  1. Yes - Save to Knowledge Base
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  2. No - Keep file only
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>Please enter your choice: [1/2]
-</span></code></pre></div>
+<h3 id="_6">同步行为<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>在 interactive 模式下，YAML 文件写入成功后，generation hook 会自动把它同步到知识库。在 workflow/API 模式下，请使用对应的显式同步步骤或工具。</p>
 <h3 id="_7">主题树分类<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
 <p>在 CLI 模式下通过问题中包含主题树来组织 SQL 摘要：</p>
 <p><strong>带主题树示例：</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/gen_sql_summary<span class="w"> </span>Analyze<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>revenue<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>sales,<span class="w"> </span>subject_tree:<span class="w"> </span>sales/reporting/revenue_analysis
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/gen_sql_summary<span class="w"> </span>Analyze<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>revenue<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>sales,<span class="w"> </span>subject_tree:<span class="w"> </span>sales/reporting/revenue_analysis
 </span></code></pre></div></p>
 <p><strong>不带主题树示例：</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/gen_sql_summary<span class="w"> </span>Analyze<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>revenue<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>sales
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/gen_sql_summary<span class="w"> </span>Analyze<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>revenue<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>sales
 </span></code></pre></div></p>
 <p>未提供时，agent 会基于知识库中的现有主题树和相似查询自动建议分类。</p>
 <h3 id="yaml">YAML 结构<a class="headerlink" href="#yaml" title="Permanent link">&para;</a></h3>
 <p>生成的 SQL 摘要遵循以下结构：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;abc123def456...&quot;</span><span class="w">                      </span><span class="c1"># 自动生成的 MD5 哈希</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">Region&quot;</span><span class="w">                  </span><span class="c1"># 描述性名称（最多 20 个字符）</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                                     </span><span class="c1"># 完整 SQL 查询</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="no">SELECT</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="no">region,</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="no">SUM(revenue) as total_revenue</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="no">FROM sales</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="no">GROUP BY region</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Calculate</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">grouped</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">region&quot;</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;This</span><span class="nv"> </span><span class="s">query</span><span class="nv"> </span><span class="s">aggregates</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">sales</span><span class="nv"> </span><span class="s">table,</span><span class="nv"> </span><span class="s">grouping</span><span class="nv"> </span><span class="s">results</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">geographic</span><span class="nv"> </span><span class="s">region.</span><span class="nv"> </span><span class="s">It</span><span class="nv"> </span><span class="s">uses</span><span class="nv"> </span><span class="s">SUM</span><span class="nv"> </span><span class="s">aggregation</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">calculate</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">totals</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">region.&quot;</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/Users/you/.datus/data/reference_sql/revenue_by_region.yml&quot;</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sales&quot;</span><span class="w">                            </span><span class="c1"># 业务域</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="nt">layer1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Reporting&quot;</span><span class="w">                        </span><span class="c1"># 主要类别</span>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="nt">layer2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">Analysis&quot;</span><span class="w">                 </span><span class="c1"># 次要类别</span>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;revenue,</span><span class="nv"> </span><span class="s">region,</span><span class="nv"> </span><span class="s">aggregation&quot;</span><span class="w">       </span><span class="c1"># 逗号分隔的标签</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;abc123def456...&quot;</span><span class="w">                      </span><span class="c1"># 自动生成的 MD5 哈希</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">Region&quot;</span><span class="w">                  </span><span class="c1"># 描述性名称（最多 20 个字符）</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                                     </span><span class="c1"># 完整 SQL 查询</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="no">SELECT</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="no">region,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="no">SUM(revenue) as total_revenue</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="no">FROM sales</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="no">GROUP BY region</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Calculate</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">grouped</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">region&quot;</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;This</span><span class="nv"> </span><span class="s">query</span><span class="nv"> </span><span class="s">aggregates</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">sales</span><span class="nv"> </span><span class="s">table,</span><span class="nv"> </span><span class="s">grouping</span><span class="nv"> </span><span class="s">results</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">geographic</span><span class="nv"> </span><span class="s">region.</span><span class="nv"> </span><span class="s">It</span><span class="nv"> </span><span class="s">uses</span><span class="nv"> </span><span class="s">SUM</span><span class="nv"> </span><span class="s">aggregation</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">calculate</span><span class="nv"> </span><span class="s">revenue</span><span class="nv"> </span><span class="s">totals</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">region.&quot;</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nt">filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/Users/you/.datus/data/reference_sql/revenue_by_region.yml&quot;</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sales&quot;</span><span class="w">                            </span><span class="c1"># 业务域</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="nt">layer1</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Reporting&quot;</span><span class="w">                        </span><span class="c1"># 主要类别</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="nt">layer2</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Revenue</span><span class="nv"> </span><span class="s">Analysis&quot;</span><span class="w">                 </span><span class="c1"># 次要类别</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;revenue,</span><span class="nv"> </span><span class="s">region,</span><span class="nv"> </span><span class="s">aggregation&quot;</span><span class="w">       </span><span class="c1"># 逗号分隔的标签</span>
 </span></code></pre></div>
 <h4 id="_8">字段说明<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
 <table>
@@ -5975,8 +5960,8 @@
 <li><strong>数据源（Data Source）</strong>：与数据库表的连接</li>
 </ul>
 <h3 id="_11">快速开始<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
-<p>使用 <code>datus --database &lt;datasource&gt;</code> 启动 Datus CLI，然后使用subagent命令：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>/gen_semantic_model<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>semantic<span class="w"> </span>model<span class="w"> </span><span class="k">for</span><span class="w"> </span>table<span class="w"> </span>&lt;table_name&gt;
+<p>使用 <code>datus --datasource &lt;datasource&gt;</code> 启动 Datus CLI，然后使用subagent命令：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/gen_semantic_model<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>semantic<span class="w"> </span>model<span class="w"> </span><span class="k">for</span><span class="w"> </span>table<span class="w"> </span>&lt;table_name&gt;
 </span></code></pre></div>
 <h3 id="_12">工作原理<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
 <h4 id="_13">交互式生成<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h4>
@@ -5986,80 +5971,61 @@
 <li>检查是否已存在语义模型</li>
 <li>生成全面的 YAML 文件</li>
 <li>使用 MetricFlow 验证配置</li>
-<li>提示你保存到知识库</li>
+<li>验证通过后同步到知识库</li>
 </ol>
 <h4 id="_14">生成工作流<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h4>
 <pre class="mermaid"><code>graph LR
     A[用户请求] --&gt; B[DDL 分析]
     B --&gt; C[YAML 生成]
     C --&gt; D[验证]
-    D --&gt; E[用户确认]
-    E --&gt; F[存储]</code></pre>
-<h3 id="_15">交互式确认<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
-<p>生成语义模型后，你会看到：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>=============================================================
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Generated YAML: table_name.yml
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Path: /path/to/file.yml
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>=============================================================
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>[带语法高亮的 YAML 内容]
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>SYNC TO KNOWLEDGE BASE?
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>1. Yes - Save to Knowledge Base
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>2. No - Keep file only
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>Please enter your choice: [1/2]
-</span></code></pre></div>
-<p><strong>选项</strong>：</p>
-<ul>
-<li><strong>选项 1</strong>：将语义模型保存到你的知识库（RAG 存储）用于 AI 驱动的查询</li>
-<li><strong>选项 2</strong>：仅保留 YAML 文件，不同步到知识库</li>
-</ul>
+    D --&gt; E[知识库同步]</code></pre>
+<h3 id="_15">验证和同步<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<p>发布前，agent 会调用 <code>validate_semantic()</code>。如果验证失败，会修改 YAML 并重试。在 interactive 模式下，验证通过后，<code>end_semantic_model_generation</code> 会触发自动知识库同步；在 workflow/API 模式下，请使用显式的语义模型同步步骤或工具。</p>
 <h3 id="_16">语义模型结构<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
 <h4 id="_17">基本模板<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h4>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">data_source</span><span class="p">:</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">table_name</span><span class="w">                    </span><span class="c1"># 必需：小写加下划线</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Table</span><span class="nv"> </span><span class="s">description&quot;</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nt">sql_table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema.table_name</span><span class="w">        </span><span class="c1"># 对于有 schema 的数据库</span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span><span class="c1"># OR</span>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="nt">sql_query</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                        </span><span class="c1"># 对于自定义查询</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="no">SELECT * FROM table_name</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">  </span><span class="nt">measures</span><span class="p">:</span>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_amount</span><span class="w">              </span><span class="c1"># 必需</span>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">      </span><span class="nt">agg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SUM</span><span class="w">                        </span><span class="c1"># 必需：SUM|COUNT|AVERAGE|etc.</span>
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amount_column</span><span class="w">             </span><span class="c1"># 列或 SQL 表达式</span>
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">      </span><span class="nt">create_metric</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">             </span><span class="c1"># 自动创建可查询指标</span>
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Total</span><span class="nv"> </span><span class="s">transaction</span><span class="nv"> </span><span class="s">amount&quot;</span>
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">  </span><span class="nt">dimensions</span><span class="p">:</span>
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">created_date</span>
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIME</span><span class="w">                      </span><span class="c1"># 必需：TIME|CATEGORICAL</span>
-</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="w">      </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="w">        </span><span class="nt">is_primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">              </span><span class="c1"># 需要一个主时间维度</span>
-</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="w">        </span><span class="nt">time_granularity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DAY</span><span class="w">         </span><span class="c1"># TIME 必需：DAY|WEEK|MONTH|etc.</span>
-</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>
-</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status</span>
-</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CATEGORICAL</span>
-</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Order</span><span class="nv"> </span><span class="s">status&quot;</span>
-</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>
-</span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="w">  </span><span class="nt">identifiers</span><span class="p">:</span>
-</span><span id="__span-8-29"><a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_id</span>
-</span><span id="__span-8-30"><a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PRIMARY</span><span class="w">                   </span><span class="c1"># PRIMARY|FOREIGN|UNIQUE|NATURAL</span>
-</span><span id="__span-8-31"><a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_id</span>
-</span><span id="__span-8-32"><a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>
-</span><span id="__span-8-33"><a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customer</span>
-</span><span id="__span-8-34"><a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FOREIGN</span>
-</span><span id="__span-8-35"><a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customer_id</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">data_source</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">table_name</span><span class="w">                    </span><span class="c1"># 必需：小写加下划线</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Table</span><span class="nv"> </span><span class="s">description&quot;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">sql_table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema.table_name</span><span class="w">        </span><span class="c1"># 对于有 schema 的数据库</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="c1"># OR</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">sql_query</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">                        </span><span class="c1"># 对于自定义查询</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="no">SELECT * FROM table_name</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="nt">measures</span><span class="p">:</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_amount</span><span class="w">              </span><span class="c1"># 必需</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">agg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SUM</span><span class="w">                        </span><span class="c1"># 必需：SUM|COUNT|AVERAGE|etc.</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amount_column</span><span class="w">             </span><span class="c1"># 列或 SQL 表达式</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">      </span><span class="nt">create_metric</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">             </span><span class="c1"># 自动创建可查询指标</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Total</span><span class="nv"> </span><span class="s">transaction</span><span class="nv"> </span><span class="s">amount&quot;</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">  </span><span class="nt">dimensions</span><span class="p">:</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">created_date</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIME</span><span class="w">                      </span><span class="c1"># 必需：TIME|CATEGORICAL</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">      </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">        </span><span class="nt">is_primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">              </span><span class="c1"># 需要一个主时间维度</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">        </span><span class="nt">time_granularity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DAY</span><span class="w">         </span><span class="c1"># TIME 必需：DAY|WEEK|MONTH|etc.</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CATEGORICAL</span>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Order</span><span class="nv"> </span><span class="s">status&quot;</span>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">  </span><span class="nt">identifiers</span><span class="p">:</span>
+</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_id</span>
+</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PRIMARY</span><span class="w">                   </span><span class="c1"># PRIMARY|FOREIGN|UNIQUE|NATURAL</span>
+</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_id</span>
+</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a>
+</span><span id="__span-6-33"><a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customer</span>
+</span><span id="__span-6-34"><a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FOREIGN</span>
+</span><span id="__span-6-35"><a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">customer_id</span>
 </span></code></pre></div>
 <h3 id="_18">总结<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
 <p>语义模型生成功能提供：</p>
 <ul>
 <li>✅ 从表 DDL 自动生成 YAML</li>
 <li>✅ 交互式验证和错误修复</li>
-<li>✅ 存储前用户确认</li>
-<li>✅ 知识库集成</li>
+<li>✅ 验证通过后同步到知识库</li>
+<li>✅ interactive 自动同步，workflow/API 显式同步</li>
 <li>✅ 防止重复</li>
 <li>✅ MetricFlow 兼容性</li>
 </ul>
@@ -6077,8 +6043,8 @@
 </ul>
 <p><strong>示例</strong>：与其重复编写 <code>SELECT SUM(revenue) / COUNT(DISTINCT customer_id)</code>，不如定义一次 <code>avg_customer_revenue</code> 指标。</p>
 <h3 id="_21">快速开始<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
-<p>使用 <code>datus --database &lt;datasource&gt;</code> 启动 Datus CLI，然后使用指标生成subagent：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions,<span class="w"> </span>the<span class="w"> </span>corresponding<span class="w"> </span>question<span class="w"> </span>is<span class="w"> </span>total<span class="w"> </span>amount<span class="w"> </span>of<span class="w"> </span>all<span class="w"> </span>transactions
+<p>使用 <code>datus --datasource &lt;datasource&gt;</code> 启动 Datus CLI，然后使用指标生成subagent：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions,<span class="w"> </span>the<span class="w"> </span>corresponding<span class="w"> </span>question<span class="w"> </span>is<span class="w"> </span>total<span class="w"> </span>amount<span class="w"> </span>of<span class="w"> </span>all<span class="w"> </span>transactions
 </span></code></pre></div>
 <h3 id="_22">工作原理<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h3>
 <h4 id="_23">生成工作流<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h4>
@@ -6090,7 +6056,7 @@
     E --&gt; F[生成指标 YAML]
     F --&gt; G[写入指标文件]
     G --&gt; H[验证]
-    H --&gt; I[用户确认]
+    H --&gt; I[生成 dry-run SQL]
     I --&gt; J[同步到知识库]</code></pre>
 <h4 id="_24">重要限制<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h4>
 <blockquote>
@@ -6098,111 +6064,95 @@
 <p>当前版本**仅支持从单表 SQL 查询生成指标**。不支持多表 JOIN。</p>
 </blockquote>
 <p><strong>支持</strong>：
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">revenue</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">transactions</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">customer_id</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">revenue</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">transactions</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">customer_id</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span>
 </span></code></pre></div></p>
 <p><strong>不支持</strong>：
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">amount</span><span class="p">)</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="n">o</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">customer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">id</span><span class="w">  </span><span class="c1">-- ❌ 不支持 JOIN</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">amount</span><span class="p">)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="n">o</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">customer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">id</span><span class="w">  </span><span class="c1">-- ❌ 不支持 JOIN</span>
 </span></code></pre></div></p>
-<h3 id="_25">交互式确认<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h3>
-<p>生成后，你会看到：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>==========================================================
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Generated YAML: transactions.yml
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Path: /Users/you/.datus/data/semantic_models/transactions.yml
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>==========================================================
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>[带语法高亮的 YAML 内容，显示新指标]
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>  SYNC TO KNOWLEDGE BASE?
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>  1. Yes - Save to Knowledge Base
-</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>  2. No - Keep file only
-</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
-</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>Please enter your choice: [1/2]
-</span></code></pre></div>
-<p><strong>选项</strong>：
-- <strong>选项 1</strong>：将指标同步到你的知识库，用于 AI 驱动的语义搜索
-- <strong>选项 2</strong>：仅保留 YAML 文件，不同步到知识库</p>
+<h3 id="_25">验证和同步<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h3>
+<p>发布前，agent 会用 <code>validate_semantic()</code> 校验 YAML，并用 <code>query_metrics(..., dry_run=True)</code> 编译 SQL。在 interactive 模式下，两项检查都通过后，<code>end_metric_generation</code> 会触发自动知识库同步；在 workflow/API 模式下，请使用显式的指标同步步骤或工具。</p>
 <h3 id="_26">主题树分类<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h3>
 <p>在 CLI 模式下通过问题中包含主题树来组织指标：</p>
 <p><strong>带主题树示例：</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions,<span class="w"> </span>subject_tree:<span class="w"> </span>finance/revenue/transactions
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions,<span class="w"> </span>subject_tree:<span class="w"> </span>finance/revenue/transactions
 </span></code></pre></div></p>
 <p><strong>不带主题树示例：</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:<span class="w"> </span>SELECT<span class="w"> </span>SUM<span class="o">(</span>amount<span class="o">)</span><span class="w"> </span>FROM<span class="w"> </span>transactions
 </span></code></pre></div></p>
 <p>未提供时，agent 会基于知识库中的现有指标自动建议分类。</p>
 <h3 id="_27">使用示例<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h3>
 <h4 id="1">示例 1：简单聚合<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
 <p><strong>用户输入</strong>：
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span><span class="k">for</span><span class="w"> </span>total<span class="w"> </span>order<span class="w"> </span>count
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span><span class="k">for</span><span class="w"> </span>total<span class="w"> </span>order<span class="w"> </span>count
 </span></code></pre></div></p>
 <p><strong>智能体操作</strong>：
 1. 查找 <code>orders.yml</code> 语义模型
 2. 读取文件以发现 <code>order_count</code> 度量
 3. 生成 MEASURE_PROXY 指标：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nn">---</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nt">metric</span><span class="p">:</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_orders</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Total number of orders</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measure_proxy</span>
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
-</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Total</span><span class="nv"> </span><span class="s">Orders&quot;</span>
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nn">---</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nt">metric</span><span class="p">:</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_orders</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Total number of orders</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measure_proxy</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Total</span><span class="nv"> </span><span class="s">Orders&quot;</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
 <h4 id="2">示例 2：转化率<a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
 <p><strong>用户输入</strong>：
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>/gen_metrics<span class="w"> </span>Create<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>SELECT
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>CASE<span class="w"> </span>WHEN<span class="w"> </span><span class="nv">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span><span class="w"> </span>THEN<span class="w"> </span>order_id<span class="w"> </span>END<span class="o">)</span><span class="w"> </span>/
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>order_id<span class="o">)</span><span class="w"> </span>AS<span class="w"> </span>completion_rate
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>FROM<span class="w"> </span>orders
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>/gen_metrics<span class="w"> </span>Create<span class="w"> </span>a<span class="w"> </span>metric<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>SQL:
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>SELECT
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>CASE<span class="w"> </span>WHEN<span class="w"> </span><span class="nv">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;completed&#39;</span><span class="w"> </span>THEN<span class="w"> </span>order_id<span class="w"> </span>END<span class="o">)</span><span class="w"> </span>/
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>order_id<span class="o">)</span><span class="w"> </span>AS<span class="w"> </span>completion_rate
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>FROM<span class="w"> </span>orders
 </span></code></pre></div></p>
 <p><strong>智能体操作</strong>：
 1. 分析 SQL 逻辑（带条件计数的比率）
 2. 查找 <code>orders.yml</code> 并读取度量
 3. 生成带约束的 RATIO 指标：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nn">---</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">metric</span><span class="p">:</span>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_completion_rate</span>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Percentage of orders that reached completed status</span>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span>
-</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
-</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">      </span><span class="nt">constraint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status = &#39;completed&#39;</span>
-</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
-</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
-</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Order</span><span class="nv"> </span><span class="s">Completion</span><span class="nv"> </span><span class="s">Rate&quot;</span>
-</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">    </span><span class="nt">value_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;.2%&quot;</span>
-</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nn">---</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nt">metric</span><span class="p">:</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_completion_rate</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Percentage of orders that reached completed status</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">      </span><span class="nt">constraint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status = &#39;completed&#39;</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Order</span><span class="nv"> </span><span class="s">Completion</span><span class="nv"> </span><span class="s">Rate&quot;</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">    </span><span class="nt">value_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;.2%&quot;</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
 <h4 id="3">示例 3：复杂计算<a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
 <p><strong>用户输入</strong>：
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>average<span class="w"> </span>basket<span class="w"> </span>size<span class="w"> </span>metric:
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>SELECT<span class="w"> </span>SUM<span class="o">(</span>total_amount<span class="o">)</span><span class="w"> </span>/<span class="w"> </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>order_id<span class="o">)</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>FROM<span class="w"> </span>order_items
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>/gen_metrics<span class="w"> </span>Generate<span class="w"> </span>average<span class="w"> </span>basket<span class="w"> </span>size<span class="w"> </span>metric:
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>SELECT<span class="w"> </span>SUM<span class="o">(</span>total_amount<span class="o">)</span><span class="w"> </span>/<span class="w"> </span>COUNT<span class="o">(</span>DISTINCT<span class="w"> </span>order_id<span class="o">)</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>FROM<span class="w"> </span>order_items
 </span></code></pre></div></p>
 <p><strong>智能体操作</strong>：
 1. 定位 <code>order_items.yml</code>
 2. 识别为 RATIO（平均值）
 3. 生成指标：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nn">---</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nt">metric</span><span class="p">:</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg_basket_size</span>
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Average order value (basket size)</span>
-</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
-</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_amount</span>
-</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
-</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
-</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Average</span><span class="nv"> </span><span class="s">Basket</span><span class="nv"> </span><span class="s">Size&quot;</span>
-</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">    </span><span class="nt">value_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;$$,.2f&quot;</span>
-</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">    </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dollars&quot;</span>
-</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nn">---</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="nt">metric</span><span class="p">:</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg_basket_size</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Average order value (basket size)</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_amount</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">order_count</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w">  </span><span class="nt">locked_metadata</span><span class="p">:</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">    </span><span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Average</span><span class="nv"> </span><span class="s">Basket</span><span class="nv"> </span><span class="s">Size&quot;</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">    </span><span class="nt">value_format</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;$$,.2f&quot;</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">    </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dollars&quot;</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">    </span><span class="nt">increase_is_good</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </span></code></pre></div>
 <h3 id="_28">指标存储方式<a class="headerlink" href="#_28" title="Permanent link">&para;</a></h3>
 <h4 id="_29">文件组织<a class="headerlink" href="#_29" title="Permanent link">&para;</a></h4>
@@ -6212,31 +6162,31 @@
 <li><strong>指标</strong>：<code>metrics/{table_name}_metrics.yml</code> —— 一个或多个指标定义，使用 YAML 文档分隔符 <code>---</code> 分隔</li>
 </ul>
 <p><strong>语义模型文件</strong> (<code>transactions.yml</code>)：
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nt">data_source</span><span class="p">:</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transactions</span>
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="nt">sql_table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transactions</span>
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span><span class="nt">measures</span><span class="p">:</span>
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">      </span><span class="nt">agg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SUM</span>
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amount</span>
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">  </span><span class="nt">dimensions</span><span class="p">:</span>
-</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transaction_date</span>
-</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIME</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">data_source</span><span class="p">:</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transactions</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nt">sql_table</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transactions</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="nt">measures</span><span class="p">:</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">      </span><span class="nt">agg</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SUM</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">      </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amount</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">  </span><span class="nt">dimensions</span><span class="p">:</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transaction_date</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TIME</span>
 </span></code></pre></div></p>
 <p><strong>指标文件</strong> (<code>metrics/transactions_metrics.yml</code>)：
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nt">metric</span><span class="p">:</span>
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_revenue</span>
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measure_proxy</span>
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
-</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
-</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="nn">---</span>
-</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="nt">metric</span><span class="p">:</span>
-</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg_transaction_value</span>
-</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
-</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
-</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
-</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transaction_count</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">metric</span><span class="p">:</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_revenue</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measure_proxy</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span><span class="nt">measure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="nn">---</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="nt">metric</span><span class="p">:</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avg_transaction_value</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ratio</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w">  </span><span class="nt">type_params</span><span class="p">:</span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="w">    </span><span class="nt">numerator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">revenue</span>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="w">    </span><span class="nt">denominator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">transaction_count</span>
 </span></code></pre></div></p>
 <p><strong>为什么使用独立文件？</strong>
 - 清晰分离 schema 定义与业务指标
@@ -6244,7 +6194,7 @@
 - MetricFlow 会把 semantic_models 目录下所有 YAML 文档一起验证</p>
 <p>更多细节见 <a href="../gen_metrics/">gen_metrics</a>。</p>
 <h4 id="_30">知识库存储<a class="headerlink" href="#_30" title="Permanent link">&para;</a></h4>
-<p>当你选择 "1. Yes - Save to Knowledge Base" 时，指标会存储到向量数据库中，包含：</p>
+<p>验证和 dry-run SQL 通过后，指标会同步到知识库，包含：</p>
 <ol>
 <li><strong>元数据</strong>：名称、描述、类型、域/层级分类</li>
 <li><strong>LLM 文本</strong>：用于语义搜索的自然语言表示</li>
@@ -6259,7 +6209,7 @@
 <li>✅ <strong>防止重复</strong>：生成前检查现有指标</li>
 <li>✅ <strong>主题树支持</strong>：按 domain/layer1/layer2 组织，支持预定义或学习模式</li>
 <li>✅ <strong>验证</strong>：MetricFlow 验证确保正确性</li>
-<li>✅ <strong>交互式工作流</strong>：同步前审阅和批准</li>
+<li>✅ <strong>发布门禁</strong>：语义验证和 dry-run SQL 通过后才同步</li>
 <li>✅ <strong>知识库集成</strong>：语义搜索以发现指标</li>
 <li>✅ <strong>文件管理</strong>：在 <code>metrics/</code> 目录下维护独立的指标文件</li>
 </ul>
@@ -6277,20 +6227,20 @@
 <p>这些知识帮助 AI agent 在生成 SQL 查询或分析数据时理解你的业务上下文。</p>
 <h3 id="_34">快速开始<a class="headerlink" href="#_34" title="Permanent link">&para;</a></h3>
 <p>启动外部知识生成 subagent：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>--<span class="w"> </span>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
-</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>--<span class="w"> </span>SQL:
-</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>SELECT
-</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span><span class="sb">`</span>Free<span class="w"> </span>Meal<span class="w"> </span>Count<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span><span class="w"> </span>/<span class="w"> </span><span class="sb">`</span>Enrollment<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span>
-</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>FROM
-</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">  </span>frpm
-</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>WHERE
-</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">  </span><span class="sb">`</span>County<span class="w"> </span>Name<span class="sb">`</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Alameda&#39;</span>
-</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>ORDER<span class="w"> </span>BY
-</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">  </span><span class="o">(</span>
-</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="w">    </span>CAST<span class="o">(</span><span class="sb">`</span>Free<span class="w"> </span>Meal<span class="w"> </span>Count<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span><span class="w"> </span>AS<span class="w"> </span>REAL<span class="o">)</span><span class="w"> </span>/<span class="w"> </span><span class="sb">`</span>Enrollment<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span>
-</span><span id="__span-23-13"><a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="w">  </span><span class="o">)</span><span class="w"> </span>DESC
-</span><span id="__span-23-14"><a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>LIMIT<span class="w"> </span><span class="m">1</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>--<span class="w"> </span>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>--<span class="w"> </span>SQL:
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>SELECT
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">  </span><span class="sb">`</span>Free<span class="w"> </span>Meal<span class="w"> </span>Count<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span><span class="w"> </span>/<span class="w"> </span><span class="sb">`</span>Enrollment<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>FROM
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">  </span>frpm
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>WHERE
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">  </span><span class="sb">`</span>County<span class="w"> </span>Name<span class="sb">`</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Alameda&#39;</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>ORDER<span class="w"> </span>BY
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">  </span><span class="o">(</span>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">    </span>CAST<span class="o">(</span><span class="sb">`</span>Free<span class="w"> </span>Meal<span class="w"> </span>Count<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span><span class="w"> </span>AS<span class="w"> </span>REAL<span class="o">)</span><span class="w"> </span>/<span class="w"> </span><span class="sb">`</span>Enrollment<span class="w"> </span><span class="o">(</span>K-12<span class="o">)</span><span class="sb">`</span>
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">  </span><span class="o">)</span><span class="w"> </span>DESC
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a>LIMIT<span class="w"> </span><span class="m">1</span>
 </span></code></pre></div>
 <h3 id="_35">生成工作流<a class="headerlink" href="#_35" title="Permanent link">&para;</a></h3>
 <p>工作流遵循**知识缺口发现**方法：agent 首先尝试独立解决问题，然后与参考 SQL 比较以识别隐含的业务知识。</p>
@@ -6301,8 +6251,7 @@
     D --&gt; E[检查重复]
     E --&gt; F[生成 YAML]
     F --&gt; G[保存文件]
-    G --&gt; H[用户确认]
-    H --&gt; I[同步到知识库]</code></pre>
+    G --&gt; H[同步到知识库]</code></pre>
 <p><strong>详细步骤</strong>：</p>
 <ol>
 <li><strong>理解问题</strong>：从 SQL 注释中读取问题并理解目标</li>
@@ -6312,51 +6261,35 @@
 <li><strong>检查重复</strong>：使用 <code>search_knowledge</code> 验证提取的知识是否已存在</li>
 <li><strong>生成 YAML</strong>：通过 <code>generate_ext_knowledge_id()</code> 创建带有唯一 ID 的结构化知识条目</li>
 <li><strong>保存文件</strong>：使用 <code>write_file(path, content, file_type="ext_knowledge")</code> 写入 YAML</li>
-<li><strong>用户确认</strong>：审阅生成的 YAML 并批准</li>
 <li><strong>同步到知识库</strong>：存储到向量数据库用于语义搜索</li>
 </ol>
 <blockquote>
 <p><strong>重要</strong>：如果未发现知识缺口（agent 的尝试与参考 SQL 匹配），则不生成知识文件。</p>
 </blockquote>
-<h3 id="_36">交互式确认<a class="headerlink" href="#_36" title="Permanent link">&para;</a></h3>
-<p>生成后，你会看到：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>============================================================
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>Generated External Knowledge YAML
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>File: /Users/liuyufei/DatusProject/bird/datus/ext_knowledge/bird_sqlite_with_knowledge/sat_school_administration_knowledge.yaml
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>============================================================
-</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>
-</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>
-</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>  SYNC TO KNOWLEDGE BASE?
-</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>
-</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>  1. Yes - Save to Knowledge Base
-</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>  2. No - Keep file only
-</span><span id="__span-24-11"><a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>
-</span><span id="__span-24-12"><a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a>Please enter your choice: [1/2] 1
-</span><span id="__span-24-13"><a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>✓ Syncing to Knowledge Base...
-</span><span id="__span-24-14"><a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a>✓ Successfully synced external knowledge to Knowledge Base
-</span></code></pre></div>
+<h3 id="_36">同步行为<a class="headerlink" href="#_36" title="Permanent link">&para;</a></h3>
+<p>在 interactive 模式下，YAML 文件写入成功后，generation hook 会自动把它同步到知识库。在 workflow/API 模式下，请使用显式同步步骤或工具。</p>
 <h3 id="_37">主题路径分类<a class="headerlink" href="#_37" title="Permanent link">&para;</a></h3>
 <p>主题路径允许对外部知识进行层次化组织。在 CLI 模式下，在问题中包含它：</p>
 <p><strong>带主题路径示例：</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
-</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>subject_tree:<span class="w"> </span>education/schools/data_integration
-</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>SQL:<span class="w"> </span>***
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>subject_tree:<span class="w"> </span>education/schools/data_integration
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>SQL:<span class="w"> </span>***
 </span></code></pre></div></p>
 <p><strong>不带主题路径示例：</strong>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>SQL:<span class="w"> </span>***
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>/gen_ext_knowledge<span class="w"> </span>Extract<span class="w"> </span>knowledge<span class="w"> </span>from<span class="w"> </span>this<span class="w"> </span>sql
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>Question:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>highest<span class="w"> </span>eligible<span class="w"> </span>free<span class="w"> </span>rate<span class="w"> </span><span class="k">for</span><span class="w"> </span>K-12<span class="w"> </span>students<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>schools<span class="w"> </span><span class="k">in</span><span class="w"> </span>Alameda<span class="w"> </span>County?
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>SQL:<span class="w"> </span>***
 </span></code></pre></div></p>
 <p>未提供时，agent 会基于知识库中现有的主题树自动建议分类。</p>
 <h3 id="yaml_1">YAML 结构<a class="headerlink" href="#yaml_1" title="Permanent link">&para;</a></h3>
 <p>生成的外部知识遵循以下结构：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">education/schools/data_integration/CDS code school identifier California Department of Education join tables</span>
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CDS Code as School Identifier</span>
-</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="nt">search_text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CDS code school identifier California Department of Education join tables</span>
-</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="nt">explanation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">  </span><span class="no">The CDS (California Department of Education) code serves as the primary identifier for linking educational datasets in California. Use `cds` field in SAT scores table to join</span>
-</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="nt">subject_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">education/schools/data_integration</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">education/schools/data_integration/CDS code school identifier California Department of Education join tables</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CDS Code as School Identifier</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="nt">search_text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CDS code school identifier California Department of Education join tables</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="nt">explanation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span><span class="no">The CDS (California Department of Education) code serves as the primary identifier for linking educational datasets in California. Use `cds` field in SAT scores table to join</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="nt">subject_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">education/schools/data_integration</span>
 </span></code></pre></div>
 <h4 id="_38">字段说明<a class="headerlink" href="#_38" title="Permanent link">&para;</a></h4>
 <table>
@@ -6415,11 +6348,11 @@
 <li><strong>File</strong>：浏览工作空间 SQL 文件和文档</li>
 </ul>
 <h3 id="_41">配置<a class="headerlink" href="#_41" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">    </span><span class="nt">explore</span><span class="p">:</span>
-</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">haiku</span><span class="w">           </span><span class="c1"># 推荐：使用较小模型（haiku、gpt-4o-mini）</span>
-</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span><span class="w">           </span><span class="c1"># 可选：默认为 15</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="nt">explore</span><span class="p">:</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">haiku</span><span class="w">           </span><span class="c1"># 推荐：使用较小模型（haiku、gpt-4o-mini）</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span><span class="w">           </span><span class="c1"># 可选：默认为 15</span>
 </span></code></pre></div>
 <blockquote>
 <p><strong>提示</strong>：explore subagent 以工具调用为主，而非复杂推理。推荐使用较小、更快的模型（如 <code>haiku</code>、<code>gpt-4o-mini</code>），可降低成本并提升速度，同时不影响质量。</p>
@@ -6467,7 +6400,7 @@
 </ul>
 <h3 id="_44">使用方式<a class="headerlink" href="#_44" title="Permanent link">&para;</a></h3>
 <p>explore subagent 通常由聊天助手通过 <code>task(type="explore")</code> 自动调用，也可手动启动：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>/explore<span class="w"> </span>Discover<span class="w"> </span>tables<span class="w"> </span>related<span class="w"> </span>to<span class="w"> </span>customer<span class="w"> </span>revenue<span class="w"> </span>and<span class="w"> </span>find<span class="w"> </span>relevant<span class="w"> </span>metrics
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>/explore<span class="w"> </span>Discover<span class="w"> </span>tables<span class="w"> </span>related<span class="w"> </span>to<span class="w"> </span>customer<span class="w"> </span>revenue<span class="w"> </span>and<span class="w"> </span>find<span class="w"> </span>relevant<span class="w"> </span>metrics
 </span></code></pre></div>
 <hr />
 <h2 id="gen_sql">gen_sql<a class="headerlink" href="#gen_sql" title="Permanent link">&para;</a></h2>
@@ -6481,11 +6414,11 @@
 <li><strong>修改支持</strong>：修改现有查询时返回 unified diff 格式</li>
 </ul>
 <h3 id="_47">配置<a class="headerlink" href="#_47" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="nt">gen_sql</span><span class="p">:</span>
-</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># 可选：默认使用已配置的模型</span>
-</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># 可选：默认为 30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="nt">gen_sql</span><span class="p">:</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># 可选：默认使用已配置的模型</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># 可选：默认为 30</span>
 </span></code></pre></div>
 <h3 id="_48">工作原理<a class="headerlink" href="#_48" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph LR
@@ -6498,23 +6431,23 @@
 <h3 id="_49">输出格式<a class="headerlink" href="#_49" title="Permanent link">&para;</a></h3>
 <p>gen_sql subagent 以两种格式之一返回结果：</p>
 <p><strong>内联 SQL</strong>（适用于较短查询）：
-<div class="language-json highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="p">{</span>
-</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span><span class="nt">&quot;sql&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELECT region, SUM(revenue) FROM sales GROUP BY region&quot;</span><span class="p">,</span>
-</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;查询解释...&quot;</span><span class="p">,</span>
-</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span>
-</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="p">{</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span><span class="nt">&quot;sql&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SELECT region, SUM(revenue) FROM sales GROUP BY region&quot;</span><span class="p">,</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;查询解释...&quot;</span><span class="p">,</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1234</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="p">}</span>
 </span></code></pre></div></p>
 <p><strong>基于文件的 SQL</strong>（适用于 50+ 行的复杂查询）：
-<div class="language-json highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="p">{</span>
-</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">  </span><span class="nt">&quot;sql_file_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/generated_query.sql&quot;</span><span class="p">,</span>
-</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">  </span><span class="nt">&quot;sql_preview&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;查询的前几行...&quot;</span><span class="p">,</span>
-</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;查询解释...&quot;</span><span class="p">,</span>
-</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5678</span>
-</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="p">{</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">  </span><span class="nt">&quot;sql_file_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/generated_query.sql&quot;</span><span class="p">,</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">  </span><span class="nt">&quot;sql_preview&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;查询的前几行...&quot;</span><span class="p">,</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;查询解释...&quot;</span><span class="p">,</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5678</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="p">}</span>
 </span></code></pre></div></p>
 <h3 id="_50">使用方式<a class="headerlink" href="#_50" title="Permanent link">&para;</a></h3>
 <p>gen_sql subagent 通常由聊天助手通过 <code>task(type="gen_sql")</code> 自动调用来处理复杂查询，也可手动启动：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>/gen_sql<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>query<span class="w"> </span>to<span class="w"> </span>calculate<span class="w"> </span>customer<span class="w"> </span>lifetime<span class="w"> </span>value<span class="w"> </span>with<span class="w"> </span>cohort<span class="w"> </span>analysis
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>/gen_sql<span class="w"> </span>Generate<span class="w"> </span>a<span class="w"> </span>query<span class="w"> </span>to<span class="w"> </span>calculate<span class="w"> </span>customer<span class="w"> </span>lifetime<span class="w"> </span>value<span class="w"> </span>with<span class="w"> </span>cohort<span class="w"> </span>analysis
 </span></code></pre></div>
 <hr />
 <h2 id="gen_report">gen_report<a class="headerlink" href="#gen_report" title="Permanent link">&para;</a></h2>
@@ -6528,12 +6461,12 @@
 <li><strong>配置驱动</strong>：工具设置和系统提示由 <code>agent.yml</code> 配置驱动</li>
 </ul>
 <h3 id="_53">配置<a class="headerlink" href="#_53" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">    </span><span class="nt">gen_report</span><span class="p">:</span>
-</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># 可选：默认使用已配置的模型</span>
-</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># 可选：默认为 30</span>
-</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="w">      </span><span class="nt">tools</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semantic_tools.*,</span><span class="nv"> </span><span class="s">db_tools.*,</span><span class="nv"> </span><span class="s">context_search_tools.list_subject_tree&quot;</span><span class="w">  </span><span class="c1"># 可选：自定义可用工具</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="nt">gen_report</span><span class="p">:</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># 可选：默认使用已配置的模型</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># 可选：默认为 30</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">      </span><span class="nt">tools</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semantic_tools.*,</span><span class="nv"> </span><span class="s">db_tools.*,</span><span class="nv"> </span><span class="s">context_search_tools.list_subject_tree&quot;</span><span class="w">  </span><span class="c1"># 可选：自定义可用工具</span>
 </span></code></pre></div>
 <p><strong>工具模式：</strong></p>
 <table>
@@ -6576,24 +6509,24 @@
     E --&gt; F[返回结构化结果]</code></pre>
 <h3 id="_55">输出格式<a class="headerlink" href="#_55" title="Permanent link">&para;</a></h3>
 <p>gen_report subagent 以结构化报告返回结果：</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">{</span>
-</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span><span class="nt">&quot;report&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;包含分析的结构化报告内容...&quot;</span><span class="p">,</span>
-</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;摘要说明...&quot;</span><span class="p">,</span>
-</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2345</span>
-</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="p">{</span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span><span class="nt">&quot;report&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;包含分析的结构化报告内容...&quot;</span><span class="p">,</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;摘要说明...&quot;</span><span class="p">,</span>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2345</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="_56">使用方式<a class="headerlink" href="#_56" title="Permanent link">&para;</a></h3>
 <p>gen_report subagent 可以手动启动，也可以由聊天助手通过 <code>task(type="gen_report")</code> 调用：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>/gen_report<span class="w"> </span>分析上季度的收入趋势并提供洞察
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>/gen_report<span class="w"> </span>分析上季度的收入趋势并提供洞察
 </span></code></pre></div>
 <h3 id="subagent_1">自定义报告 Subagent<a class="headerlink" href="#subagent_1" title="Permanent link">&para;</a></h3>
 <p>你可以在 <code>agent.yml</code> 中配置使用 gen_report 节点类的自定义 subagent：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">    </span><span class="nt">attribution_report</span><span class="p">:</span>
-</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_report</span>
-</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">      </span><span class="nt">tools</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semantic_tools.*,</span><span class="nv"> </span><span class="s">db_tools.*,</span><span class="nv"> </span><span class="s">context_search_tools.*&quot;</span>
-</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">    </span><span class="nt">attribution_report</span><span class="p">:</span>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_report</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="w">      </span><span class="nt">tools</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semantic_tools.*,</span><span class="nv"> </span><span class="s">db_tools.*,</span><span class="nv"> </span><span class="s">context_search_tools.*&quot;</span>
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
 </span></code></pre></div>
 <p>然后通过 <code>/attribution_report 分析活动 X 的转化归因</code> 使用。</p>
 <hr />
@@ -6608,67 +6541,77 @@
 <li><strong>内置校验</strong>：结束前可调用 <code>validate_skill</code> 检查结果</li>
 </ul>
 <h3 id="_59">配置<a class="headerlink" href="#_59" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">    </span><span class="nt">gen_skill</span><span class="p">:</span>
-</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span>
-</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">    </span><span class="nt">gen_skill</span><span class="p">:</span>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span>
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
 </span></code></pre></div>
 <h3 id="_60">输出格式<a class="headerlink" href="#_60" title="Permanent link">&para;</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="p">{</span>
-</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;已创建一个用于财务仪表盘校验的新 skill。&quot;</span><span class="p">,</span>
-</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">  </span><span class="nt">&quot;skill_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;finance-dashboard-validation&quot;</span><span class="p">,</span>
-</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">  </span><span class="nt">&quot;skill_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/skills/finance-dashboard-validation&quot;</span><span class="p">,</span>
-</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1980</span>
-</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">{</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;已创建一个用于财务仪表盘校验的新 skill。&quot;</span><span class="p">,</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">  </span><span class="nt">&quot;skill_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;finance-dashboard-validation&quot;</span><span class="p">,</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">  </span><span class="nt">&quot;skill_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/skills/finance-dashboard-validation&quot;</span><span class="p">,</span>
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1980</span>
+</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="_61">使用方式<a class="headerlink" href="#_61" title="Permanent link">&para;</a></h3>
 <p>直接启动：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>/gen_skill<span class="w"> </span>创建一个在发布前校验每日收入仪表盘的<span class="w"> </span>skill
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>/gen_skill<span class="w"> </span>创建一个在发布前校验每日收入仪表盘的<span class="w"> </span>skill
 </span></code></pre></div>
 <p>也可以由聊天 agent 通过 <code>task(type="gen_skill")</code> 自动委派。</p>
 <hr />
 <h2 id="gen_dashboard">gen_dashboard<a class="headerlink" href="#gen_dashboard" title="Permanent link">&para;</a></h2>
 <h3 id="_62">概览<a class="headerlink" href="#_62" title="Permanent link">&para;</a></h3>
-<p>gen_dashboard subagent 在 Superset 和 Grafana 上创建、更新和管理 BI 仪表盘。它由聊天 agent 通过 <code>task(type="gen_dashboard")</code> 调用，使用 <code>BIFuncTool</code> 中的 BI 工具，通过 LLM function calling 驱动完整的仪表盘创建工作流。</p>
+<p>gen_dashboard subagent 在 Superset 和 Grafana 上创建、更新和管理 BI 仪表盘。它由聊天 agent 通过 <code>task(type="gen_dashboard")</code> 调用，使用 <code>BIFuncTool</code> 中的 BI 工具，基于已存在的 serving 表或 SQL dataset 创建 dashboard 资产。</p>
 <h3 id="_63">关键特性<a class="headerlink" href="#_63" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>多平台支持</strong>：支持 Apache Superset 和 Grafana；平台可通过 <code>bi_platform</code> 显式指定，或从 <code>agent.services.bi_platforms</code> 自动检测</li>
 <li><strong>动态工具暴露</strong>：工具根据 adapter Mixin 能力动态暴露——只有平台实际支持的操作才作为 LLM 工具出现</li>
-<li><strong>数据物化桥接</strong>：<code>write_query</code> 将源数据库查询结果写入 BI 平台自有数据库，解耦源数据与可视化层</li>
-<li><strong>Skill 引导工作流</strong>：内置 <code>gen-dashboard</code> skill 为各平台提供分步工作流指导</li>
+<li><strong>只处理已就位的 serving 数据</strong>：数据准备由 <code>gen_job</code> / <code>scheduler</code> 单独完成；gen_dashboard 负责创建 BI dataset / chart / dashboard 资产</li>
+<li><strong>Skill 引导</strong>：平台 skill（<code>superset-dashboard</code>、<code>grafana-dashboard</code>）提供分步工作流；<code>bi-validation</code> 在创建结束后自动运行</li>
 </ul>
 <h3 id="_64">配置<a class="headerlink" href="#_64" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">    </span><span class="nt">bi_platforms</span><span class="p">:</span>
-</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">      </span><span class="nt">superset</span><span class="p">:</span>
-</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
-</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8088&quot;</span>
-</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_USER}&quot;</span>
-</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_PASSWORD}&quot;</span>
-</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="w">        </span><span class="nt">dataset_db</span><span class="p">:</span>
-</span><span id="__span-41-10"><a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="w">          </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_DB_URI}&quot;</span>
-</span><span id="__span-41-11"><a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a><span class="w">          </span><span class="nt">schema</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;public&quot;</span>
-</span><span id="__span-41-12"><a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a>
-</span><span id="__span-41-13"><a id="__codelineno-41-13" name="__codelineno-41-13" href="#__codelineno-41-13"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-41-14"><a id="__codelineno-41-14" name="__codelineno-41-14" href="#__codelineno-41-14"></a><span class="w">    </span><span class="nt">gen_dashboard</span><span class="p">:</span>
-</span><span id="__span-41-15"><a id="__codelineno-41-15" name="__codelineno-41-15" href="#__codelineno-41-15"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># 可选：默认使用已配置的模型</span>
-</span><span id="__span-41-16"><a id="__codelineno-41-16" name="__codelineno-41-16" href="#__codelineno-41-16"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># 可选：默认为 30</span>
-</span><span id="__span-41-17"><a id="__codelineno-41-17" name="__codelineno-41-17" href="#__codelineno-41-17"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span><span class="w">   </span><span class="c1"># 可选：只配置一个 BI 平台时可自动检测</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">    </span><span class="nt">datasources</span><span class="p">:</span>
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">      </span><span class="nt">serving_pg</span><span class="p">:</span>
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">        </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">127.0.0.1</span>
+</span><span id="__span-37-7"><a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="w">        </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5433</span>
+</span><span id="__span-37-8"><a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="w">        </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset_examples</span>
+</span><span id="__span-37-9"><a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a><span class="w">        </span><span class="nt">schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bi_public</span>
+</span><span id="__span-37-10"><a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SERVING_WRITE_USER}&quot;</span>
+</span><span id="__span-37-11"><a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SERVING_WRITE_PASSWORD}&quot;</span>
+</span><span id="__span-37-12"><a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a>
+</span><span id="__span-37-13"><a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a><span class="w">    </span><span class="nt">bi_platforms</span><span class="p">:</span>
+</span><span id="__span-37-14"><a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a><span class="w">      </span><span class="nt">superset</span><span class="p">:</span>
+</span><span id="__span-37-15"><a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
+</span><span id="__span-37-16"><a id="__codelineno-37-16" name="__codelineno-37-16" href="#__codelineno-37-16"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;http://localhost:8088&quot;</span>
+</span><span id="__span-37-17"><a id="__codelineno-37-17" name="__codelineno-37-17" href="#__codelineno-37-17"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_USER}&quot;</span>
+</span><span id="__span-37-18"><a id="__codelineno-37-18" name="__codelineno-37-18" href="#__codelineno-37-18"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${SUPERSET_PASSWORD}&quot;</span>
+</span><span id="__span-37-19"><a id="__codelineno-37-19" name="__codelineno-37-19" href="#__codelineno-37-19"></a><span class="w">        </span><span class="nt">dataset_db</span><span class="p">:</span>
+</span><span id="__span-37-20"><a id="__codelineno-37-20" name="__codelineno-37-20" href="#__codelineno-37-20"></a><span class="w">          </span><span class="nt">datasource_ref</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">serving_pg</span>
+</span><span id="__span-37-21"><a id="__codelineno-37-21" name="__codelineno-37-21" href="#__codelineno-37-21"></a><span class="w">          </span><span class="nt">bi_database_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">examples</span>
+</span><span id="__span-37-22"><a id="__codelineno-37-22" name="__codelineno-37-22" href="#__codelineno-37-22"></a>
+</span><span id="__span-37-23"><a id="__codelineno-37-23" name="__codelineno-37-23" href="#__codelineno-37-23"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-37-24"><a id="__codelineno-37-24" name="__codelineno-37-24" href="#__codelineno-37-24"></a><span class="w">    </span><span class="nt">gen_dashboard</span><span class="p">:</span>
+</span><span id="__span-37-25"><a id="__codelineno-37-25" name="__codelineno-37-25" href="#__codelineno-37-25"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">           </span><span class="c1"># 可选：默认使用已配置的模型</span>
+</span><span id="__span-37-26"><a id="__codelineno-37-26" name="__codelineno-37-26" href="#__codelineno-37-26"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># 可选：默认为 30</span>
+</span><span id="__span-37-27"><a id="__codelineno-37-27" name="__codelineno-37-27" href="#__codelineno-37-27"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span><span class="w">   </span><span class="c1"># 可选：只配置一个 BI 平台时可自动检测</span>
 </span></code></pre></div>
 <p><strong>前置条件</strong>：
 - <code>agent.yml</code> 中包含 <code>agent.services.bi_platforms</code> 配置段及平台凭据
 - 已安装 <code>datus-bi-superset</code> 或 <code>datus-bi-grafana</code> 包</p>
 <h3 id="_65">工作原理<a class="headerlink" href="#_65" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>graph LR
-    A[chat agent] --&gt;|task type=gen_dashboard| B[GenDashboardAgenticNode]
-    B --&gt; C[_setup_bi_tools]
-    C --&gt; D[adapter_registry.get platform]
-    D --&gt; E[BIFuncTool.available_tools]
-    E --&gt; F[LLM Function Calling]
-    F --&gt;|Superset| G[write_query → create_dataset → create_chart → create_dashboard]
-    F --&gt;|Grafana| H[write_query → create_dashboard → create_chart]</code></pre>
+    A[task gen_dashboard] --&gt; C[GenDashboardAgenticNode]
+    C --&gt; D[BIFuncTool.available_tools]
+    D --&gt; E[LLM Function Calling]
+    E --&gt;|Superset| F[list_bi_databases → create_dataset → create_chart → create_dashboard → add_chart_to_dashboard]
+    E --&gt;|Grafana| G[create_dashboard → create_chart]
+    F --&gt; H[ValidationHook.on_end]
+    G --&gt; H</code></pre>
 <h3 id="_66">可用工具<a class="headerlink" href="#_66" title="Permanent link">&para;</a></h3>
 <p>工具根据平台 adapter 实现的 Mixin 动态暴露：</p>
 <table>
@@ -6761,33 +6704,33 @@
 <td>删除数据集</td>
 </tr>
 <tr>
-<td><code>write_query</code></td>
-<td>已配置 <code>dataset_db_uri</code></td>
-<td>将查询结果物化到 BI 数据库</td>
+<td><code>get_bi_serving_target</code></td>
+<td>已配置 <code>dataset_db</code></td>
+<td>给编排层返回 serving DB 契约</td>
 </tr>
 </tbody>
 </table>
 <h3 id="_67">输出格式<a class="headerlink" href="#_67" title="Permanent link">&para;</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="p">{</span>
-</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;已创建包含 3 个营收趋势图表的销售仪表盘。&quot;</span><span class="p">,</span>
-</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">  </span><span class="nt">&quot;dashboard_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="w">    </span><span class="nt">&quot;dashboard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
-</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8088/superset/dashboard/42/&quot;</span>
-</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="w">  </span><span class="p">},</span>
-</span><span id="__span-42-7"><a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3210</span>
-</span><span id="__span-42-8"><a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="p">{</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;已创建包含 3 个营收趋势图表的销售仪表盘。&quot;</span><span class="p">,</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">  </span><span class="nt">&quot;dashboard_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">    </span><span class="nt">&quot;dashboard_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8088/superset/dashboard/42/&quot;</span>
+</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-38-7"><a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3210</span>
+</span><span id="__span-38-8"><a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="_68">使用方式<a class="headerlink" href="#_68" title="Permanent link">&para;</a></h3>
 <p>gen_dashboard subagent 通常由聊天 agent 通过 <code>task(type="gen_dashboard")</code> 自动调用，也可手动启动：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>/gen_dashboard<span class="w"> </span>创建一个包含按地区划分的营收趋势的销售仪表盘
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>/gen_dashboard<span class="w"> </span>创建一个包含按地区划分的营收趋势的销售仪表盘
 </span></code></pre></div>
 <p>也可以使用 <code>gen_dashboard</code> 节点类创建自定义 subagent：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">    </span><span class="nt">sales_dashboard</span><span class="p">:</span>
-</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_dashboard</span>
-</span><span id="__span-44-5"><a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
-</span><span id="__span-44-6"><a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">    </span><span class="nt">sales_dashboard</span><span class="p">:</span>
+</span><span id="__span-40-4"><a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen_dashboard</span>
+</span><span id="__span-40-5"><a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="w">      </span><span class="nt">bi_platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">superset</span>
+</span><span id="__span-40-6"><a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
 </span></code></pre></div>
 <hr />
 <h2 id="scheduler">scheduler<a class="headerlink" href="#scheduler" title="Permanent link">&para;</a></h2>
@@ -6797,25 +6740,26 @@
 <ul>
 <li><strong>完整作业生命周期</strong>：提交、触发、暂停、恢复、更新和删除 Airflow DAG 作业</li>
 <li><strong>SQL 和 SparkSQL 支持</strong>：支持提交 SQL 和 SparkSQL 两种作业类型</li>
+<li><strong>SQL 文件管理</strong>：提交前可用文件系统工具创建或更新作业 SQL 文件</li>
 <li><strong>监控能力</strong>：列出作业运行记录、获取运行日志、排查故障</li>
 <li><strong>连接发现</strong>：列出可用的 Airflow 连接，用于作业配置</li>
 </ul>
 <h3 id="_71">配置<a class="headerlink" href="#_71" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">    </span><span class="nt">schedulers</span><span class="p">:</span>
-</span><span id="__span-45-4"><a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="w">      </span><span class="nt">airflow_prod</span><span class="p">:</span>
-</span><span id="__span-45-5"><a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">airflow</span>
-</span><span id="__span-45-6"><a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_URL}&quot;</span>
-</span><span id="__span-45-7"><a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_USER}&quot;</span>
-</span><span id="__span-45-8"><a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_PASSWORD}&quot;</span>
-</span><span id="__span-45-9"><a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a><span class="w">        </span><span class="nt">dags_folder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_DAGS_DIR}&quot;</span>
-</span><span id="__span-45-10"><a id="__codelineno-45-10" name="__codelineno-45-10" href="#__codelineno-45-10"></a>
-</span><span id="__span-45-11"><a id="__codelineno-45-11" name="__codelineno-45-11" href="#__codelineno-45-11"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-45-12"><a id="__codelineno-45-12" name="__codelineno-45-12" href="#__codelineno-45-12"></a><span class="w">    </span><span class="nt">scheduler</span><span class="p">:</span>
-</span><span id="__span-45-13"><a id="__codelineno-45-13" name="__codelineno-45-13" href="#__codelineno-45-13"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">                  </span><span class="c1"># 可选：默认使用已配置的模型</span>
-</span><span id="__span-45-14"><a id="__codelineno-45-14" name="__codelineno-45-14" href="#__codelineno-45-14"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">                  </span><span class="c1"># 可选：默认为 30</span>
-</span><span id="__span-45-15"><a id="__codelineno-45-15" name="__codelineno-45-15" href="#__codelineno-45-15"></a><span class="w">      </span><span class="nt">scheduler_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">airflow_prod</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">    </span><span class="nt">schedulers</span><span class="p">:</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">      </span><span class="nt">airflow_prod</span><span class="p">:</span>
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">airflow</span>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="w">        </span><span class="nt">api_base_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_URL}&quot;</span>
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="w">        </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_USER}&quot;</span>
+</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="w">        </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_PASSWORD}&quot;</span>
+</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="w">        </span><span class="nt">dags_folder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${AIRFLOW_DAGS_DIR}&quot;</span>
+</span><span id="__span-41-10"><a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a>
+</span><span id="__span-41-11"><a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-41-12"><a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a><span class="w">    </span><span class="nt">scheduler</span><span class="p">:</span>
+</span><span id="__span-41-13"><a id="__codelineno-41-13" name="__codelineno-41-13" href="#__codelineno-41-13"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude</span><span class="w">                  </span><span class="c1"># 可选：默认使用已配置的模型</span>
+</span><span id="__span-41-14"><a id="__codelineno-41-14" name="__codelineno-41-14" href="#__codelineno-41-14"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">                  </span><span class="c1"># 可选：默认为 30</span>
+</span><span id="__span-41-15"><a id="__codelineno-41-15" name="__codelineno-41-15" href="#__codelineno-41-15"></a><span class="w">      </span><span class="nt">scheduler_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">airflow_prod</span>
 </span></code></pre></div>
 <p><strong>前置条件</strong>：
 - <code>agent.yml</code> 中包含 <code>agent.services.schedulers</code> 配置段及 Airflow 凭据
@@ -6824,10 +6768,11 @@
 <pre class="mermaid"><code>graph LR
     A[chat agent] --&gt;|task type=scheduler| B[SchedulerAgenticNode]
     B --&gt; C[LLM Function Calling]
-    C --&gt; D[submit_sql_job / submit_sparksql_job]
-    C --&gt; E[trigger_scheduler_job]
-    C --&gt; F[pause_job / resume_job]
-    C --&gt; G[list_job_runs / get_run_log]</code></pre>
+    C --&gt; D[write_file / edit_file]
+    D --&gt; E[submit_sql_job / submit_sparksql_job]
+    C --&gt; F[trigger_scheduler_job]
+    C --&gt; G[pause_job / resume_job]
+    C --&gt; H[list_job_runs / get_run_log]</code></pre>
 <h3 id="_73">可用工具<a class="headerlink" href="#_73" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -6844,6 +6789,10 @@
 <tr>
 <td><code>submit_sparksql_job</code></td>
 <td>从 <code>.sql</code> 文件提交定时 SparkSQL 作业</td>
+</tr>
+<tr>
+<td><code>read_file</code> / <code>write_file</code> / <code>edit_file</code></td>
+<td>读取、创建或更新定时作业使用的 SQL 文件</td>
 </tr>
 <tr>
 <td><code>trigger_scheduler_job</code></td>
@@ -6888,26 +6837,26 @@
 </tbody>
 </table>
 <h3 id="_74">输出格式<a class="headerlink" href="#_74" title="Permanent link">&para;</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="p">{</span>
-</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;已提交每日 SQL 作业 &#39;daily_revenue&#39;，每天早上 8:00 运行。&quot;</span><span class="p">,</span>
-</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">  </span><span class="nt">&quot;scheduler_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-46-4"><a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">    </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;daily_revenue_dag&quot;</span><span class="p">,</span>
-</span><span id="__span-46-5"><a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;active&quot;</span><span class="p">,</span>
-</span><span id="__span-46-6"><a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="w">    </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 8 * * *&quot;</span>
-</span><span id="__span-46-7"><a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="w">  </span><span class="p">},</span>
-</span><span id="__span-46-8"><a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1580</span>
-</span><span id="__span-46-9"><a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="p">{</span>
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">  </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;已提交每日 SQL 作业 &#39;daily_revenue&#39;，每天早上 8:00 运行。&quot;</span><span class="p">,</span>
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">  </span><span class="nt">&quot;scheduler_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="w">    </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;daily_revenue_dag&quot;</span><span class="p">,</span>
+</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;active&quot;</span><span class="p">,</span>
+</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="w">    </span><span class="nt">&quot;schedule&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 8 * * *&quot;</span>
+</span><span id="__span-42-7"><a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-42-8"><a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="w">  </span><span class="nt">&quot;tokens_used&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1580</span>
+</span><span id="__span-42-9"><a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="_75">使用方式<a class="headerlink" href="#_75" title="Permanent link">&para;</a></h3>
 <p>scheduler subagent 通常由聊天 agent 通过 <code>task(type="scheduler")</code> 自动调用，也可手动启动：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>/scheduler<span class="w"> </span>提交<span class="w"> </span>/opt/sql/daily_revenue.sql<span class="w"> </span>作为每天早上<span class="w"> </span><span class="m">8</span><span class="w"> </span>点运行的定时作业，使用<span class="w"> </span>postgres_prod<span class="w"> </span>连接
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>/scheduler<span class="w"> </span>提交<span class="w"> </span>/opt/sql/daily_revenue.sql<span class="w"> </span>作为每天早上<span class="w"> </span><span class="m">8</span><span class="w"> </span>点运行的定时作业，使用<span class="w"> </span>postgres_prod<span class="w"> </span>连接
 </span></code></pre></div>
 <p>也可以使用 <code>scheduler</code> 节点类创建自定义 subagent：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="nt">agent</span><span class="p">:</span>
-</span><span id="__span-48-2"><a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
-</span><span id="__span-48-3"><a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="w">    </span><span class="nt">etl_scheduler</span><span class="p">:</span>
-</span><span id="__span-48-4"><a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scheduler</span>
-</span><span id="__span-48-5"><a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="nt">agent</span><span class="p">:</span>
+</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">  </span><span class="nt">agentic_nodes</span><span class="p">:</span>
+</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">    </span><span class="nt">etl_scheduler</span><span class="p">:</span>
+</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="w">      </span><span class="nt">node_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scheduler</span>
+</span><span id="__span-44-5"><a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="w">      </span><span class="nt">max_turns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
 </span></code></pre></div>
 <hr />
 <h2 id="_76">总结<a class="headerlink" href="#_76" title="Permanent link">&para;</a></h2>
@@ -6980,10 +6929,10 @@
 </tr>
 <tr>
 <td><code>gen_job</code></td>
-<td>数据管道作业（单库 ETL + 跨库迁移）</td>
-<td>作业 / 迁移结果</td>
+<td>数据管道作业（单库 ETL + 跨库传输）</td>
+<td>作业 / 传输结果</td>
 <td>源库 + 目标库</td>
-<td>DDL/DML 执行、通过 MigrationTargetMixin 做跨方言类型映射、<code>transfer_query_result</code>、源目标不同库时强制对数校验</td>
+<td>DDL/DML 执行、通过 MigrationTargetMixin 做跨方言类型映射、<code>transfer_query_result</code>、源目标不同库时做轻量对账校验</td>
 </tr>
 <tr>
 <td><code>gen_skill</code></td>
@@ -6997,7 +6946,7 @@
 <td>BI 仪表盘 CRUD（Superset、Grafana）</td>
 <td>仪表盘结果</td>
 <td>BI 平台</td>
-<td>动态工具暴露、数据物化、多平台支持</td>
+<td>动态工具暴露、基于已就位 serving 数据、多平台支持</td>
 </tr>
 <tr>
 <td><code>scheduler</code></td>
@@ -7011,8 +6960,8 @@
 <p><strong>所有 subagent 的内置特性：</strong>
 - 最小化配置（仅 <code>model</code> 和 <code>max_turns</code> 可选）
 - 自动工具设置、hooks 和 MCP 服务器集成
-- 内置系统提示（版本 1.0）
-- 交互模式下的用户确认工作流
+- 内置系统提示，默认选择最新可用版本
+- 按工作流启用验证和知识库同步
 - 知识库集成用于语义搜索
 - 自动工作空间管理</p>
 <p>这些subagent共同自动化了 <strong>数据工程知识管道</strong> ——从 <strong>数据探索 → 查询生成 → 模型定义 → 指标生成 → 业务知识捕获 → 可搜索的知识库</strong>。</p>
